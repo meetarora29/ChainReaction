@@ -3,6 +3,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.stage.Stage;
 
 import java.io.IOException;
 
@@ -19,12 +20,14 @@ public class MainController {
 
     @FXML
     void clickQuit(ActionEvent event) {
-        
+        Stage stage=new Stage();
+        stage.close();
     }
 
     @FXML
-    void clickSettings(ActionEvent event) {
-
+    void clickSettings(ActionEvent event) throws IOException{
+        AnchorPane pane=FXMLLoader.load(getClass().getResource("settings.fxml"));
+        rootPane.getChildren().setAll(pane);
     }
 
 }
