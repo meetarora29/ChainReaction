@@ -20,13 +20,13 @@ public class MainController {
 
     @FXML
     void clickQuit(ActionEvent event) {
-        Stage stage=new Stage();
-        stage.close();
+//        Stage stage=new Stage();
+//        stage.close();
     }
 
     @FXML
     void clickSettings(ActionEvent event) throws IOException{
-        AnchorPane pane=FXMLLoader.load(getClass().getResource("settings.fxml"));
+        AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/settings.fxml"));
         rootPane.getChildren().setAll(pane);
     }
 
