@@ -11,7 +11,7 @@ public class NewGameController {
     @FXML
     public void clickNewGame() throws IOException
     {
-        AnchorPane pane= FXMLLoader.load(getClass().getResource("selectplayer.fxml"));
+        AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/selectplayer.fxml"));
         newgamepane.getChildren().setAll(pane);
     }
     @FXML
@@ -22,7 +22,7 @@ public class NewGameController {
     @FXML
     public void clickBack() throws IOException
     {
-        AnchorPane pane= FXMLLoader.load(getClass().getResource("sample_main.fxml"));
+        AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/sample_main.fxml"));
         newgamepane.getChildren().setAll(pane);
     }
 }

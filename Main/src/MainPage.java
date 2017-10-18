@@ -23,7 +23,7 @@ public class MainPage extends Application {
     public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("CHAIN-REACTION");//set the title as "CHAIN_REACTION"
         //loading the fxml file from scene builder
-        AnchorPane pane=(AnchorPane) FXMLLoader.load(MainPage.class.getResource("sample_main.fxml"));
+        AnchorPane pane=(AnchorPane) FXMLLoader.load(MainPage.class.getResource("fxml_files/sample_main.fxml"));
 //        BorderPane pane=new BorderPane();
 //        Button btn=new Button("Play Game");
 //        Button btn1=new Button("Settings");

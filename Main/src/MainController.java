@@ -14,7 +14,7 @@ public class MainController {
 
     @FXML
     void clickPlayGame(ActionEvent event) throws IOException {
-        AnchorPane pane= FXMLLoader.load(getClass().getResource("sample_newgame.fxml"));
+        AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/sample_newgame.fxml"));
         rootPane.getChildren().setAll(pane);
     }
 

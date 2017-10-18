@@ -13,7 +13,7 @@ public class SettingsController {
     private AnchorPane settingsPane;
     @FXML
     void clickDone(ActionEvent event) throws IOException {
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("sample_main.fxml"));
+        AnchorPane pane = FXMLLoader.load(getClass().getResource("fxml_files/sample_main.fxml"));
         settingsPane.getChildren().setAll(pane);
     }
 
