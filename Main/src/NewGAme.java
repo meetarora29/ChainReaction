@@ -4,6 +4,7 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -16,7 +17,7 @@ public class NewGAme extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         primaryStage.setTitle("Play Game");
-        Pane pane=(Pane)FXMLLoader.load(NewGAme.class.getResource("sample_newgame.fxml"));
+        AnchorPane pane=(AnchorPane)FXMLLoader.load(NewGAme.class.getResource("sample_newgame.fxml"));
          scene2=new Scene(pane);
         primaryStage.setScene(scene2);
         // Display the stage
