@@ -22,6 +22,7 @@ public class MainController {
     void clickQuit(ActionEvent event) {
 //        Stage stage=new Stage();
 //        stage.close();
+        rootPane.getChildren().
     }
 
     @FXML

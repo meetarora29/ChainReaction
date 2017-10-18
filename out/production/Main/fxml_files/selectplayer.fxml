@@ -9,13 +9,19 @@
 
 <AnchorPane fx:id="playerPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SelectPlayerController">
    <children>
-      <ComboBox fx:id="comboBox" layoutX="300.0" layoutY="187.0" prefHeight="27.0" prefWidth="216.0" />
+      <ComboBox fx:id="comboBox" layoutX="300.0" layoutY="80.0" prefHeight="30.0" prefWidth="216.0" />
       <Button layoutX="450.0" layoutY="316.0" mnemonicParsing="false" onAction="#clickPlay" prefWidth="80.0" text="PLAY" />
-      <Label layoutX="84.0" layoutY="190.0" prefHeight="22.0" prefWidth="216.0" text="Select Number of Players">
+      <Label layoutX="84.0" layoutY="83.0" prefHeight="22.0" prefWidth="216.0" text="Select Number of Players">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
       <Button layoutX="349.0" layoutY="316.0" mnemonicParsing="false" onAction="#clickBack" prefWidth="80.0" text="Back" />
+      <ComboBox fx:id="gridSize" layoutX="300.0" layoutY="187.0" prefHeight="30.0" prefWidth="216.0" />
+      <Label layoutX="128.0" layoutY="191.0" text="Select Grid Size">
+         <font>
+            <Font size="17.0" />
+         </font>
+      </Label>
    </children>
 </AnchorPane>
