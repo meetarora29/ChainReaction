@@ -15,24 +15,21 @@ import javafx.stage.Stage;
 public class MainPage extends Application {
 
     public Scene scene1,scene2;
+    public static Stage window;
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        primaryStage.setTitle("CHAIN-REACTION");//set the title as "CHAIN_REACTION"
+        window=primaryStage;
+        window.setTitle("CHAIN-REACTION");//set the title as "CHAIN_REACTION"
         //loading the fxml file from scene builder
         AnchorPane pane=(AnchorPane) FXMLLoader.load(MainPage.class.getResource("fxml_files/sample_main.fxml"));
         scene1=new Scene(pane);
-        primaryStage.setScene(scene1);
+        window.setScene(scene1);
         // Display the stage
-        primaryStage.show();
+        window.show();
     }
-//    @Override
-//    public void handle(ActionEvent event)
-//    {
-//
-//    }
 
 }
