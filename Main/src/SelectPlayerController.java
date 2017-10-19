@@ -13,6 +13,8 @@ import java.util.Observable;
 public class SelectPlayerController {
     ObservableList<Integer> list= FXCollections.observableArrayList(2,3,4,5,6,7,8);
     ObservableList<Pair<Integer,Integer>> list1= FXCollections.observableArrayList(new Pair(8,10),new Pair(16,20),new Pair(24,30));
+    int numberofPlayers=2;
+    Pair<Integer,Integer> grid;
     @FXML
     private AnchorPane playerPane;
 
@@ -33,8 +35,10 @@ public class SelectPlayerController {
     {
         comboBox.setValue(2);
         comboBox.setItems(list);
+        numberofPlayers=comboBox.getValue();
         gridSize.setValue(new Pair<>(8,10));
         gridSize.setItems(list1);
+        grid=gridSize.getValue();
 
     }
     @FXML
