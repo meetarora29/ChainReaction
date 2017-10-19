@@ -2,6 +2,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
@@ -19,37 +20,45 @@ public class SelectPlayerController {
     private AnchorPane playerPane;
 
     @FXML
-    private ComboBox<Integer> comboBox;
+    private ChoiceBox<Integer> choiceBox;
     @FXML
-    private ComboBox<Pair<Integer,Integer> > gridSize;
-    public ComboBox<Integer> getComboBox() {
-        return comboBox;
-    }
+    private ChoiceBox<Pair<Integer,Integer> > gridSize;
 
-    public void setComboBox(ComboBox<Integer> comboBox) {
-        this.comboBox = comboBox;
-
-    }
     @FXML
     private void initialize()
     {
-        comboBox.setValue(2);
-        comboBox.setItems(list);
-        numberofPlayers=comboBox.getValue();
-        gridSize.setValue(new Pair<>(8,10));
+
+        choiceBox.setItems(list);
+        choiceBox.setValue(2);
+//        numberofPlayers=choiceBox.getValue();
+
+
         gridSize.setItems(list1);
-        grid=gridSize.getValue();
+        gridSize.setValue(new Pair<>(8,10));
+//        grid=gridSize.getValue();
 
     }
     @FXML
     void clickPlay(ActionEvent event) {
-
+//        System.out.println(numberofPlayers);
+//        System.out.println(grid.getKey()+"x"+grid.getValue());
+        getNumberOfPlayers(choiceBox);
+        getGridSize(gridSize);
     }
     @FXML
     void clickBack(ActionEvent event) throws IOException{
         AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/sample_newgame.fxml"));
         playerPane.getChildren().setAll(pane);
     }
-
+    private void getNumberOfPlayers(ChoiceBox<Integer> choiceBox)
+    {
+        numberofPlayers=choiceBox.getValue();
+        System.out.println(numberofPlayers);
+    }
+    private void getGridSize(ChoiceBox<Pair<Integer,Integer> > choiceBox)
+    {
+        grid=choiceBox.getValue();
+        System.out.println(grid.getKey()+"x"+grid.getValue());
+    }
 
 }
