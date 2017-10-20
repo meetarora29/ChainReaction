@@ -1,4 +1,6 @@
 import javafx.application.Application;
+import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -11,11 +13,9 @@ import java.awt.*;
 
 class myRectangle extends Rectangle {
     Point p;
-    Player player;
 
     myRectangle(int x, int y) {
         p=new Point(x, y);
-        player=new Player(Color.WHITE);
     }
 }
 
@@ -33,18 +33,23 @@ class Ball extends Circle {
         mass=1;
     }
 
+    int getMass() {
+        return mass;
+    }
+
     void increaseMass() {
+
         mass++;
     }
 }
 
 public class GamePage extends Application {
 
-    public static GridPane grid=new GridPane();
-    public static Grid g;
+    private static GridPane grid=new GridPane();
+    private static Grid g;
 
     // Make grid outline
-    public void buildGrid(myRectangle[][] box, int n, int m) {
+    private void buildGrid(myRectangle[][] box, int n, int m) {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
                 myRectangle r=new myRectangle(i, j);
@@ -56,7 +61,7 @@ public class GamePage extends Application {
 
                 r.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                     System.out.println(r.p);
-                    g.setPosition(r.p.x, r.p.y, r.player);
+                    g.setPosition(r.p.x, r.p.y);
                 });
 
                 box[i][j]=r;
@@ -76,10 +81,22 @@ public class GamePage extends Application {
 
     @Override
     public void start(Stage primaryStage) {
-        int n=10, m=10;
-        g=new Grid(n, m, grid);
+        // Initialisations
+        int n=10, m=10, numPlayers=2;
         myRectangle[][] box=new myRectangle[n][m];  // For grid outline
+        Player[] players=new Player[numPlayers];
+        Color[] colors=new Color[numPlayers];
+        g=Player.setGrid(n, m, grid, players);
+
+        // Setting Color Array
+        colors[0]=Color.BLUE;
+        colors[1]=Color.RED;
+
+        for(int i=0;i<numPlayers;i++)
+            players[i]=new Player(colors[i]);
+
         grid.setMinSize(500, 500);
+        grid.setAlignment(Pos.CENTER);
 
         buildGrid(box, n, m);
 

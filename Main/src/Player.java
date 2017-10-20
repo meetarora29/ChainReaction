@@ -1,16 +1,16 @@
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
-public class Player {
-    Color color;
-    static Grid grid;
+class Player {
+    private Color color;
+    private static Grid grid;
 
     Player(Color color) {
         this.color=color;
     }
 
     void takeTurn(int i, int j) {
-        grid.setPosition(i, j, this);
+        grid.setPosition(i, j);
     }
 
     Color getColor() {
@@ -21,7 +21,7 @@ public class Player {
         grid.undo();
     }
 
-    static void setGrid(int n, int m, GridPane g) {
-        grid=new Grid(n, m, g);
+    static Grid setGrid(int n, int m, GridPane g, Player[] players) {
+        return grid=new Grid(n, m, g, players);
     }
 }
