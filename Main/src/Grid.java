@@ -12,7 +12,7 @@ public class Grid {
     private GridPane grid;
     private Player[] players;
     private int curr_player, numPlayers;
-    static private int count;
+    static private int count, animation_count;
 
     Grid(int n, int m, GridPane grid, Player[] players) {
         this.n=n;
@@ -64,7 +64,7 @@ public class Grid {
     }
 
     private void isGameOver() {
-        if(checkWin() && count!=0)
+        if(checkWin() && count!=0 && animation_count==0)
             System.out.println("Game Over!!!");
     }
 
@@ -97,7 +97,12 @@ public class Grid {
                 FillTransition fillTransition=new FillTransition(Duration.millis(1000));
                 fillTransition.setShape(matrix[i][j]);
                 fillTransition.setToValue(color);
+                fillTransition.setOnFinished(event -> {
+                    animation_count--;
+                    isGameOver();
+                });
                 fillTransition.play();
+                animation_count++;
             }
             matrix[i][j].increaseMass();
             if(matrix[i][j].getMass()==2)
@@ -115,7 +120,12 @@ public class Grid {
             fadeTransition.setNode(matrix[i][j]);
             fadeTransition.setFromValue(0);
             fadeTransition.setToValue(1);
+            fadeTransition.setOnFinished(event -> {
+                animation_count--;
+                isGameOver();
+            });
             fadeTransition.play();
+            animation_count++;
             GridPane.setHalignment(matrix[i][j], HPos.CENTER);
             matrix[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> setPosition(i, j));
         }
@@ -160,7 +170,7 @@ public class Grid {
         }
     }
 
-    private void burst(int val, int i, int j) throws ArrayIndexOutOfBoundsException {
+    private void burst(int val, int i, int j) {
         // Translate Animation
         // 1R, 2L, 3U, 4D
         Ball one=new Ball(color);
@@ -202,6 +212,7 @@ public class Grid {
 
         ParallelTransition parallelTransition=new ParallelTransition(up, down, left, right);
         parallelTransition.setOnFinished(event -> {
+            animation_count--;
             grid.getChildren().removeAll(one, two, three, four);
             isGameOver();
         });
@@ -263,5 +274,6 @@ public class Grid {
         }
 
         parallelTransition.play();
+        animation_count++;
     }
 }
