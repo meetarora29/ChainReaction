@@ -1,7 +1,9 @@
+import javafx.animation.*;
 import javafx.geometry.HPos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 
 public class Grid {
     private int n, m;
@@ -61,6 +63,11 @@ public class Grid {
         return true;
     }
 
+    private void isGameOver() {
+        if(checkWin() && count!=0)
+            System.out.println("Game Over!!!");
+    }
+
     void setPosition(int i, int j) {
         saveState();
         color=players[curr_player].getColor();
@@ -68,9 +75,8 @@ public class Grid {
         if(!checkValidity(i, j))
             return;
         setMass(i, j);
-        if(checkWin() && count++!=0)
-            System.out.println("Game Over!!!");
         nextPlayer();
+        count++;
     }
 
     private int getMass(int i, int j) {
@@ -80,10 +86,18 @@ public class Grid {
     }
 
     private void setMass(int i, int j) {
+        // Check Invalid Index
+        if(i<0 || i>n-1 || j<0 || j>m-1)
+            return;
+
         if(matrix[i][j]!=null) {
             if (matrix[i][j].color != color) {
+                // Changing Color
                 matrix[i][j].color = color;
-                matrix[i][j].setFill(color);
+                FillTransition fillTransition=new FillTransition(Duration.millis(1000));
+                fillTransition.setShape(matrix[i][j]);
+                fillTransition.setToValue(color);
+                fillTransition.play();
             }
             matrix[i][j].increaseMass();
             if(matrix[i][j].getMass()==2)
@@ -96,79 +110,158 @@ public class Grid {
             matrix[i][j].setRadius(15);
             matrix[i][j].setFill(color);
             grid.add(matrix[i][j], j, i);
+            // Fade in on add
+            FadeTransition fadeTransition=new FadeTransition(Duration.millis(1000));
+            fadeTransition.setNode(matrix[i][j]);
+            fadeTransition.setFromValue(0);
+            fadeTransition.setToValue(1);
+            fadeTransition.play();
             GridPane.setHalignment(matrix[i][j], HPos.CENTER);
-            matrix[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                setPosition(i, j);
-            });
+            matrix[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> setPosition(i, j));
         }
         checkMass(i, j);
     }
 
     private void checkMass(int i, int j) {
+        // Fade out on remove
+        FadeTransition fadeTransition=new FadeTransition(Duration.millis(1000));
+        fadeTransition.setNode(matrix[i][j]);
+        fadeTransition.setToValue(0);
+
         if(i>0 && i<n-1 && j>0 && j<m-1) {
-            if(getMass(i, j)==4)
-                burst(4, i, j);
+            if(getMass(i, j)==4){
+                fadeTransition.setOnFinished(event -> {
+                    grid.getChildren().remove(matrix[i][j]);
+                    burst(4, i, j);
+                });
+                fadeTransition.play();
+                matrix[i][j] = null;
+            }
         }
         else if((i==0 && (j==0 || j==m-1)) || (i==n-1 && (j==0 || j==m-1))) {
-            if(getMass(i, j)==2)
-                burst(2, i ,j);
+            if(getMass(i, j)==2){
+                fadeTransition.setOnFinished(event -> {
+                    grid.getChildren().remove(matrix[i][j]);
+                    burst(2, i, j);
+                });
+                fadeTransition.play();
+                matrix[i][j] = null;
+            }
         }
         else {
-            if(getMass(i, j)==3)
-                burst(3, i, j);
+            if(getMass(i, j)==3){
+                fadeTransition.setOnFinished(event -> {
+                    grid.getChildren().remove(matrix[i][j]);
+                    burst(3, i, j);
+                });
+                fadeTransition.play();
+                matrix[i][j] = null;
+            }
         }
     }
 
-    private void burst(int val, int i, int j) {
-        if(val>1 && val<5) {
-            grid.getChildren().remove(matrix[i][j]);
-            matrix[i][j] = null;
-        }
+    private void burst(int val, int i, int j) throws ArrayIndexOutOfBoundsException {
+        // Translate Animation
+        // 1R, 2L, 3U, 4D
+        Ball one=new Ball(color);
+        one.setRadius(15);
+        one.setFill(color);
+        GridPane.setHalignment(one, HPos.CENTER);
+        TranslateTransition right=new TranslateTransition(Duration.millis(500));
+        right.setNode(one);
+        right.setByX(25);
+
+        Ball two=new Ball(color);
+        two.setRadius(15);
+        two.setFill(color);
+        GridPane.setHalignment(two, HPos.CENTER);
+        TranslateTransition left=new TranslateTransition(Duration.millis(500));
+        left.setNode(two);
+        left.setByX(-25);
+
+        Ball three=new Ball(color);
+        three.setFill(color);
+        three.setRadius(15);
+        GridPane.setHalignment(three, HPos.CENTER);
+        TranslateTransition up=new TranslateTransition(Duration.millis(500));
+        up.setNode(three);
+        up.setByY(-25);
+
+        Ball four=new Ball(color);
+        four.setRadius(15);
+        four.setFill(color);
+        GridPane.setHalignment(four, HPos.CENTER);
+        TranslateTransition down=new TranslateTransition(Duration.millis(500));
+        down.setNode(four);
+        down.setByY(25);
+
+        up.setOnFinished(event -> setMass(i-1, j));
+        right.setOnFinished(event -> setMass(i, j+1));
+        left.setOnFinished(event -> setMass(i, j-1));
+        down.setOnFinished(event -> setMass(i+1, j));
+
+        ParallelTransition parallelTransition=new ParallelTransition(up, down, left, right);
+        parallelTransition.setOnFinished(event -> {
+            grid.getChildren().removeAll(one, two, three, four);
+            isGameOver();
+        });
+
         if(val==4) {
-            setMass(i-1, j);
-            setMass(i, j+1);
-            setMass(i, j-1);
-            setMass(i+1, j);
+            // Go UDLR
+            grid.add(one, j, i);
+            grid.add(two, j, i);
+            grid.add(three, j, i);
+            grid.add(four, j, i);
         }
         else if(val==3) {
             if(i==0) {
-                setMass(i, j+1);
-                setMass(i, j-1);
-                setMass(i+1, j);
+                // Go DLR
+                grid.add(one, j, i);
+                grid.add(two, j, i);
+                grid.add(four, j, i);
             }
             else if(i==n-1) {
-                setMass(i, j+1);
-                setMass(i, j-1);
-                setMass(i-1, j);
+                // Go ULR
+                grid.add(one, j, i);
+                grid.add(two, j, i);
+                grid.add(three, j, i);
             }
             else if(j==0) {
-                setMass(i, j+1);
-                setMass(i-1, j);
-                setMass(i+1, j);
+                // Go UDR
+                grid.add(one, j, i);
+                grid.add(three, j, i);
+                grid.add(four, j, i);
             }
             else if(j==m-1) {
-                setMass(i-1, j);
-                setMass(i+1, j);
-                setMass(i, j-1);
+                // Go UDL
+                grid.add(two, j, i);
+                grid.add(three, j, i);
+                grid.add(four, j, i);
             }
         }
         else if(val==2) {
             if(i==0 && j==0) {
-                setMass(i+1, j);
-                setMass(i, j+1);
+                // Go RD
+                grid.add(one, j, i);
+                grid.add(four, j, i);
             }
             else if(i==0 && j==m-1) {
-                setMass(i, j-1);
-                setMass(i+1, j);
+                // Go LD
+                grid.add(two, j, i);
+                grid.add(four, j, i);
             }
             else if(i==n-1 && j==0) {
-                setMass(i, j+1);
-                setMass(i-1, j);
+                // Go UR
+                grid.add(one, j, i);
+                grid.add(three, j, i);
             }
             else if(i==n-1 && j==m-1) {
-                setMass(i, j-1);
-                setMass(i-1, j);
+                // Go UL
+                grid.add(two, j, i);
+                grid.add(three, j, i);
             }
         }
+
+        parallelTransition.play();
     }
 }
