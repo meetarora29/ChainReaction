@@ -142,9 +142,11 @@ public class Grid {
             if(getMass(i, j)==4){
                 fadeTransition.setOnFinished(event -> {
                     grid.getChildren().remove(matrix[i][j]);
+                    animation_count--;
                     burst(4, i, j);
                 });
                 fadeTransition.play();
+                animation_count++;
                 matrix[i][j] = null;
             }
         }
@@ -152,9 +154,11 @@ public class Grid {
             if(getMass(i, j)==2){
                 fadeTransition.setOnFinished(event -> {
                     grid.getChildren().remove(matrix[i][j]);
+                    animation_count--;
                     burst(2, i, j);
                 });
                 fadeTransition.play();
+                animation_count++;
                 matrix[i][j] = null;
             }
         }
@@ -162,9 +166,11 @@ public class Grid {
             if(getMass(i, j)==3){
                 fadeTransition.setOnFinished(event -> {
                     grid.getChildren().remove(matrix[i][j]);
+                    animation_count--;
                     burst(3, i, j);
                 });
                 fadeTransition.play();
+                animation_count++;
                 matrix[i][j] = null;
             }
         }
