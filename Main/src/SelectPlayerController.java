@@ -6,6 +6,7 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
+import javafx.stage.Stage;
 import javafx.util.Pair;
 
 import java.io.IOException;
@@ -42,8 +43,13 @@ public class SelectPlayerController {
     void clickPlay(ActionEvent event) {
 //        System.out.println(numberofPlayers);
 //        System.out.println(grid.getKey()+"x"+grid.getValue());
-        getNumberOfPlayers(choiceBox);
-        getGridSize(gridSize);
+//        GamePage game=new GamePage();
+//        MainPage.window.close();
+//        Stage stage=new Stage();
+//        game.start(stage);
+        playerPane.getChildren().removeAll();
+        playerPane.getChildren().setAll(GamePage.grid);
+
     }
     @FXML
     void clickBack(ActionEvent event) throws IOException{

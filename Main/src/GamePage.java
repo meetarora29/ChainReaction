@@ -45,7 +45,7 @@ class Ball extends Circle {
 
 public class GamePage extends Application {
 
-    private static GridPane grid=new GridPane();
+    public static GridPane grid=new GridPane();
     private static Grid g;
 
     // Make grid outline

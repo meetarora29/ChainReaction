@@ -1,20 +1,33 @@
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.layout.AnchorPane;
+import java.net.URL;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.stage.Stage;
-
-import java.io.IOException;
+import javafx.fxml.FXML;
+import javafx.scene.control.ColorPicker;
 
 public class SettingsController {
 
     @FXML
-    private AnchorPane settingsPane;
+    private ResourceBundle resources;
+
     @FXML
-    void clickDone(ActionEvent event) throws IOException {
-        AnchorPane pane = FXMLLoader.load(getClass().getResource("fxml_files/sample_main.fxml"));
-        settingsPane.getChildren().setAll(pane);
+    private URL location;
+
+    @FXML
+    private ColorPicker color;
+
+    @FXML
+    void clickDone(ActionEvent event) {
+
     }
 
+    @FXML
+    void selectColor(ActionEvent event) {
+
+    }
+
+    @FXML
+    void initialize() {
+        assert color != null : "fx:id=\"color\" was not injected: check your FXML file 'settings.fxml'.";
+
+    }
 }
