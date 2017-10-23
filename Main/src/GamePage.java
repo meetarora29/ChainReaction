@@ -1,14 +1,16 @@
 import javafx.application.Application;
-import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
 import java.awt.*;
 
 class myRectangle extends Rectangle {
@@ -38,7 +40,6 @@ class Ball extends Circle {
     }
 
     void increaseMass() {
-
         mass++;
     }
 }
@@ -61,7 +62,8 @@ public class GamePage extends Application {
 
                 r.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                     System.out.println(r.p);
-                    g.setPosition(r.p.x, r.p.y);
+                    if(g.noAnimation())
+                        g.setPosition(r.p.x, r.p.y);
                 });
 
                 box[i][j]=r;
@@ -73,6 +75,28 @@ public class GamePage extends Application {
                 grid.add(box[i][j], j, i);
             }
         }
+    }
+
+    private void buildButtons(BorderPane borderPane) {
+        Button button1=new Button("Save");
+        Button button2=new Button("Undo");
+
+        ComboBox<String> comboBox=new ComboBox<>();
+        comboBox.setPromptText("Choose Option");
+        comboBox.getItems().addAll("Restart Game", "Return to Main Menu");
+        comboBox.setOnAction(event -> System.out.println(comboBox.getValue()));
+
+        HBox hBox=new HBox();
+        Pane spacer=new Pane();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+        hBox.getChildren().addAll(button1, spacer, comboBox);
+
+        borderPane.setTop(hBox);
+        borderPane.setBottom(button2);
+
+        BorderPane.setMargin(hBox, new Insets(10, 10, 10, 10));
+        BorderPane.setMargin(button2, new Insets(10, 10, 10, 10));
+        BorderPane.setMargin(grid, new Insets(0, 10, 0, 10));
     }
 
     public static void main(String[] args) {
@@ -87,6 +111,7 @@ public class GamePage extends Application {
         Player[] players=new Player[numPlayers];
         Color[] colors=new Color[numPlayers];
         g=Player.setGrid(n, m, grid, players);
+        BorderPane borderPane=new BorderPane(grid);
 
         // Setting Color Array
         colors[0]=Color.BLUE;
@@ -95,12 +120,14 @@ public class GamePage extends Application {
         for(int i=0;i<numPlayers;i++)
             players[i]=new Player(colors[i]);
 
+        // GridPane properties
         grid.setMinSize(500, 500);
         grid.setAlignment(Pos.CENTER);
 
         buildGrid(box, n, m);
+        buildButtons(borderPane);
 
-        Scene scene=new Scene(grid);
+        Scene scene=new Scene(borderPane);
 
         primaryStage.setTitle("Chain Reaction");
         primaryStage.setScene(scene);
