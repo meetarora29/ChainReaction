@@ -12,7 +12,7 @@ public class Grid {
     private GridPane grid;
     private Player[] players;
     private int curr_player, numPlayers;
-    static private int count, animation_count;
+    private int flag, animation_count;
 
     Grid(int n, int m, GridPane grid, Player[] players) {
         this.n=n;
@@ -63,8 +63,10 @@ public class Grid {
         return true;
     }
 
+    boolean noAnimation() { return animation_count==0; }
+
     private void isGameOver() {
-        if(checkWin() && count!=0 && animation_count==0)
+        if(checkWin() && flag!=0 && noAnimation())
             System.out.println("Game Over!!!");
     }
 
@@ -76,7 +78,6 @@ public class Grid {
             return;
         setMass(i, j);
         nextPlayer();
-        count++;
     }
 
     private int getMass(int i, int j) {
@@ -123,11 +124,15 @@ public class Grid {
             fadeTransition.setOnFinished(event -> {
                 animation_count--;
                 isGameOver();
+                flag=1; // For first move
             });
             fadeTransition.play();
             animation_count++;
             GridPane.setHalignment(matrix[i][j], HPos.CENTER);
-            matrix[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> setPosition(i, j));
+            matrix[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                if(noAnimation())
+                    setPosition(i, j);
+            });
         }
         checkMass(i, j);
     }
