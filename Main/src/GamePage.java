@@ -1,9 +1,9 @@
 import javafx.application.Application;
+import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -22,12 +22,12 @@ class myRectangle extends Rectangle {
 }
 
 class Ball extends Circle {
-    int mass;
-    Color color;
+    private int mass;
+    private Color color;
 
     Ball(Ball b) {
-        mass=b.mass;
-        color=b.color;
+        mass=b.getMass();
+        color=b.getColor();
     }
 
     Ball(Color c) {
@@ -39,6 +39,14 @@ class Ball extends Circle {
         return mass;
     }
 
+    Color getColor() {
+        return color;
+    }
+
+    void setColor(Color color) {
+        this.color = color;
+    }
+
     void increaseMass() {
         mass++;
     }
@@ -46,7 +54,7 @@ class Ball extends Circle {
 
 public class GamePage extends Application {
 
-    public static GridPane grid=new GridPane();
+    private static GridPane grid=new GridPane();
     private static Grid g;
 
     // Make grid outline
@@ -79,12 +87,22 @@ public class GamePage extends Application {
 
     private void buildButtons(BorderPane borderPane) {
         Button button1=new Button("Save");
+
         Button button2=new Button("Undo");
+        button2.setOnAction(event -> {
+            if(g.noAnimation())
+                g.undo();
+        });
 
         ComboBox<String> comboBox=new ComboBox<>();
         comboBox.setPromptText("Choose Option");
         comboBox.getItems().addAll("Restart Game", "Return to Main Menu");
-        comboBox.setOnAction(event -> System.out.println(comboBox.getValue()));
+        comboBox.setOnAction(event -> {
+            if(comboBox.getSelectionModel().getSelectedIndex()==0)
+                g.restartGame();
+            // TODO: ComboBox reset
+        });
+
 
         HBox hBox=new HBox();
         Pane spacer=new Pane();
@@ -112,6 +130,7 @@ public class GamePage extends Application {
         Color[] colors=new Color[numPlayers];
         g=Player.setGrid(n, m, grid, players);
         BorderPane borderPane=new BorderPane(grid);
+        // TODO: Correct Resizing of Window
 
         // Setting Color Array
         colors[0]=Color.BLUE;

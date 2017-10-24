@@ -5,14 +5,16 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+import java.util.Stack;
+
 public class Grid {
     private int n, m;
     private Ball[][] matrix, prev_state;
     private Color color;
     private GridPane grid;
     private Player[] players;
-    private int curr_player, numPlayers;
-    private int flag, animation_count;
+    private int curr_player, numPlayers, flag, animation_count;
+    private Stack<Ball[][]> moveStack;
 
     Grid(int n, int m, GridPane grid, Player[] players) {
         this.n=n;
@@ -21,9 +23,51 @@ public class Grid {
         this.grid=grid;
         this.players=players;
         numPlayers=players.length;
+        moveStack=new Stack<>();
+    }
+
+    void restartGame() {
+        for(int i=0;i<n;i++)
+            for(int j=0;j<m;j++)
+                grid.getChildren().removeAll(matrix[i][j]);
+
+        matrix=new Ball[n][m];
+        flag=0;
+        animation_count=0;
+        curr_player=0;
+        moveStack=new Stack<>();
     }
 
     void undo() {
+        if(moveStack.isEmpty() || moveStack.size()==1) {
+            restartGame();
+            return;
+        }
+
+        prev_state=moveStack.pop();
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<m;j++) {
+                grid.getChildren().removeAll(matrix[i][j]);
+                if(prev_state[i][j]!=null) {
+                    if(prev_state[i][j].getMass()==1)
+                        prev_state[i][j].setRadius(15);
+                    else if(prev_state[i][j].getMass()==2)
+                        prev_state[i][j].setRadius(20);
+                    else if(prev_state[i][j].getMass()==3)
+                        prev_state[i][j].setRadius(25);
+                    prev_state[i][j].setFill(prev_state[i][j].getColor());
+                    grid.add(prev_state[i][j], j, i);
+                    GridPane.setHalignment(prev_state[i][j], HPos.CENTER);
+                    int finalI = i;
+                    int finalJ = j;
+                    prev_state[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                        if(noAnimation())
+                            setPosition(finalI, finalJ);
+                    });
+                }
+            }
+        }
+
         matrix=prev_state;
         prevPlayer();
     }
@@ -36,6 +80,7 @@ public class Grid {
                     prev_state[i][j]=new Ball(matrix[i][j]);
             }
         }
+        moveStack.add(prev_state);
     }
 
     private void prevPlayer() {
@@ -50,13 +95,13 @@ public class Grid {
     }
 
     private boolean checkValidity(int i, int j) {
-        return matrix[i][j] == null || color == matrix[i][j].color;
+        return matrix[i][j] == null || color == matrix[i][j].getColor();
     }
 
     private boolean checkWin() {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
-                if(matrix[i][j]!=null && matrix[i][j].color!=color)
+                if(matrix[i][j]!=null && matrix[i][j].getColor()!=color)
                     return false;
             }
         }
@@ -83,7 +128,7 @@ public class Grid {
     private int getMass(int i, int j) {
         if(matrix[i][j]==null)
             matrix[i][j]=new Ball(color);
-        return matrix[i][j].mass;
+        return matrix[i][j].getMass();
     }
 
     private void setMass(int i, int j) {
@@ -92,9 +137,9 @@ public class Grid {
             return;
 
         if(matrix[i][j]!=null) {
-            if (matrix[i][j].color != color) {
+            if (matrix[i][j].getColor() != color) {
                 // Changing Color
-                matrix[i][j].color = color;
+                matrix[i][j].setColor(color);
                 FillTransition fillTransition=new FillTransition(Duration.millis(1000));
                 fillTransition.setShape(matrix[i][j]);
                 fillTransition.setToValue(color);
