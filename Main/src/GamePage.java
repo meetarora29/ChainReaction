@@ -1,5 +1,4 @@
 import javafx.application.Application;
-import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,6 +11,7 @@ import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import java.awt.*;
+import java.io.*;
 
 class myRectangle extends Rectangle {
     Point p;
@@ -21,9 +21,9 @@ class myRectangle extends Rectangle {
     }
 }
 
-class Ball extends Circle {
+class Ball extends Circle implements Serializable {
     private int mass;
-    private Color color;
+    private transient Color color;
 
     Ball(Ball b) {
         mass=b.getMass();
@@ -85,8 +85,17 @@ public class GamePage extends Application {
         }
     }
 
+    // Build UI Elements
     private void buildButtons(BorderPane borderPane) {
         Button button1=new Button("Save");
+        button1.setOnAction(event -> {
+            try {
+                serialize();
+            }
+            catch (IOException e) {
+                System.out.println(e);
+            }
+        });
 
         Button button2=new Button("Undo");
         button2.setOnAction(event -> {
@@ -119,6 +128,33 @@ public class GamePage extends Application {
 
     public static void main(String[] args) {
         launch(args);
+    }
+
+    private void serialize() throws IOException {
+        OutputStream outputStream=new FileOutputStream("game.txt");
+        ObjectOutputStream out=null;
+        try {
+            out=new ObjectOutputStream(outputStream);
+            out.writeObject(g);
+        }
+        finally {
+            if(out!=null)
+                out.close();
+        }
+    }
+
+    void deserialize() throws IOException, ClassNotFoundException {
+        InputStream input=new FileInputStream("game.txt");
+        ObjectInputStream in=null;
+        try {
+            in=new ObjectInputStream(input);
+            g=(Grid)in.readObject();
+            grid=g.getGridPane();
+        }
+        finally {
+            if(in!=null)
+                in.close();
+        }
     }
 
     @Override

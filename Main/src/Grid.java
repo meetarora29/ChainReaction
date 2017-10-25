@@ -5,13 +5,14 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 import javafx.util.Duration;
 
+import java.io.Serializable;
 import java.util.Stack;
 
-public class Grid {
+public class Grid implements Serializable {
     private int n, m;
     private Ball[][] matrix, prev_state;
-    private Color color;
-    private GridPane grid;
+    private transient Color color;
+    private transient GridPane grid;
     private Player[] players;
     private int curr_player, numPlayers, flag, animation_count;
     private Stack<Ball[][]> moveStack;
@@ -24,6 +25,10 @@ public class Grid {
         this.players=players;
         numPlayers=players.length;
         moveStack=new Stack<>();
+    }
+
+    GridPane getGridPane() {
+        return grid;
     }
 
     void restartGame() {
@@ -116,11 +121,11 @@ public class Grid {
     }
 
     void setPosition(int i, int j) {
-        saveState();
         color=players[curr_player].getColor();
-        // TODO: Change grid line color
         if(!checkValidity(i, j))
             return;
+        saveState();
+        // TODO: Change grid line color
         setMass(i, j);
         nextPlayer();
     }

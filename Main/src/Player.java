@@ -1,8 +1,10 @@
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
 
-class Player {
-    private Color color;
+import java.io.Serializable;
+
+class Player implements Serializable {
+    private transient Color color;
     private static Grid grid;
 
     Player(Color color) {
