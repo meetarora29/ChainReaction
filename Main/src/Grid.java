@@ -1,9 +1,17 @@
 import javafx.animation.*;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.scene.Scene;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+
+import java.io.IOException;
 
 public class Grid {
     private int n, m;
@@ -13,7 +21,7 @@ public class Grid {
     private Player[] players;
     private int curr_player, numPlayers;
     private int flag, animation_count;
-
+    private AnchorPane mainPane;
     Grid(int n, int m, GridPane grid, Player[] players) {
         this.n=n;
         this.m=m;
@@ -65,9 +73,18 @@ public class Grid {
 
     boolean noAnimation() { return animation_count==0; }
 
-    private void isGameOver() {
+    private void isGameOver() throws IOException {
         if(checkWin() && flag!=0 && noAnimation())
+//            System.out.println("Game Over!!!");
+        {
             System.out.println("Game Over!!!");
+            Stage stage=new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Congratulations!!");
+            AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/game_end.fxml"));
+            stage.setScene(new Scene(pane));
+            stage.show();
+        }
     }
 
     void setPosition(int i, int j) {
@@ -100,7 +117,11 @@ public class Grid {
                 fillTransition.setToValue(color);
                 fillTransition.setOnFinished(event -> {
                     animation_count--;
-                    isGameOver();
+                    try {
+                        isGameOver();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 });
                 fillTransition.play();
                 animation_count++;
@@ -123,7 +144,11 @@ public class Grid {
             fadeTransition.setToValue(1);
             fadeTransition.setOnFinished(event -> {
                 animation_count--;
-                isGameOver();
+                try {
+                    isGameOver();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 flag=1; // For first move
             });
             fadeTransition.play();
@@ -225,7 +250,11 @@ public class Grid {
         parallelTransition.setOnFinished(event -> {
             animation_count--;
             grid.getChildren().removeAll(one, two, three, four);
-            isGameOver();
+            try {
+                isGameOver();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         if(val==4) {
