@@ -41,6 +41,8 @@ public class SelectPlayerController {
     }
     @FXML
     void clickPlay(ActionEvent event) {
+        getNumberOfPlayers(choiceBox);
+        getGridSize(gridSize);
 //        System.out.println(numberofPlayers);
 //        System.out.println(grid.getKey()+"x"+grid.getValue());
 //        GamePage game=new GamePage();

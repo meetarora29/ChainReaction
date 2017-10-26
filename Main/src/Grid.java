@@ -1,11 +1,18 @@
 import javafx.animation.*;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.scene.Scene;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Stack;
@@ -17,6 +24,7 @@ public class Grid implements Serializable {
     private transient Color color;
     private transient GridPane grid;
     private Player[] players;
+    public static Stage stage;
     private int curr_player, numPlayers, flag, animation_count;
     private transient Stack<Ball[][]> moveStack;
     private int load;
@@ -182,9 +190,18 @@ public class Grid implements Serializable {
 
     boolean noAnimation() { return animation_count==0; }
 
-    private void isGameOver() {
+    private void isGameOver() throws IOException {
         if(checkWin() && flag!=0 && noAnimation())
+//            System.out.println("Game Over!!!");
+        {
             System.out.println("Game Over!!!");
+            stage=new Stage();
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setTitle("Congratulations!!");
+            AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/game_end.fxml"));
+            stage.setScene(new Scene(pane));
+            stage.show();
+        }
     }
 
     void setPosition(int i, int j) {
@@ -217,7 +234,11 @@ public class Grid implements Serializable {
                 fillTransition.setToValue(color);
                 fillTransition.setOnFinished(event -> {
                     animation_count--;
-                    isGameOver();
+                    try {
+                        isGameOver();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 });
                 fillTransition.play();
                 animation_count++;
@@ -240,7 +261,11 @@ public class Grid implements Serializable {
             fadeTransition.setToValue(1);
             fadeTransition.setOnFinished(event -> {
                 animation_count--;
-                isGameOver();
+                try {
+                    isGameOver();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
                 flag=1; // For first move
             });
             fadeTransition.play();
@@ -342,7 +367,11 @@ public class Grid implements Serializable {
         parallelTransition.setOnFinished(event -> {
             animation_count--;
             grid.getChildren().removeAll(one, two, three, four);
-            isGameOver();
+            try {
+                isGameOver();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         });
 
         if(val==4) {
