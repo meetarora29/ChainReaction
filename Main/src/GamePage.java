@@ -133,7 +133,7 @@ public class GamePage extends Application {
     public void start(Stage primaryStage) {
         // Initialisations
         stage=primaryStage;
-        int n=15, m=10, numPlayers=2;
+        int n=10, m=10, numPlayers=2;
         myRectangle[][] box=new myRectangle[n][m];  // For grid outline
         Player[] players=new Player[numPlayers];
         Color[] colors=new Color[numPlayers];
