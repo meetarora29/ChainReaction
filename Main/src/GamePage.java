@@ -48,6 +48,7 @@ public class GamePage extends Application {
 
     public static GridPane grid=new GridPane();
     private static Grid g;
+    public static Stage stage;
 
     // Make grid outline
     private void buildGrid(myRectangle[][] box, int n, int m) {
@@ -106,6 +107,7 @@ public class GamePage extends Application {
     @Override
     public void start(Stage primaryStage) {
         // Initialisations
+        stage=primaryStage;
         int n=10, m=10, numPlayers=2;
         myRectangle[][] box=new myRectangle[n][m];  // For grid outline
         Player[] players=new Player[numPlayers];
@@ -129,8 +131,8 @@ public class GamePage extends Application {
 
         Scene scene=new Scene(borderPane);
 
-        primaryStage.setTitle("Chain Reaction");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        stage.setTitle("Chain Reaction");
+        stage.setScene(scene);
+        stage.show();
     }
 }

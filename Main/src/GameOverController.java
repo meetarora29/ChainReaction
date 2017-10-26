@@ -20,27 +20,37 @@ public class GameOverController {
 //
 //    @FXML // URL location of the FXML file that was given to the FXMLLoader
 //    private URL location;
+    public static Stage stage1;
     @FXML
     private AnchorPane gamePane;
     @FXML
     void clickNewGame(ActionEvent event) throws IOException{
         AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/selectplayer.fxml"));
-        gamePane.getChildren().setAll(pane);
-    }
-
-    @FXML
-    void clickQuit(ActionEvent event) throws IOException {
-        Stage stage = new Stage();
-        stage.initModality(Modality.APPLICATION_MODAL);
-        stage.setTitle("Quit");
-        AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/quitGame.fxml"));
-        stage.setScene(new Scene(pane));
+//        gamePane.getChildren().setAll(pane);
+        GamePage.stage.close();
+        Grid.stage.close();
+        Stage stage=new Stage();
+        Scene scene=new Scene(pane);
+        stage.setScene(scene);
+        stage.setTitle("CHAIN-REACTION");
         stage.show();
     }
 
     @FXML
+    void clickQuit(ActionEvent event) throws IOException {
+        stage1 = new Stage();
+        stage1.initModality(Modality.APPLICATION_MODAL);
+        stage1.setTitle("Quit");
+        AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/quit2.fxml"));
+        stage1.setScene(new Scene(pane));
+        stage1.show();
+    }
+
+    @FXML
     void clickRestart(ActionEvent event) {
-        
+        GamePage.stage.close();
+        Grid.stage.close();
+
     }
 
 //    @FXML // This method is called by the FXMLLoader when initialization is complete

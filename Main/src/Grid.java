@@ -22,6 +22,7 @@ public class Grid {
     private int curr_player, numPlayers;
     private int flag, animation_count;
     private AnchorPane mainPane;
+    public static Stage stage;
     Grid(int n, int m, GridPane grid, Player[] players) {
         this.n=n;
         this.m=m;
@@ -78,7 +79,7 @@ public class Grid {
 //            System.out.println("Game Over!!!");
         {
             System.out.println("Game Over!!!");
-            Stage stage=new Stage();
+            stage=new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Congratulations!!");
             AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/game_end.fxml"));
