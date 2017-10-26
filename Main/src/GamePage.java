@@ -7,7 +7,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import java.awt.*;
@@ -18,37 +17,6 @@ class myRectangle extends Rectangle {
 
     myRectangle(int x, int y) {
         p=new Point(x, y);
-    }
-}
-
-class Ball extends Circle implements Serializable {
-    private int mass;
-    private transient Color color;
-
-    Ball(Ball b) {
-        mass=b.getMass();
-        color=b.getColor();
-    }
-
-    Ball(Color c) {
-        color=c;
-        mass=1;
-    }
-
-    int getMass() {
-        return mass;
-    }
-
-    Color getColor() {
-        return color;
-    }
-
-    void setColor(Color color) {
-        this.color = color;
-    }
-
-    void increaseMass() {
-        mass++;
     }
 }
 
@@ -95,6 +63,9 @@ public class GamePage extends Application {
             catch (IOException e) {
                 System.out.println(e);
             }
+//            catch (ClassNotFoundException e) {
+//                System.out.println(e);
+//            }
         });
 
         Button button2=new Button("Undo");
@@ -131,7 +102,8 @@ public class GamePage extends Application {
     }
 
     private void serialize() throws IOException {
-        OutputStream outputStream=new FileOutputStream("game.txt");
+        g.serializeMatrix();
+        OutputStream outputStream=new FileOutputStream("game.dat");
         ObjectOutputStream out=null;
         try {
             out=new ObjectOutputStream(outputStream);
@@ -143,13 +115,13 @@ public class GamePage extends Application {
         }
     }
 
-    void deserialize() throws IOException, ClassNotFoundException {
-        InputStream input=new FileInputStream("game.txt");
+    private void deserialize() throws IOException, ClassNotFoundException {
+        InputStream input=new FileInputStream("game.dat");
         ObjectInputStream in=null;
         try {
             in=new ObjectInputStream(input);
             g=(Grid)in.readObject();
-            grid=g.getGridPane();
+            grid=g.resolve(grid);
         }
         finally {
             if(in!=null)
@@ -164,7 +136,7 @@ public class GamePage extends Application {
         myRectangle[][] box=new myRectangle[n][m];  // For grid outline
         Player[] players=new Player[numPlayers];
         Color[] colors=new Color[numPlayers];
-        g=Player.setGrid(n, m, grid, players);
+        g=new Grid(n, m, grid, players);
         BorderPane borderPane=new BorderPane(grid);
         // TODO: Correct Resizing of Window
 
