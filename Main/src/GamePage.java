@@ -3,15 +3,14 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import java.awt.*;
+import java.io.*;
 
 class myRectangle extends Rectangle {
     Point p;
@@ -21,32 +20,9 @@ class myRectangle extends Rectangle {
     }
 }
 
-class Ball extends Circle {
-    int mass;
-    Color color;
-
-    Ball(Ball b) {
-        mass=b.mass;
-        color=b.color;
-    }
-
-    Ball(Color c) {
-        color=c;
-        mass=1;
-    }
-
-    int getMass() {
-        return mass;
-    }
-
-    void increaseMass() {
-        mass++;
-    }
-}
-
 public class GamePage extends Application {
 
-    public static GridPane grid=new GridPane();
+    private static GridPane grid=new GridPane();
     private static Grid g;
     public static Stage stage;
 
@@ -78,14 +54,35 @@ public class GamePage extends Application {
         }
     }
 
+    // Build UI Elements
     private void buildButtons(BorderPane borderPane) {
         Button button1=new Button("Save");
-        Button button2=new Button("Undo");
+        button1.setOnAction(event -> {
+            try {
+                serialize();
+            }
+            catch (IOException e) {
+                System.out.println(e);
+            }
+//            catch (ClassNotFoundException e) {
+//                System.out.println(e);
+//            }
+        });
 
+        Button button2=new Button("Undo");
+        button2.setOnAction(event -> {
+            if(g.noAnimation())
+                g.undo();
+        });
         ComboBox<String> comboBox=new ComboBox<>();
         comboBox.setPromptText("Choose Option");
         comboBox.getItems().addAll("Restart Game", "Return to Main Menu");
         comboBox.setOnAction(event -> System.out.println(comboBox.getValue()));
+        comboBox.setOnAction(event -> {
+            if(comboBox.getSelectionModel().getSelectedIndex()==0)
+                g.restartGame();
+            // TODO: ComboBox reset
+        });
 
         HBox hBox=new HBox();
         Pane spacer=new Pane();
@@ -104,6 +101,34 @@ public class GamePage extends Application {
         launch(args);
     }
 
+    private void serialize() throws IOException {
+        g.serializeMatrix();
+        OutputStream outputStream=new FileOutputStream("game.dat");
+        ObjectOutputStream out=null;
+        try {
+            out=new ObjectOutputStream(outputStream);
+            out.writeObject(g);
+        }
+        finally {
+            if(out!=null)
+                out.close();
+        }
+    }
+
+    private void deserialize() throws IOException, ClassNotFoundException {
+        InputStream input=new FileInputStream("game.dat");
+        ObjectInputStream in=null;
+        try {
+            in=new ObjectInputStream(input);
+            g=(Grid)in.readObject();
+            grid=g.resolve(grid);
+        }
+        finally {
+            if(in!=null)
+                in.close();
+        }
+    }
+
     @Override
     public void start(Stage primaryStage) {
         // Initialisations
@@ -112,8 +137,9 @@ public class GamePage extends Application {
         myRectangle[][] box=new myRectangle[n][m];  // For grid outline
         Player[] players=new Player[numPlayers];
         Color[] colors=new Color[numPlayers];
-        g=Player.setGrid(n, m, grid, players);
+        g=new Grid(n, m, grid, players);
         BorderPane borderPane=new BorderPane(grid);
+        // TODO: Correct Resizing of Window
 
         // Setting Color Array
         colors[0]=Color.BLUE;

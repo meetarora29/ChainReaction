@@ -3,6 +3,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
+import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
@@ -12,27 +13,141 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Stack;
 
-public class Grid {
+public class Grid implements Serializable {
     private int n, m;
-    private Ball[][] matrix, prev_state;
-    private Color color;
-    private GridPane grid;
+    private transient Ball[][] matrix, prev_state;
+    private SerializableBall[][] s_matrix;
+    private transient Color color;
+    private transient GridPane grid;
     private Player[] players;
-    private int curr_player, numPlayers;
-    private int flag, animation_count;
-    private AnchorPane mainPane;
     public static Stage stage;
+    private int curr_player, numPlayers, flag, animation_count;
+    private transient Stack<Ball[][]> moveStack;
+    private int load;
+
+    private static final long serialVersionUID = 1L;
+
     Grid(int n, int m, GridPane grid, Player[] players) {
         this.n=n;
         this.m=m;
-        this.matrix=new Ball[n][m];
+        matrix=new Ball[n][m];
+        s_matrix=new SerializableBall[n][m];
         this.grid=grid;
         this.players=players;
         numPlayers=players.length;
+        moveStack=new Stack<>();
+    }
+
+    void serializeMatrix() {
+        for(int i=0;i<n;i++) {
+            for (int j = 0; j < m; j++) {
+                if(matrix[i][j]!=null)
+                    s_matrix[i][j] = new SerializableBall(matrix[i][j]);
+            }
+        }
+        load=0;
+    }
+
+    GridPane resolve(GridPane grid) {
+        // Transient Initialisations
+        matrix=new Ball[n][m];
+        this.grid=grid;
+        moveStack=new Stack<>();
+        load=1;
+
+        // Resolve Players
+        for(int i=0;i<numPlayers;i++)
+            players[i].makeColor();
+
+        // Resolve Matrix
+        for(int i=0;i<n;i++) {
+            for (int j = 0; j < m; j++) {
+                if (s_matrix[i][j] != null)
+                    matrix[i][j] = new Ball(s_matrix[i][j]);
+            }
+        }
+        moveStack.add(matrix);
+
+        // Resolve GridPane
+        removeGridNodes();
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<m;j++) {
+                if(matrix[i][j]!=null) {
+                    if(matrix[i][j].getMass()==1)
+                        matrix[i][j].setRadius(15);
+                    else if(matrix[i][j].getMass()==2)
+                        matrix[i][j].setRadius(20);
+                    else if(matrix[i][j].getMass()==3)
+                        matrix[i][j].setRadius(25);
+                    matrix[i][j].setFill(matrix[i][j].getColor());
+                    grid.add(matrix[i][j], j, i);
+                    GridPane.setHalignment(matrix[i][j], HPos.CENTER);
+                    int finalI = i;
+                    int finalJ = j;
+                    matrix[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                        if(noAnimation())
+                            setPosition(finalI, finalJ);
+                    });
+                }
+            }
+        }
+
+        return grid;
+    }
+
+    private void removeGridNodes() {
+        ArrayList<Node> list=new ArrayList<>();
+        for(Node node : grid.getChildren()) {
+            if(node instanceof Ball)
+                list.add(node);
+        }
+        grid.getChildren().removeAll(list);
+    }
+
+    void restartGame() {
+        removeGridNodes();
+        matrix=new Ball[n][m];
+        flag=0;
+        animation_count=0;
+        curr_player=0;
+        moveStack=new Stack<>();
     }
 
     void undo() {
+        if(moveStack.isEmpty() || moveStack.size()==1) {
+            if(load==0)
+                restartGame();
+            return;
+        }
+
+        prev_state=moveStack.pop();
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<m;j++) {
+                grid.getChildren().removeAll(matrix[i][j]);
+                if(prev_state[i][j]!=null) {
+                    if(prev_state[i][j].getMass()==1)
+                        prev_state[i][j].setRadius(15);
+                    else if(prev_state[i][j].getMass()==2)
+                        prev_state[i][j].setRadius(20);
+                    else if(prev_state[i][j].getMass()==3)
+                        prev_state[i][j].setRadius(25);
+                    prev_state[i][j].setFill(prev_state[i][j].getColor());
+                    grid.add(prev_state[i][j], j, i);
+                    GridPane.setHalignment(prev_state[i][j], HPos.CENTER);
+                    int finalI = i;
+                    int finalJ = j;
+                    prev_state[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                        if(noAnimation())
+                            setPosition(finalI, finalJ);
+                    });
+                }
+            }
+        }
+
         matrix=prev_state;
         prevPlayer();
     }
@@ -45,6 +160,7 @@ public class Grid {
                     prev_state[i][j]=new Ball(matrix[i][j]);
             }
         }
+        moveStack.add(prev_state);
     }
 
     private void prevPlayer() {
@@ -59,13 +175,13 @@ public class Grid {
     }
 
     private boolean checkValidity(int i, int j) {
-        return matrix[i][j] == null || color == matrix[i][j].color;
+        return matrix[i][j] == null || color.equals(matrix[i][j].getColor());
     }
 
     private boolean checkWin() {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
-                if(matrix[i][j]!=null && matrix[i][j].color!=color)
+                if(matrix[i][j]!=null && matrix[i][j].getColor()!=color)
                     return false;
             }
         }
@@ -89,11 +205,11 @@ public class Grid {
     }
 
     void setPosition(int i, int j) {
-        saveState();
         color=players[curr_player].getColor();
-        // TODO: Change grid line color
         if(!checkValidity(i, j))
             return;
+        saveState();
+        // TODO: Change grid line color
         setMass(i, j);
         nextPlayer();
     }
@@ -101,7 +217,7 @@ public class Grid {
     private int getMass(int i, int j) {
         if(matrix[i][j]==null)
             matrix[i][j]=new Ball(color);
-        return matrix[i][j].mass;
+        return matrix[i][j].getMass();
     }
 
     private void setMass(int i, int j) {
@@ -110,9 +226,9 @@ public class Grid {
             return;
 
         if(matrix[i][j]!=null) {
-            if (matrix[i][j].color != color) {
+            if (matrix[i][j].getColor() != color) {
                 // Changing Color
-                matrix[i][j].color = color;
+                matrix[i][j].setColor(color);
                 FillTransition fillTransition=new FillTransition(Duration.millis(1000));
                 fillTransition.setShape(matrix[i][j]);
                 fillTransition.setToValue(color);
