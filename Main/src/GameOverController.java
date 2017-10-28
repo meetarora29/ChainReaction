@@ -25,7 +25,7 @@ public class GameOverController {
     private AnchorPane gamePane;
     @FXML
     void clickNewGame(ActionEvent event) throws IOException{
-        AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/selectplayer.fxml"));
+        AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/selectplayer2.fxml"));
 //        gamePane.getChildren().setAll(pane);
         GamePage.stage.close();
         Grid.stage.close();
