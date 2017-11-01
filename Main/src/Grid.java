@@ -1,5 +1,4 @@
 import javafx.animation.*;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
@@ -15,7 +14,6 @@ import javafx.util.Duration;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Stack;
 
 public class Grid implements Serializable {
     private int n, m;
@@ -26,8 +24,8 @@ public class Grid implements Serializable {
     private Player[] players;
     public static Stage stage;
     private int curr_player, numPlayers, flag, animation_count;
-    private transient Stack<Ball[][]> moveStack;
-    private int load;
+    private transient myStack<Ball[][]> moveStack;
+    private int load, count;
 
     private static final long serialVersionUID = 1L;
 
@@ -39,7 +37,8 @@ public class Grid implements Serializable {
         this.grid=grid;
         this.players=players;
         numPlayers=players.length;
-        moveStack=new Stack<>();
+        moveStack=new myStack<>(3*numPlayers);
+        count=0;
     }
 
     void serializeMatrix() {
@@ -56,7 +55,7 @@ public class Grid implements Serializable {
         // Transient Initialisations
         matrix=new Ball[n][m];
         this.grid=grid;
-        moveStack=new Stack<>();
+        moveStack=new myStack<>(3*numPlayers);
         load=1;
 
         // Resolve Players
@@ -70,7 +69,7 @@ public class Grid implements Serializable {
                     matrix[i][j] = new Ball(s_matrix[i][j]);
             }
         }
-        moveStack.add(matrix);
+        moveStack.push(matrix);
 
         // Resolve GridPane
         removeGridNodes();
@@ -114,13 +113,16 @@ public class Grid implements Serializable {
         flag=0;
         animation_count=0;
         curr_player=0;
-        moveStack=new Stack<>();
+        moveStack=new myStack<>(3*numPlayers);
+        count=0;
     }
 
     void undo() {
-        if(moveStack.isEmpty() || moveStack.size()==1) {
-            if(load==0)
-                restartGame();
+        if(moveStack.isEmpty())
+            return;
+
+        if(moveStack.size()==1 && load==0 && count<=1) {
+            restartGame();
             return;
         }
 
@@ -150,6 +152,7 @@ public class Grid implements Serializable {
 
         matrix=prev_state;
         prevPlayer();
+        count--;
     }
 
     private void saveState() {
@@ -160,7 +163,7 @@ public class Grid implements Serializable {
                     prev_state[i][j]=new Ball(matrix[i][j]);
             }
         }
-        moveStack.add(prev_state);
+        moveStack.push(prev_state);
     }
 
     private void prevPlayer() {
@@ -211,6 +214,7 @@ public class Grid implements Serializable {
         saveState();
         // TODO: Change grid line color
         setMass(i, j);
+        count++;
         nextPlayer();
     }
 
