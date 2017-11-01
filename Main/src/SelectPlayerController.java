@@ -11,19 +11,77 @@ import javafx.util.Pair;
 
 import java.io.IOException;
 import java.util.Observable;
+class P<T1,T2>
+{
+    private T1 key;
+    private T2 value;
 
+    public P(T1 key, T2 value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    public T1 getKey() {
+        return key;
+    }
+
+    public void setKey(T1 key) {
+        this.key = key;
+    }
+
+    public T2 getValue() {
+        return value;
+    }
+
+    public void setValue(T2 value) {
+        this.value = value;
+    }
+
+    @Override
+    public String toString() {
+        return key+"x"+value;
+    }
+}
 public class SelectPlayerController {
     ObservableList<Integer> list= FXCollections.observableArrayList(2,3,4,5,6,7,8);
-    ObservableList<Pair<Integer,Integer>> list1= FXCollections.observableArrayList(new Pair(8,10),new Pair(16,20),new Pair(24,30));
+    ObservableList<P<Integer,Integer>> list1= FXCollections.observableArrayList(new P(9,6),new P(15,10));
+    Stage primaryStage=new Stage();
     int numberofPlayers;
-    Pair<Integer,Integer> grid;
+    P<Integer,Integer> grid;
+//    int n=9, m=6;
+//    int numPlayers=2;
+
+//    public int getN() {
+//        return n;
+//    }
+//
+//    public void setN(int n) {
+//        this.n = n;
+//    }
+//
+//    public int getM() {
+//        return m;
+//    }
+//
+//    public void setM(int m) {
+//        this.m = m;
+//    }
+//
+//    public int getNumPlayers() {
+//        return numPlayers;
+//    }
+//
+//    public void setNumPlayers(int numPlayers) {
+//        this.numPlayers = numPlayers;
+//    }
+
     @FXML
     private AnchorPane playerPane;
 
     @FXML
     private ChoiceBox<Integer> choiceBox;
     @FXML
-    private ChoiceBox<Pair<Integer,Integer> > gridSize;
+    private ChoiceBox<P<Integer,Integer> > gridSize;
 
     @FXML
     private void initialize()
@@ -35,18 +93,24 @@ public class SelectPlayerController {
 
 
         gridSize.setItems(list1);
-        gridSize.setValue(new Pair<>(8,10));
+        gridSize.setValue(new P<>(9,6));
+        
 //        grid=gridSize.getValue();
 
     }
     @FXML
     void clickPlay(ActionEvent event) {
-        getNumberOfPlayers(choiceBox);
-        getGridSize(gridSize);
+            GamePage gamePage=new GamePage();
+            gamePage.setN(getGridSize().getKey());
+            gamePage.setM(getGridSize().getValue());
+            gamePage.setNumPlayers(getNumberOfPlayers());
+            MainPage.window.close();
+
+            gamePage.start(MainPage.window);
 //        System.out.println(numberofPlayers);
 //        System.out.println(grid.getKey()+"x"+grid.getValue());
 //        GamePage game=new GamePage();
-//        MainPage.window.close();
+
 //        Stage stage=new Stage();
 //        game.start(stage);
 //        playerPane.getChildren().removeAll();
@@ -58,15 +122,17 @@ public class SelectPlayerController {
         AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/sample_newgame.fxml"));
         playerPane.getChildren().setAll(pane);
     }
-    private void getNumberOfPlayers(ChoiceBox<Integer> choiceBox)
+    public int getNumberOfPlayers()
     {
         numberofPlayers=choiceBox.getValue();
         System.out.println(numberofPlayers);
+        return numberofPlayers;
     }
-    private void getGridSize(ChoiceBox<Pair<Integer,Integer> > choiceBox)
+    public P<Integer,Integer> getGridSize()
     {
-        grid=choiceBox.getValue();
+        grid=gridSize.getValue();
         System.out.println(grid.getKey()+"x"+grid.getValue());
+        return grid;
     }
 
 }

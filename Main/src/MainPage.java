@@ -7,7 +7,7 @@ import java.io.IOException;
 
 public class MainPage extends Application {
 
-    public Scene scene1,scene2;
+    public Scene scene1;
     public static Stage window;
     public static void main(String[] args) {
         launch(args);
@@ -16,9 +16,9 @@ public class MainPage extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         window=primaryStage;
-        window.setTitle("CHAIN-REACTION");//set the title as "CHAIN_REACTION"
+        window.setTitle("Chain Reaction");//set the title as "CHAIN_REACTION"
         //loading the fxml file from scene builder
-        AnchorPane pane=(AnchorPane) FXMLLoader.load(MainPage.class.getResource("fxml_files/sample_main.fxml"));
+        AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/sample_main.fxml"));
         scene1=new Scene(pane);
         window.setScene(scene1);
         // Display the stage
