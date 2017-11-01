@@ -3,10 +3,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.Node;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -157,6 +159,7 @@ public class Grid implements Serializable {
             curr_player--;
         else
             curr_player=numPlayers-1;
+        GamePage.changeGridLineColor(players[curr_player].getColor());
     }
 
     private void nextPlayer() {
@@ -208,6 +211,37 @@ public class Grid implements Serializable {
         return matrix[i][j].getMass();
     }
 
+    private void makeCircle(Circle s, int i, int j) {
+        DropShadow dropShadow=new DropShadow(5, Color.GRAY);
+        s.setRadius(15);
+        s.setFill(color);
+        s.setEffect(dropShadow);
+        grid.add(s, j, i);
+        GridPane.setHalignment(s, HPos.CENTER);
+        s.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+            if(noAnimation())
+                setPosition(i, j);
+        });
+    }
+
+    private boolean isCorner(int i, int j) {
+        if(i==0 && j==0)
+            return true;
+        if(i==n-1 && j==m-1)
+            return true;
+        if(i==0 && j==m-1)
+            return true;
+        if(i==n-1 && j==0)
+            return true;
+        return false;
+    }
+
+    private boolean isExtremeSide(int i, int j) {
+        if(i==0 || i==n-1 || j==0 || j==m-1)
+            return true;
+        return false;
+    }
+
     private void setMass(int i, int j) {
         // Check Invalid Index
         if(i<0 || i>n-1 || j<0 || j>m-1)
@@ -217,10 +251,21 @@ public class Grid implements Serializable {
             if (matrix[i][j].getColor() != color) {
                 // Changing Color
                 matrix[i][j].setColor(color);
-                FillTransition fillTransition=new FillTransition(Duration.millis(1000));
-                fillTransition.setShape(matrix[i][j]);
-                fillTransition.setToValue(color);
-                fillTransition.setOnFinished(event -> {
+                FillTransition fillTransition1=new FillTransition(Duration.millis(1000));
+                fillTransition1.setShape(matrix[i][j]);
+                fillTransition1.setToValue(color);
+
+                FillTransition fillTransition2=new FillTransition(Duration.millis(1000));
+                fillTransition2.setShape(matrix[i][j].two);
+                fillTransition2.setToValue(color);
+
+                FillTransition fillTransition3=new FillTransition(Duration.millis(1000));
+                fillTransition3.setShape(matrix[i][j].three);
+                fillTransition3.setToValue(color);
+
+                ParallelTransition parallelTransition=new ParallelTransition(fillTransition1, fillTransition2, fillTransition3);
+
+                parallelTransition.setOnFinished(event -> {
                     animation_count--;
                     try {
                         isGameOver();
@@ -228,20 +273,25 @@ public class Grid implements Serializable {
                         e.printStackTrace();
                     }
                 });
-                fillTransition.play();
+                parallelTransition.play();
                 animation_count++;
             }
             matrix[i][j].increaseMass();
-            if(matrix[i][j].getMass()==2)
-                matrix[i][j].setRadius(20);
-            else if(matrix[i][j].getMass()==3)
-                matrix[i][j].setRadius(25);
+            if(matrix[i][j].getMass()==2 && !isCorner(i, j)) {
+                makeCircle(matrix[i][j].two, i, j);
+                matrix[i][j].setTranslateX(-7.5);
+                matrix[i][j].two.setTranslateX(7.5);
+            }
+            else if(matrix[i][j].getMass()==3 && !isExtremeSide(i, j)) {
+                makeCircle(matrix[i][j].three, i, j);
+                matrix[i][j].setTranslateY(-7.5);
+                matrix[i][j].two.setTranslateY(-7.5);
+                matrix[i][j].three.setTranslateY(7.5);
+            }
         }
         else {
             matrix[i][j]=new Ball(color);
-            matrix[i][j].setRadius(15);
-            matrix[i][j].setFill(color);
-            grid.add(matrix[i][j], j, i);
+            makeCircle(matrix[i][j], i, j);
             // Fade in on add
             FadeTransition fadeTransition=new FadeTransition(Duration.millis(1000));
             fadeTransition.setNode(matrix[i][j]);
@@ -258,53 +308,65 @@ public class Grid implements Serializable {
             });
             fadeTransition.play();
             animation_count++;
-            GridPane.setHalignment(matrix[i][j], HPos.CENTER);
-            matrix[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                if(noAnimation())
-                    setPosition(i, j);
-            });
         }
         checkMass(i, j);
     }
 
     private void checkMass(int i, int j) {
         // Fade out on remove
-        FadeTransition fadeTransition=new FadeTransition(Duration.millis(1000));
-        fadeTransition.setNode(matrix[i][j]);
-        fadeTransition.setToValue(0);
+        ScaleTransition transition1=new ScaleTransition(Duration.millis(500));
+        transition1.setNode(matrix[i][j]);
+        transition1.setToX(1.2);
+        transition1.setToY(1.2);
+
+        ScaleTransition transition2=new ScaleTransition(Duration.millis(500));
+        transition2.setNode(matrix[i][j].two);
+        transition2.setToX(1.2);
+        transition2.setToY(1.2);
+
+        ScaleTransition transition3=new ScaleTransition(Duration.millis(500));
+        transition3.setNode(matrix[i][j].three);
+        transition3.setToX(1.2);
+        transition3.setToY(1.2);
+
+        ParallelTransition parallelTransition=new ParallelTransition(transition1, transition2, transition3);
+
+        Circle temp1=matrix[i][j];
+        Circle temp2=matrix[i][j].two;
+        Circle temp3=matrix[i][j].three;
 
         if(i>0 && i<n-1 && j>0 && j<m-1) {
             if(getMass(i, j)==4){
-                fadeTransition.setOnFinished(event -> {
-                    grid.getChildren().remove(matrix[i][j]);
+                parallelTransition.setOnFinished(event -> {
+                    grid.getChildren().removeAll(temp1, temp2, temp3);
                     animation_count--;
                     burst(4, i, j);
                 });
-                fadeTransition.play();
+                parallelTransition.play();
                 animation_count++;
                 matrix[i][j] = null;
             }
         }
-        else if((i==0 && (j==0 || j==m-1)) || (i==n-1 && (j==0 || j==m-1))) {
+        else if(isCorner(i, j)) {
             if(getMass(i, j)==2){
-                fadeTransition.setOnFinished(event -> {
-                    grid.getChildren().remove(matrix[i][j]);
+                parallelTransition.setOnFinished(event -> {
+                    grid.getChildren().removeAll(temp1, temp2, temp3);
                     animation_count--;
                     burst(2, i, j);
                 });
-                fadeTransition.play();
+                parallelTransition.play();
                 animation_count++;
                 matrix[i][j] = null;
             }
         }
         else {
             if(getMass(i, j)==3){
-                fadeTransition.setOnFinished(event -> {
-                    grid.getChildren().remove(matrix[i][j]);
+                parallelTransition.setOnFinished(event -> {
+                    grid.getChildren().removeAll(temp1, temp2, temp3);
                     animation_count--;
                     burst(3, i, j);
                 });
-                fadeTransition.play();
+                parallelTransition.play();
                 animation_count++;
                 matrix[i][j] = null;
             }
