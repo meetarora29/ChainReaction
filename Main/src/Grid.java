@@ -180,9 +180,7 @@ public class Grid implements Serializable {
     boolean noAnimation() { return animation_count==0; }
 
     private void isGameOver() throws IOException {
-        if(checkWin() && flag!=0 && noAnimation())
-//            System.out.println("Game Over!!!");
-        {
+        if(checkWin() && flag!=0 && noAnimation()) {
             System.out.println("Game Over!!!");
             stage=new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);

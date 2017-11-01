@@ -17,11 +17,6 @@ class SerializableBall implements Serializable {
         opacity=b.opacity;
     }
 
-    @Override
-    public String toString() {
-        return red+" "+green+" "+blue+" "+opacity;
-    }
-
     int getMass() {
         return mass;
     }
