@@ -56,18 +56,23 @@ public class Grid implements Serializable {
     private void makeNode(int i, int j, Ball[][] matrix) {
         if(matrix[i][j]!=null) {
             if(matrix[i][j].getMass()==1)
-                matrix[i][j].setRadius(15);
-            else if(matrix[i][j].getMass()==2)
-                matrix[i][j].setRadius(20);
-            else if(matrix[i][j].getMass()==3)
-                matrix[i][j].setRadius(25);
-            matrix[i][j].setFill(matrix[i][j].getColor());
-            grid.add(matrix[i][j], j, i);
-            GridPane.setHalignment(matrix[i][j], HPos.CENTER);
-            matrix[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                if(noAnimation())
-                    setPosition(i, j);
-            });
+                makeCircle(matrix[i][j], i, j, matrix[i][j].getColor());
+            else if(matrix[i][j].getMass()==2 && !isCorner(i, j)) {
+                makeCircle(matrix[i][j], i, j, matrix[i][j].getColor());
+                makeCircle(matrix[i][j].two, i, j, matrix[i][j].getColor());
+                matrix[i][j].setTranslateX(-7.5);
+                matrix[i][j].two.setTranslateX(7.5);
+            }
+            else if(matrix[i][j].getMass()==3 && !isExtremeSide(i, j)) {
+                makeCircle(matrix[i][j], i, j, matrix[i][j].getColor());
+                makeCircle(matrix[i][j].two, i, j, matrix[i][j].getColor());
+                makeCircle(matrix[i][j].three, i, j, matrix[i][j].getColor());
+                matrix[i][j].setTranslateX(-7.5);
+                matrix[i][j].two.setTranslateX(7.5);
+                matrix[i][j].setTranslateY(-7.5);
+                matrix[i][j].two.setTranslateY(-7.5);
+                matrix[i][j].three.setTranslateY(7.5);
+            }
         }
     }
 
@@ -133,7 +138,8 @@ public class Grid implements Serializable {
         prev_state=moveStack.pop();
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
-                grid.getChildren().removeAll(matrix[i][j]);
+                if(matrix[i][j]!=null)
+                    grid.getChildren().removeAll(matrix[i][j], matrix[i][j].two, matrix[i][j].three);
                 makeNode(i, j, prev_state);
             }
         }
@@ -211,7 +217,7 @@ public class Grid implements Serializable {
         return matrix[i][j].getMass();
     }
 
-    private void makeCircle(Circle s, int i, int j) {
+    private void makeCircle(Circle s, int i, int j, Color color) {
         DropShadow dropShadow=new DropShadow(5, Color.GRAY);
         s.setRadius(15);
         s.setFill(color);
@@ -278,12 +284,12 @@ public class Grid implements Serializable {
             }
             matrix[i][j].increaseMass();
             if(matrix[i][j].getMass()==2 && !isCorner(i, j)) {
-                makeCircle(matrix[i][j].two, i, j);
+                makeCircle(matrix[i][j].two, i, j, color);
                 matrix[i][j].setTranslateX(-7.5);
                 matrix[i][j].two.setTranslateX(7.5);
             }
             else if(matrix[i][j].getMass()==3 && !isExtremeSide(i, j)) {
-                makeCircle(matrix[i][j].three, i, j);
+                makeCircle(matrix[i][j].three, i, j, color);
                 matrix[i][j].setTranslateY(-7.5);
                 matrix[i][j].two.setTranslateY(-7.5);
                 matrix[i][j].three.setTranslateY(7.5);
@@ -291,7 +297,7 @@ public class Grid implements Serializable {
         }
         else {
             matrix[i][j]=new Ball(color);
-            makeCircle(matrix[i][j], i, j);
+            makeCircle(matrix[i][j], i, j, color);
             // Fade in on add
             FadeTransition fadeTransition=new FadeTransition(Duration.millis(1000));
             fadeTransition.setNode(matrix[i][j]);
