@@ -21,10 +21,10 @@ class myRectangle extends Rectangle {
 }
 
 public class GamePage extends Application {
-
+    private int n, m,numPlayers;
     private static GridPane grid=new GridPane();
     private static Grid g;
-    public static Stage stage;
+    static Stage stage;
 
     // Make grid outline
     private void buildGrid(myRectangle[][] box, int n, int m) {
@@ -97,10 +97,6 @@ public class GamePage extends Application {
         BorderPane.setMargin(grid, new Insets(0, 10, 0, 10));
     }
 
-//    public static void main(String[] args) {
-//        launch(args);
-//    }
-
     private void serialize() throws IOException {
         g.serializeMatrix();
         OutputStream outputStream=new FileOutputStream("game.dat");
@@ -128,29 +124,16 @@ public class GamePage extends Application {
                 in.close();
         }
     }
-    int n, m,numPlayers;
 
-    public int getN() {
-        return n;
-    }
-
-    public void setN(int n) {
+    void setN(int n) {
         this.n = n;
     }
 
-    public int getM() {
-        return m;
-    }
-
-    public void setM(int m) {
+    void setM(int m) {
         this.m = m;
     }
 
-    public int getNumPlayers() {
-        return numPlayers;
-    }
-
-    public void setNumPlayers(int numPlayers) {
+    void setNumPlayers(int numPlayers) {
         this.numPlayers = numPlayers;
     }
 
@@ -158,7 +141,6 @@ public class GamePage extends Application {
     public void start(Stage primaryStage) {
         // Initialisations
         MainPage.window=primaryStage;
-//        SelectPlayerController selection=new SelectPlayerController();
 
         myRectangle[][] box=new myRectangle[n][m];  // For grid outline
         Player[] players=new Player[numPlayers];
