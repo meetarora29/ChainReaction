@@ -22,7 +22,7 @@ public class Grid implements Serializable {
     private transient Color color;
     private transient GridPane grid;
     private Player[] players;
-    public static Stage stage;
+    static Stage stage;
     private int curr_player, numPlayers, flag, animation_count;
     private transient myStack<Ball[][]> moveStack;
     private int load, count;
@@ -51,6 +51,24 @@ public class Grid implements Serializable {
         load=0;
     }
 
+    private void makeNode(int i, int j, Ball[][] matrix) {
+        if(matrix[i][j]!=null) {
+            if(matrix[i][j].getMass()==1)
+                matrix[i][j].setRadius(15);
+            else if(matrix[i][j].getMass()==2)
+                matrix[i][j].setRadius(20);
+            else if(matrix[i][j].getMass()==3)
+                matrix[i][j].setRadius(25);
+            matrix[i][j].setFill(matrix[i][j].getColor());
+            grid.add(matrix[i][j], j, i);
+            GridPane.setHalignment(matrix[i][j], HPos.CENTER);
+            matrix[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
+                if(noAnimation())
+                    setPosition(i, j);
+            });
+        }
+    }
+
     GridPane resolve(GridPane grid) {
         // Transient Initialisations
         matrix=new Ball[n][m];
@@ -75,23 +93,7 @@ public class Grid implements Serializable {
         removeGridNodes();
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
-                if(matrix[i][j]!=null) {
-                    if(matrix[i][j].getMass()==1)
-                        matrix[i][j].setRadius(15);
-                    else if(matrix[i][j].getMass()==2)
-                        matrix[i][j].setRadius(20);
-                    else if(matrix[i][j].getMass()==3)
-                        matrix[i][j].setRadius(25);
-                    matrix[i][j].setFill(matrix[i][j].getColor());
-                    grid.add(matrix[i][j], j, i);
-                    GridPane.setHalignment(matrix[i][j], HPos.CENTER);
-                    int finalI = i;
-                    int finalJ = j;
-                    matrix[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                        if(noAnimation())
-                            setPosition(finalI, finalJ);
-                    });
-                }
+                makeNode(i, j, matrix);
             }
         }
 
@@ -130,23 +132,7 @@ public class Grid implements Serializable {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
                 grid.getChildren().removeAll(matrix[i][j]);
-                if(prev_state[i][j]!=null) {
-                    if(prev_state[i][j].getMass()==1)
-                        prev_state[i][j].setRadius(15);
-                    else if(prev_state[i][j].getMass()==2)
-                        prev_state[i][j].setRadius(20);
-                    else if(prev_state[i][j].getMass()==3)
-                        prev_state[i][j].setRadius(25);
-                    prev_state[i][j].setFill(prev_state[i][j].getColor());
-                    grid.add(prev_state[i][j], j, i);
-                    GridPane.setHalignment(prev_state[i][j], HPos.CENTER);
-                    int finalI = i;
-                    int finalJ = j;
-                    prev_state[i][j].addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                        if(noAnimation())
-                            setPosition(finalI, finalJ);
-                    });
-                }
+                makeNode(i, j, prev_state);
             }
         }
 

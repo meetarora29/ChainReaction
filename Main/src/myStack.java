@@ -11,13 +11,13 @@ class myStack<T> extends Stack<T> {
     @Override
     public T push(T item) {
         if(this.size()>=max_size) {
-            Stack<Ball[][]> temp=new Stack<>();
+            Stack<T> temp=new Stack<>();
             while(!this.isEmpty())
-                temp.push((Ball[][]) this.pop());
+                temp.push(this.pop());
             while (temp.size()>=max_size)
                 temp.pop();
             while (!temp.isEmpty())
-                this.push((T) temp.pop());
+                this.push(temp.pop());
         }
         super.push(item);
         return item;
