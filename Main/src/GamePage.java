@@ -1,4 +1,3 @@
-import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -20,11 +19,12 @@ class myRectangle extends Rectangle {
     }
 }
 
-public class GamePage extends Application {
-    private int n, m,numPlayers;
+class GamePage {
+    private static int n, m,numPlayers;
     private static GridPane grid=new GridPane();
     private static Grid g;
     static Stage stage;
+    private static myRectangle[][] box;
 
     // Make grid outline
     private void buildGrid(myRectangle[][] box, int n, int m) {
@@ -97,6 +97,13 @@ public class GamePage extends Application {
         BorderPane.setMargin(grid, new Insets(0, 10, 0, 10));
     }
 
+
+    static void changeGridLineColor(Color color) {
+        for(int i=0;i<n;i++)
+            for (int j = 0; j < m; j++)
+                box[i][j].setStroke(color);
+    }
+
     private void serialize() throws IOException {
         g.serializeMatrix();
         OutputStream outputStream=new FileOutputStream("game.dat");
@@ -126,23 +133,21 @@ public class GamePage extends Application {
     }
 
     void setN(int n) {
-        this.n = n;
+        GamePage.n = n;
     }
 
     void setM(int m) {
-        this.m = m;
+        GamePage.m = m;
     }
 
     void setNumPlayers(int numPlayers) {
-        this.numPlayers = numPlayers;
+        GamePage.numPlayers = numPlayers;
     }
 
-//    @Override
-    public void start(Stage primaryStage) {
+    void start(Stage primaryStage) {
         // Initialisations
         MainPage.window=primaryStage;
-
-        myRectangle[][] box=new myRectangle[n][m];  // For grid outline
+        box=new myRectangle[n][m];  // For grid outline
         Player[] players=new Player[numPlayers];
         Color[] colors=new Color[numPlayers];
         g=new Grid(n, m, grid, players);
@@ -162,6 +167,7 @@ public class GamePage extends Application {
 
         buildGrid(box, n, m);
         buildButtons(borderPane);
+        changeGridLineColor(players[0].getColor());
 
         Scene scene=new Scene(borderPane);
 

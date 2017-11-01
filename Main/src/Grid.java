@@ -161,6 +161,7 @@ public class Grid implements Serializable {
 
     private void nextPlayer() {
         curr_player=(curr_player+1)%numPlayers;
+        GamePage.changeGridLineColor(players[curr_player].getColor());
     }
 
     private boolean checkValidity(int i, int j) {
@@ -196,7 +197,6 @@ public class Grid implements Serializable {
         if(!checkValidity(i, j))
             return;
         saveState();
-        // TODO: Change grid line color
         setMass(i, j);
         count++;
         nextPlayer();
