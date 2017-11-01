@@ -97,9 +97,9 @@ public class GamePage extends Application {
         BorderPane.setMargin(grid, new Insets(0, 10, 0, 10));
     }
 
-    public static void main(String[] args) {
-        launch(args);
-    }
+//    public static void main(String[] args) {
+//        launch(args);
+//    }
 
     private void serialize() throws IOException {
         g.serializeMatrix();
@@ -128,12 +128,38 @@ public class GamePage extends Application {
                 in.close();
         }
     }
+    int n, m,numPlayers;
 
-    @Override
+    public int getN() {
+        return n;
+    }
+
+    public void setN(int n) {
+        this.n = n;
+    }
+
+    public int getM() {
+        return m;
+    }
+
+    public void setM(int m) {
+        this.m = m;
+    }
+
+    public int getNumPlayers() {
+        return numPlayers;
+    }
+
+    public void setNumPlayers(int numPlayers) {
+        this.numPlayers = numPlayers;
+    }
+
+//    @Override
     public void start(Stage primaryStage) {
         // Initialisations
-        stage=primaryStage;
-        int n=10, m=10, numPlayers=2;
+        MainPage.window=primaryStage;
+//        SelectPlayerController selection=new SelectPlayerController();
+
         myRectangle[][] box=new myRectangle[n][m];  // For grid outline
         Player[] players=new Player[numPlayers];
         Color[] colors=new Color[numPlayers];
@@ -157,8 +183,8 @@ public class GamePage extends Application {
 
         Scene scene=new Scene(borderPane);
 
-        stage.setTitle("Chain Reaction");
-        stage.setScene(scene);
-        stage.show();
+        MainPage.window.setTitle("Chain Reaction");
+        MainPage.window.setScene(scene);
+        MainPage.window.show();
     }
 }

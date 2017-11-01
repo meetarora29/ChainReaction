@@ -16,7 +16,7 @@ public class MainPage extends Application {
     @Override
     public void start(Stage primaryStage) throws IOException {
         window=primaryStage;
-        window.setTitle("CHAIN-REACTION");//set the title as "CHAIN_REACTION"
+        window.setTitle("Chain Reaction");//set the title as "CHAIN_REACTION"
         //loading the fxml file from scene builder
         AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/sample_main.fxml"));
         scene1=new Scene(pane);

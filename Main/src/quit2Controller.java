@@ -19,13 +19,13 @@ public class quit2Controller {
 
     @FXML
     void clickYes(ActionEvent event) {
-        GamePage.stage.close();
+        MainPage.window.close();
         Grid.stage.close();
         GameOverController.stage1.close();
     }
 
-//    @FXML
-//    void initialize() {
 //
-//    }
+
+
+
 }
