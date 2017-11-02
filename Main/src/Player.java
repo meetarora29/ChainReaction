@@ -5,12 +5,22 @@ import java.io.Serializable;
 class Player implements Serializable {
     private transient Color color;
     private double red, green, blue, opacity;
+    private int undo_left;
 
     private static final long serialVersionUID = 3L;
 
     Player(Color color) {
         this.color=color;
+        undo_left=3;
         resolveColor();
+    }
+
+    int getUndo() {
+        return undo_left;
+    }
+
+    void undo() {
+        undo_left--;
     }
 
     void makeColor() {

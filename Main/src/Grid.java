@@ -13,6 +13,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -127,9 +128,10 @@ public class Grid implements Serializable {
     }
 
     void undo() {
-        if(moveStack.isEmpty())
+        if(moveStack.isEmpty() || players[curr_player].getUndo()==0)
             return;
 
+        players[curr_player].undo();
         if(moveStack.size()==1 && load==0 && count<=1) {
             restartGame();
             return;
@@ -192,6 +194,10 @@ public class Grid implements Serializable {
     private void isGameOver() throws IOException {
         if(checkWin() && flag!=0 && noAnimation()) {
             System.out.println("Game Over!!!");
+            // Delete File
+            File file=new File("game.dat");
+            file.delete();
+
             stage=new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Congratulations!!");
@@ -299,7 +305,7 @@ public class Grid implements Serializable {
             matrix[i][j]=new Ball(color);
             makeCircle(matrix[i][j], i, j, color);
             // Fade in on add
-            FadeTransition fadeTransition=new FadeTransition(Duration.millis(1000));
+            FadeTransition fadeTransition=new FadeTransition(Duration.millis(500));
             fadeTransition.setNode(matrix[i][j]);
             fadeTransition.setFromValue(0);
             fadeTransition.setToValue(1);
