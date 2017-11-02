@@ -1,3 +1,4 @@
+import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -9,6 +10,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
 import java.awt.*;
 import java.io.*;
 
@@ -82,7 +85,16 @@ class GamePage {
                 MainPage mainPage=new MainPage();
                 try {
                     serialize();
-                    mainPage.start(stage);
+                    FadeTransition fadeTransition=new FadeTransition(Duration.millis(1000), borderPane);
+                    fadeTransition.setToValue(0);
+                    fadeTransition.play();
+                    fadeTransition.setOnFinished(event1 -> {
+                        try {
+                            mainPage.start(stage);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
                 }
                 catch (IOException e) {
                     System.out.println();
@@ -164,6 +176,10 @@ class GamePage {
         g=new Grid(n, m, grid, players);
         BorderPane borderPane=new BorderPane(grid);
         // TODO: Correct Resizing of Window
+
+        // Background
+        String image= GamePage.class.getResource("images/gamepage.png").toExternalForm();
+        borderPane.setStyle("-fx-background-image: url('"+ image +"')");
 
         // Setting Color Array
         colors[0]=Color.BLUE;
