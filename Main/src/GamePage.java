@@ -1,3 +1,4 @@
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -38,7 +39,6 @@ class GamePage {
                 r.setFill(Color.WHITE);
 
                 r.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                    System.out.println(r.p);
                     if(g.noAnimation())
                         g.setPosition(r.p.x, r.p.y);
                 });
@@ -55,14 +55,14 @@ class GamePage {
     }
 
     // Build UI Elements
-    private void buildButtons(BorderPane borderPane) {
+    private void buildButtons(BorderPane borderPane, Stage stage) {
         Button button1=new Button("Save");
         button1.setOnAction(event -> {
             try {
                 serialize();
             }
             catch (IOException e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
 //            catch (ClassNotFoundException e) {
 //                System.out.println(e);
@@ -77,11 +77,21 @@ class GamePage {
         ComboBox<String> comboBox=new ComboBox<>();
         comboBox.setPromptText("Choose Option");
         comboBox.getItems().addAll("Restart Game", "Return to Main Menu");
-        comboBox.setOnAction(event -> System.out.println(comboBox.getValue()));
         comboBox.setOnAction(event -> {
-            if(comboBox.getSelectionModel().getSelectedIndex()==0)
+            if(comboBox.getValue().equals("Restart Game"))
                 g.restartGame();
-            // TODO: ComboBox reset
+            else {
+                MainPage mainPage=new MainPage();
+                try {
+                    mainPage.start(stage);
+                }
+                catch (IOException e) {
+                    System.out.println();
+                }
+            }
+
+//            // ComboBox reset
+//            Platform.runLater(() -> comboBox.setValue(null));
         });
 
         HBox hBox=new HBox();
@@ -166,7 +176,7 @@ class GamePage {
         grid.setAlignment(Pos.CENTER);
 
         buildGrid(box, n, m);
-        buildButtons(borderPane);
+        buildButtons(borderPane, primaryStage);
         changeGridLineColor(players[0].getColor());
 
         Scene scene=new Scene(borderPane);

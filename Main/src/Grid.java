@@ -111,7 +111,7 @@ public class Grid implements Serializable {
     private void removeGridNodes() {
         ArrayList<Node> list=new ArrayList<>();
         for(Node node : grid.getChildren()) {
-            if(node instanceof Ball)
+            if(node instanceof Circle)
                 list.add(node);
         }
         grid.getChildren().removeAll(list);
@@ -125,6 +125,7 @@ public class Grid implements Serializable {
         curr_player=0;
         moveStack=new myStack<>(3*numPlayers);
         count=0;
+        GamePage.changeGridLineColor(players[curr_player].getColor());
     }
 
     void undo() {
