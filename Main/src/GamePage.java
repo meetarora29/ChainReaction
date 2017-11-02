@@ -81,6 +81,7 @@ class GamePage {
             if (comboBox.getSelectionModel().getSelectedIndex()==1){
                 MainPage mainPage=new MainPage();
                 try {
+                    serialize();
                     mainPage.start(stage);
                 }
                 catch (IOException e) {
