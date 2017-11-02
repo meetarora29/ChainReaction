@@ -78,9 +78,7 @@ class GamePage {
         comboBox.setPromptText("Choose Option");
         comboBox.getItems().addAll("Restart Game", "Return to Main Menu");
         comboBox.setOnAction(event -> {
-            if(comboBox.getValue().equals("Restart Game"))
-                g.restartGame();
-            else {
+            if (comboBox.getSelectionModel().getSelectedIndex()==1){
                 MainPage mainPage=new MainPage();
                 try {
                     mainPage.start(stage);
@@ -89,9 +87,11 @@ class GamePage {
                     System.out.println();
                 }
             }
+            else
+                g.restartGame();
 
-//            // ComboBox reset
-//            Platform.runLater(() -> comboBox.setValue(null));
+            // ComboBox reset
+            Platform.runLater(() -> comboBox.setValue(null));
         });
 
         HBox hBox=new HBox();
