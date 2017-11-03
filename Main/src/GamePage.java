@@ -184,11 +184,6 @@ class GamePage {
         String image= GamePage.class.getResource("images/gamepage.png").toExternalForm();
         borderPane.setStyle("-fx-background-image: url('"+ image +"')");
 
-
-        // Setting Color Array
-        colors[0]=Color.BLUE;
-        colors[1]=Color.RED;
-
         for(int i=0;i<numPlayers;i++)
             players[i]=new Player(colors[i]);
 
