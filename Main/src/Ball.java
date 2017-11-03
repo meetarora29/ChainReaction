@@ -17,11 +17,6 @@ class SerializableBall implements Serializable {
         opacity=b.opacity;
     }
 
-    @Override
-    public String toString() {
-        return red+" "+green+" "+blue+" "+opacity;
-    }
-
     int getMass() {
         return mass;
     }
@@ -31,17 +26,22 @@ class Ball extends Circle {
     private int mass;
     private transient Color color;
     double red, green, blue, opacity;
+    Circle two, three;
 
     Ball(Ball b) {
         mass=b.getMass();
         color=b.getColor();
         resolveColor();
+        two=new Circle();
+        three=new Circle();
     }
 
     Ball(Color c) {
         color=c;
         resolveColor();
         mass=1;
+        two=new Circle();
+        three=new Circle();
     }
 
     Ball(SerializableBall sb) {
@@ -51,6 +51,8 @@ class Ball extends Circle {
         green=sb.green;
         opacity=sb.opacity;
         makeColor();
+        two=new Circle();
+        three=new Circle();
     }
 
     private void makeColor() {

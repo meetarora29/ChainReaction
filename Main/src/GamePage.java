@@ -1,4 +1,5 @@
-import javafx.application.Application;
+import javafx.animation.FadeTransition;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -9,6 +10,8 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.util.Duration;
+
 import java.awt.*;
 import java.io.*;
 
@@ -20,11 +23,12 @@ class myRectangle extends Rectangle {
     }
 }
 
-public class GamePage extends Application {
-
+class GamePage {
+    private static int n, m,numPlayers;
     private static GridPane grid=new GridPane();
     private static Grid g;
-    public static Stage stage;
+    static Stage stage;
+    private static myRectangle[][] box;
 
     // Make grid outline
     private void buildGrid(myRectangle[][] box, int n, int m) {
@@ -38,7 +42,6 @@ public class GamePage extends Application {
                 r.setFill(Color.WHITE);
 
                 r.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
-                    System.out.println(r.p);
                     if(g.noAnimation())
                         g.setPosition(r.p.x, r.p.y);
                 });
@@ -55,14 +58,14 @@ public class GamePage extends Application {
     }
 
     // Build UI Elements
-    private void buildButtons(BorderPane borderPane) {
+    private void buildButtons(BorderPane borderPane, Stage stage) {
         Button button1=new Button("Save");
         button1.setOnAction(event -> {
             try {
                 serialize();
             }
             catch (IOException e) {
-                System.out.println(e);
+                e.printStackTrace();
             }
 //            catch (ClassNotFoundException e) {
 //                System.out.println(e);
@@ -77,11 +80,31 @@ public class GamePage extends Application {
         ComboBox<String> comboBox=new ComboBox<>();
         comboBox.setPromptText("Choose Option");
         comboBox.getItems().addAll("Restart Game", "Return to Main Menu");
-        comboBox.setOnAction(event -> System.out.println(comboBox.getValue()));
         comboBox.setOnAction(event -> {
-            if(comboBox.getSelectionModel().getSelectedIndex()==0)
+            if (comboBox.getSelectionModel().getSelectedIndex()==1){
+                MainPage mainPage=new MainPage();
+                try {
+                    serialize();
+                    FadeTransition fadeTransition=new FadeTransition(Duration.millis(1000), borderPane);
+                    fadeTransition.setToValue(0);
+                    fadeTransition.play();
+                    fadeTransition.setOnFinished(event1 -> {
+                        try {
+                            mainPage.start(stage);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    });
+                }
+                catch (IOException e) {
+                    System.out.println();
+                }
+            }
+            else
                 g.restartGame();
-            // TODO: ComboBox reset
+
+            // ComboBox reset
+            Platform.runLater(() -> comboBox.setValue(null));
         });
 
         HBox hBox=new HBox();
@@ -97,9 +120,12 @@ public class GamePage extends Application {
         BorderPane.setMargin(grid, new Insets(0, 10, 0, 10));
     }
 
-//    public static void main(String[] args) {
-//        launch(args);
-//    }
+
+    static void changeGridLineColor(Color color) {
+        for(int i=0;i<n;i++)
+            for (int j = 0; j < m; j++)
+                box[i][j].setStroke(color);
+    }
 
     private void serialize() throws IOException {
         g.serializeMatrix();
@@ -128,47 +154,38 @@ public class GamePage extends Application {
                 in.close();
         }
     }
-    int n, m,numPlayers;
 
-    public int getN() {
-        return n;
+    void setN(int n) {
+        GamePage.n = n;
     }
 
-    public void setN(int n) {
-        this.n = n;
+    void setM(int m) {
+        GamePage.m = m;
     }
 
-    public int getM() {
-        return m;
+    void setNumPlayers(int numPlayers) {
+        GamePage.numPlayers = numPlayers;
     }
 
-    public void setM(int m) {
-        this.m = m;
-    }
-
-    public int getNumPlayers() {
-        return numPlayers;
-    }
-
-    public void setNumPlayers(int numPlayers) {
-        this.numPlayers = numPlayers;
-    }
-
-//    @Override
-    public void start(Stage primaryStage) {
+    void start(Stage primaryStage) {
         // Initialisations
         MainPage.window=primaryStage;
-//        SelectPlayerController selection=new SelectPlayerController();
-
-        myRectangle[][] box=new myRectangle[n][m];  // For grid outline
+        box=new myRectangle[n][m];  // For grid outline
         Player[] players=new Player[numPlayers];
         Color[] colors;
         g=new Grid(n, m, grid, players);
         BorderPane borderPane=new BorderPane(grid);
         // TODO: Correct Resizing of Window
 
+
         SettingsController settingsController=new SettingsController();
         colors=settingsController.getColours();
+
+        // Background
+        String image= GamePage.class.getResource("images/gamepage.png").toExternalForm();
+        borderPane.setStyle("-fx-background-image: url('"+ image +"')");
+
+
         // Setting Color Array
 //        colors[0]=Color.BLUE;
 //        colors[1]=Color.RED;
@@ -181,7 +198,8 @@ public class GamePage extends Application {
         grid.setAlignment(Pos.CENTER);
 
         buildGrid(box, n, m);
-        buildButtons(borderPane);
+        buildButtons(borderPane, primaryStage);
+        changeGridLineColor(players[0].getColor());
 
         Scene scene=new Scene(borderPane);
 
