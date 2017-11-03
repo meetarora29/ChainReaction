@@ -177,8 +177,8 @@ class GamePage {
         // TODO: Correct Resizing of Window
 
 
-        SettingsController settingsController=new SettingsController();
-        colors=settingsController.getColours();
+        MainPage mainPage=new MainPage();
+        colors=mainPage.getColours();
 
         // Background
         String image= GamePage.class.getResource("images/gamepage.png").toExternalForm();
