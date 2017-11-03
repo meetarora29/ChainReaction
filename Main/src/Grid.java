@@ -192,7 +192,7 @@ public class Grid implements Serializable {
 
     boolean noAnimation() { return animation_count==0; }
 
-    private void isGameOver() throws IOException {
+    private void isGameOver() {
         if(checkWin() && flag!=0 && noAnimation()) {
             System.out.println("Game Over!!!");
             // Delete File
@@ -202,10 +202,17 @@ public class Grid implements Serializable {
             stage=new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Congratulations!!");
-            AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/game_end.fxml"));
-            stage.setScene(new Scene(pane));
+            AnchorPane pane;
+            try {
+                pane = FXMLLoader.load(getClass().getResource("fxml_files/game_end.fxml"));
+                stage.setScene(new Scene(pane));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             stage.show();
         }
+        else if (noAnimation())
+            nextPlayer();
     }
 
     void setPosition(int i, int j) {
@@ -215,7 +222,6 @@ public class Grid implements Serializable {
         saveState();
         setMass(i, j);
         count++;
-        nextPlayer();
     }
 
     private int getMass(int i, int j) {
@@ -280,11 +286,7 @@ public class Grid implements Serializable {
 
                 parallelTransition.setOnFinished(event -> {
                     animation_count--;
-                    try {
-                        isGameOver();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    isGameOver();
                 });
                 parallelTransition.play();
                 animation_count++;
@@ -294,12 +296,14 @@ public class Grid implements Serializable {
                 makeCircle(matrix[i][j].two, i, j, color);
                 matrix[i][j].setTranslateX(-7.5);
                 matrix[i][j].two.setTranslateX(7.5);
+                isGameOver();
             }
             else if(matrix[i][j].getMass()==3 && !isExtremeSide(i, j)) {
                 makeCircle(matrix[i][j].three, i, j, color);
                 matrix[i][j].setTranslateY(-7.5);
                 matrix[i][j].two.setTranslateY(-7.5);
                 matrix[i][j].three.setTranslateY(7.5);
+                isGameOver();
             }
         }
         else {
@@ -312,11 +316,7 @@ public class Grid implements Serializable {
             fadeTransition.setToValue(1);
             fadeTransition.setOnFinished(event -> {
                 animation_count--;
-                try {
-                    isGameOver();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                isGameOver();
                 flag=1; // For first move
             });
             fadeTransition.play();
@@ -430,11 +430,7 @@ public class Grid implements Serializable {
         parallelTransition.setOnFinished(event -> {
             animation_count--;
             grid.getChildren().removeAll(one, two, three, four);
-            try {
-                isGameOver();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            isGameOver();
         });
 
         if(val==4) {
