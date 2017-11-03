@@ -7,13 +7,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.layout.AnchorPane;
-import javafx.util.Pair;
+//import P;
 
 public class SelectPlayerController2 {
     ObservableList<Integer> list= FXCollections.observableArrayList(2,3,4,5,6,7,8);
-    ObservableList<Pair<Integer,Integer>> list1= FXCollections.observableArrayList(new Pair(8,10),new Pair(16,20),new Pair(24,30));
+    ObservableList<P<Integer,Integer>> list1= FXCollections.observableArrayList(new P(9,6),new P<>(15,10));
     int numberofPlayers;
-    Pair<Integer,Integer> grid;
+    P<Integer,Integer> grid;
 
 //    @FXML
 //    private ResourceBundle resources;
@@ -27,12 +27,17 @@ public class SelectPlayerController2 {
     @FXML
     private ChoiceBox<Integer> choiceBox;
     @FXML
-    private ChoiceBox<Pair<Integer,Integer> > gridSize;
+    private ChoiceBox<P<Integer,Integer> > gridSize;
 
     @FXML
     void clickPlay(ActionEvent event) {
-        getNumberOfPlayers(choiceBox);
-        getGridSize(gridSize);
+        GamePage gamePage=new GamePage();
+        gamePage.setN(getGridSize().getKey());
+        gamePage.setM(getGridSize().getValue());
+        gamePage.setNumPlayers(getNumberOfPlayers());
+        MainPage.window.close();
+
+        gamePage.start(MainPage.window);
     }
 
     @FXML
@@ -43,16 +48,18 @@ public class SelectPlayerController2 {
 
 
         gridSize.setItems(list1);
-        gridSize.setValue(new Pair<>(8,10));
+        gridSize.setValue(new P<>(9,6));
     }
-    private void getNumberOfPlayers(ChoiceBox<Integer> choiceBox)
+    public int getNumberOfPlayers()
     {
         numberofPlayers=choiceBox.getValue();
         System.out.println(numberofPlayers);
+        return numberofPlayers;
     }
-    private void getGridSize(ChoiceBox<Pair<Integer,Integer>> choiceBox)
+    public P<Integer,Integer> getGridSize()
     {
-        grid=choiceBox.getValue();
+        grid=gridSize.getValue();
         System.out.println(grid.getKey()+"x"+grid.getValue());
+        return grid;
     }
 }

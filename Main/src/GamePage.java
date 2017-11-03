@@ -162,14 +162,16 @@ public class GamePage extends Application {
 
         myRectangle[][] box=new myRectangle[n][m];  // For grid outline
         Player[] players=new Player[numPlayers];
-        Color[] colors=new Color[numPlayers];
+        Color[] colors;
         g=new Grid(n, m, grid, players);
         BorderPane borderPane=new BorderPane(grid);
         // TODO: Correct Resizing of Window
 
+        SettingsController settingsController=new SettingsController();
+        colors=settingsController.getColours();
         // Setting Color Array
-        colors[0]=Color.BLUE;
-        colors[1]=Color.RED;
+//        colors[0]=Color.BLUE;
+//        colors[1]=Color.RED;
 
         for(int i=0;i<numPlayers;i++)
             players[i]=new Player(colors[i]);
