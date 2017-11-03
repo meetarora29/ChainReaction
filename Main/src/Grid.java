@@ -7,6 +7,8 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
@@ -488,6 +490,11 @@ public class Grid implements Serializable {
                 grid.add(three, j, i);
             }
         }
+
+        // Pop Sound on Burst
+        Media media=new Media(new File("src/sounds/pop.mp3").toURI().toString());
+        MediaPlayer mediaPlayer=new MediaPlayer(media);
+        mediaPlayer.play();
 
         parallelTransition.play();
         animation_count++;

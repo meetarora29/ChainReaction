@@ -27,7 +27,6 @@ class GamePage {
     private static int n, m,numPlayers;
     private static GridPane grid=new GridPane();
     private static Grid g;
-    static Stage stage;
     private static myRectangle[][] box;
 
     // Make grid outline
@@ -187,8 +186,8 @@ class GamePage {
 
 
         // Setting Color Array
-//        colors[0]=Color.BLUE;
-//        colors[1]=Color.RED;
+        colors[0]=Color.BLUE;
+        colors[1]=Color.RED;
 
         for(int i=0;i<numPlayers;i++)
             players[i]=new Player(colors[i]);

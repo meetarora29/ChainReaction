@@ -32,7 +32,7 @@ public class GameOverController {
 //        Stage stage=new Stage();
         Scene scene=new Scene(pane);
         MainPage.window.setScene(scene);
-        MainPage.window.setTitle("CHAIN-REACTION");
+        MainPage.window.setTitle("Chain Reaction");
 //        MainPage.window.show();
     }
 
