@@ -175,10 +175,9 @@ class GamePage {
         g=new Grid(n, m, grid, players);
         BorderPane borderPane=new BorderPane(grid);
         // TODO: Correct Resizing of Window
+        // TODO: Correct Bug
 
-
-        MainPage mainPage=new MainPage();
-        colors=mainPage.getColours();
+        colors=MainPage.getColours();
 
         // Background
         String image= GamePage.class.getResource("images/gamepage.png").toExternalForm();
