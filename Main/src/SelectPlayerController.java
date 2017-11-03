@@ -45,7 +45,7 @@ class P<T1,T2>
 public class SelectPlayerController {
     ObservableList<Integer> list= FXCollections.observableArrayList(2,3,4,5,6,7,8);
     ObservableList<P<Integer,Integer>> list1= FXCollections.observableArrayList(new P(9,6),new P(15,10));
-    Stage primaryStage=new Stage();
+//    Stage primaryStage=new Stage();
     int numberofPlayers;
     P<Integer,Integer> grid;
 //    int n=9, m=6;
@@ -94,7 +94,7 @@ public class SelectPlayerController {
 
         gridSize.setItems(list1);
         gridSize.setValue(new P<>(9,6));
-        
+
 //        grid=gridSize.getValue();
 
     }

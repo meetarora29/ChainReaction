@@ -27,13 +27,13 @@ public class GameOverController {
     void clickNewGame(ActionEvent event) throws IOException{
         AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/selectplayer2.fxml"));
 //        gamePane.getChildren().setAll(pane);
-        GamePage.stage.close();
+//        MainPage.window.close();
         Grid.stage.close();
-        Stage stage=new Stage();
+//        Stage stage=new Stage();
         Scene scene=new Scene(pane);
-        stage.setScene(scene);
-        stage.setTitle("CHAIN-REACTION");
-        stage.show();
+        MainPage.window.setScene(scene);
+        MainPage.window.setTitle("CHAIN-REACTION");
+//        MainPage.window.show();
     }
 
     @FXML
@@ -48,8 +48,10 @@ public class GameOverController {
 
     @FXML
     void clickRestart(ActionEvent event) {
-        GamePage.stage.close();
+        GamePage gamePage=new GamePage();
+        MainPage.window.close();
         Grid.stage.close();
+        gamePage.start(MainPage.window);
 
     }
 
