@@ -15,6 +15,10 @@ class Player implements Serializable {
         resolveColor();
     }
 
+    void resetUndo() {
+        undo_left=3;
+    }
+
     int getUndo() {
         return undo_left;
     }

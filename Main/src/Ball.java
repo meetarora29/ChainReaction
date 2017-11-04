@@ -1,3 +1,5 @@
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
@@ -27,21 +29,24 @@ class Ball extends Circle {
     private transient Color color;
     double red, green, blue, opacity;
     Circle two, three;
+    Pane stackPane;
+
+    {
+        two=new Circle();
+        three=new Circle();
+        stackPane=new StackPane();
+    }
 
     Ball(Ball b) {
         mass=b.getMass();
         color=b.getColor();
         resolveColor();
-        two=new Circle();
-        three=new Circle();
     }
 
     Ball(Color c) {
         color=c;
         resolveColor();
         mass=1;
-        two=new Circle();
-        three=new Circle();
     }
 
     Ball(SerializableBall sb) {
@@ -51,8 +56,6 @@ class Ball extends Circle {
         green=sb.green;
         opacity=sb.opacity;
         makeColor();
-        two=new Circle();
-        three=new Circle();
     }
 
     private void makeColor() {

@@ -1,16 +1,20 @@
 import javafx.animation.*;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -65,6 +69,7 @@ public class Grid implements Serializable {
                 makeCircle(matrix[i][j].two, i, j, matrix[i][j].getColor());
                 matrix[i][j].setTranslateX(-7.5);
                 matrix[i][j].two.setTranslateX(7.5);
+                rotateTwo(i, j, matrix);
             }
             else if(matrix[i][j].getMass()==3 && !isExtremeSide(i, j)) {
                 makeCircle(matrix[i][j], i, j, matrix[i][j].getColor());
@@ -75,6 +80,7 @@ public class Grid implements Serializable {
                 matrix[i][j].setTranslateY(-7.5);
                 matrix[i][j].two.setTranslateY(-7.5);
                 matrix[i][j].three.setTranslateY(7.5);
+                rotateThree(i, j, matrix);
             }
         }
     }
@@ -127,6 +133,8 @@ public class Grid implements Serializable {
         curr_player=0;
         moveStack=new myStack<>(3*numPlayers);
         count=0;
+        for(int i=0;i<numPlayers;i++)
+            players[i].resetUndo();
         GamePage.changeGridLineColor(players[curr_player].getColor());
     }
 
@@ -144,7 +152,7 @@ public class Grid implements Serializable {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
                 if(matrix[i][j]!=null)
-                    grid.getChildren().removeAll(matrix[i][j], matrix[i][j].two, matrix[i][j].three);
+                    grid.getChildren().removeAll(matrix[i][j], matrix[i][j].two, matrix[i][j].three, matrix[i][j].stackPane);
                 makeNode(i, j, prev_state);
             }
         }
@@ -245,6 +253,38 @@ public class Grid implements Serializable {
         });
     }
 
+    private void rotateTwo(int i, int j, Ball[][] matrix) {
+        Pane pane=matrix[i][j].stackPane;
+        pane.getChildren().removeAll(matrix[i][j], matrix[i][j].two, matrix[i][j].three);
+        pane.getChildren().addAll(matrix[i][j], matrix[i][j].two);
+        pane.setMaxSize(50, 50);
+        grid.getChildren().removeAll(matrix[i][j], matrix[i][j].two);
+        grid.add(pane, j, i);
+
+        Timeline timeline=new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(pane.rotateProperty(), 0)),
+                new KeyFrame(Duration.seconds(5), new KeyValue(pane.rotateProperty(), 360))
+        );
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+
+    private void rotateThree(int i, int j, Ball[][] matrix) {
+        Pane pane=matrix[i][j].stackPane;
+        pane.getChildren().removeAll(matrix[i][j], matrix[i][j].two, matrix[i][j].three);
+        pane.getChildren().addAll(matrix[i][j], matrix[i][j].two, matrix[i][j].three);
+        pane.setMaxSize(50, 50);
+        grid.getChildren().removeAll(matrix[i][j], matrix[i][j].two, matrix[i][j].three, matrix[i][j].stackPane);
+        grid.add(pane, j, i);
+
+        Timeline timeline=new Timeline(
+                new KeyFrame(Duration.ZERO, new KeyValue(pane.rotateProperty(), 0)),
+                new KeyFrame(Duration.seconds(3), new KeyValue(pane.rotateProperty(), 360))
+        );
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
+
     private boolean isCorner(int i, int j) {
         if(i==0 && j==0)
             return true;
@@ -298,6 +338,7 @@ public class Grid implements Serializable {
                 makeCircle(matrix[i][j].two, i, j, color);
                 matrix[i][j].setTranslateX(-7.5);
                 matrix[i][j].two.setTranslateX(7.5);
+                rotateTwo(i, j, matrix);
                 isGameOver();
             }
             else if(matrix[i][j].getMass()==3 && !isExtremeSide(i, j)) {
@@ -305,6 +346,7 @@ public class Grid implements Serializable {
                 matrix[i][j].setTranslateY(-7.5);
                 matrix[i][j].two.setTranslateY(-7.5);
                 matrix[i][j].three.setTranslateY(7.5);
+                rotateThree(i, j, matrix);
                 isGameOver();
             }
         }
@@ -327,6 +369,7 @@ public class Grid implements Serializable {
         checkMass(i, j);
     }
 
+    // TODO: Speed up animation
     private void checkMass(int i, int j) {
         // Fade out on remove
         ScaleTransition transition1=new ScaleTransition(Duration.millis(500));
@@ -349,11 +392,12 @@ public class Grid implements Serializable {
         Circle temp1=matrix[i][j];
         Circle temp2=matrix[i][j].two;
         Circle temp3=matrix[i][j].three;
+        Pane temp4=matrix[i][j].stackPane;
 
         if(i>0 && i<n-1 && j>0 && j<m-1) {
             if(getMass(i, j)==4){
                 parallelTransition.setOnFinished(event -> {
-                    grid.getChildren().removeAll(temp1, temp2, temp3);
+                    grid.getChildren().removeAll(temp1, temp2, temp3, temp4);
                     animation_count--;
                     burst(4, i, j);
                 });
@@ -365,7 +409,7 @@ public class Grid implements Serializable {
         else if(isCorner(i, j)) {
             if(getMass(i, j)==2){
                 parallelTransition.setOnFinished(event -> {
-                    grid.getChildren().removeAll(temp1, temp2, temp3);
+                    grid.getChildren().removeAll(temp1, temp2, temp3, temp4);
                     animation_count--;
                     burst(2, i, j);
                 });
@@ -377,7 +421,7 @@ public class Grid implements Serializable {
         else {
             if(getMass(i, j)==3){
                 parallelTransition.setOnFinished(event -> {
-                    grid.getChildren().removeAll(temp1, temp2, temp3);
+                    grid.getChildren().removeAll(temp1, temp2, temp3, temp4);
                     animation_count--;
                     burst(3, i, j);
                 });
