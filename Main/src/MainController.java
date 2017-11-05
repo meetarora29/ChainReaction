@@ -9,6 +9,9 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 public class MainController {
 
@@ -25,7 +28,15 @@ public class MainController {
     void clickPlayGame(ActionEvent event) throws IOException {
 //        settingsController.initialize();
         colours=MainPage.getColours();
-        AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/sample_newgame.fxml"));
+        AnchorPane pane;
+        Path path= Paths.get("/Users/gagan/Desktop/project/ChainReaction/Main/game.dat");
+        if(Files.exists(path)) {
+            pane = FXMLLoader.load(getClass().getResource("fxml_files/sample_newgame.fxml"));
+        }
+        else
+        {
+            pane = FXMLLoader.load(getClass().getResource("fxml_files/newGame2.fxml"));
+        }
         rootPane.getChildren().setAll(pane);
     }
 

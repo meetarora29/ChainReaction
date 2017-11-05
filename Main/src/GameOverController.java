@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 
 import static javafx.application.Application.launch;
 
-public class GameOverController {
+public class GameOverController{
 
 //    @FXML // ResourceBundle that was given to the FXMLLoader
 //    private ResourceBundle resources;
@@ -61,8 +61,5 @@ public class GameOverController {
     }
 
 
-//    @FXML // This method is called by the FXMLLoader when initialization is complete
-//    void initialize() {
-//
-//    }
+
 }
