@@ -56,6 +56,14 @@ class GamePage {
         }
     }
 
+    // Destroy Grid
+    static void destroyGrid() {
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<m;j++)
+                grid.getChildren().removeAll(box[i][j]);
+        }
+    }
+
     // Build UI Elements
     private void buildButtons(BorderPane borderPane, Stage stage) {
         Button button1=new Button("Save");
@@ -89,6 +97,7 @@ class GamePage {
                     fadeTransition.play();
                     fadeTransition.setOnFinished(event1 -> {
                         try {
+                            destroyGrid();
                             mainPage.start(stage);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -175,7 +184,6 @@ class GamePage {
         g=new Grid(n, m, grid, players);
         BorderPane borderPane=new BorderPane(grid);
         // TODO: Correct Resizing of Window
-        // TODO: Correct Bug
 
         colors=MainPage.getColours();
 
