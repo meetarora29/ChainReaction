@@ -261,9 +261,12 @@ public class Grid implements Serializable {
         grid.getChildren().removeAll(matrix[i][j], matrix[i][j].two);
         grid.add(pane, j, i);
 
+        int seconds =5;
+        if(isExtremeSide(i, j))
+            seconds=2;
         Timeline timeline=new Timeline(
                 new KeyFrame(Duration.ZERO, new KeyValue(pane.rotateProperty(), 0)),
-                new KeyFrame(Duration.seconds(5), new KeyValue(pane.rotateProperty(), 360))
+                new KeyFrame(Duration.seconds(seconds), new KeyValue(pane.rotateProperty(), 360))
         );
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -279,7 +282,7 @@ public class Grid implements Serializable {
 
         Timeline timeline=new Timeline(
                 new KeyFrame(Duration.ZERO, new KeyValue(pane.rotateProperty(), 0)),
-                new KeyFrame(Duration.seconds(3), new KeyValue(pane.rotateProperty(), 360))
+                new KeyFrame(Duration.seconds(2.5), new KeyValue(pane.rotateProperty(), 360))
         );
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
@@ -365,6 +368,25 @@ public class Grid implements Serializable {
             });
             fadeTransition.play();
             animation_count++;
+
+            if(isCorner(i, j)) {
+                double pixel=0.75;
+                TranslateTransition left=new TranslateTransition(Duration.millis(75), matrix[i][j]);
+                left.setByX(-pixel);
+
+                TranslateTransition right=new TranslateTransition(Duration.millis(75), matrix[i][j]);
+                right.setByX(pixel);
+
+                TranslateTransition up=new TranslateTransition(Duration.millis(75), matrix[i][j]);
+                up.setByY(-pixel);
+
+                TranslateTransition down=new TranslateTransition(Duration.millis(75), matrix[i][j]);
+                down.setByY(pixel);
+
+                SequentialTransition sequentialTransition=new SequentialTransition(up, down, left, right);
+                sequentialTransition.setCycleCount(Animation.INDEFINITE);
+                sequentialTransition.play();
+            }
         }
         checkMass(i, j);
     }
@@ -539,6 +561,7 @@ public class Grid implements Serializable {
         Media media=new Media(new File("src/sounds/pop.mp3").toURI().toString());
         MediaPlayer mediaPlayer=new MediaPlayer(media);
         mediaPlayer.play();
+        // TODO: Buggy media when game taking a lot of memory
 
         parallelTransition.play();
         animation_count++;
