@@ -3,6 +3,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.awt.*;
@@ -50,6 +51,14 @@ public class MainPage extends Application {
         window=primaryStage;
         window.setTitle("Chain Reaction");//set the title as "CHAIN_REACTION"
         //loading the fxml file from scene builder
+        window.setOnCloseRequest(e -> {
+            try {
+                e.consume();
+                closeprogram();
+            } catch (IOException e1) {
+                e1.printStackTrace();
+            }
+        });
         AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/sample_main.fxml"));
         String image= GamePage.class.getResource("images/gamepage.png").toExternalForm();
         pane.setStyle("-fx-background-image: url('"+ image +"')");
@@ -57,5 +66,14 @@ public class MainPage extends Application {
         window.setScene(scene1);
         // Display the stage
         window.show();
+    }
+    private void closeprogram() throws IOException {
+
+        MainController.stage=new Stage();
+        MainController.stage.setTitle("Quit");
+        MainController.stage.initModality(Modality.APPLICATION_MODAL);
+        AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/quitGame.fxml"));
+        MainController.stage.setScene(new Scene(pane));
+        MainController.stage.show();
     }
 }
