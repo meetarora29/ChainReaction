@@ -23,18 +23,23 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Grid implements Serializable {
-    private int n, m;
-    private transient Ball[][] matrix, prev_state;
+    private static int n, m;
+    private static transient Ball[][] matrix, prev_state;
     private SerializableBall[][] s_matrix;
-    private transient Color color;
+    private static transient Color color;
     private transient GridPane grid;
     private Player[] players;
     static Stage stage;
-    private int curr_player, numPlayers, flag, animation_count;
+    private static int animation_count, flag;
+    private int curr_player, numPlayers;
     private transient myStack<Ball[][]> moveStack;
     private int load, count;
 
     private static final long serialVersionUID = 1L;
+
+    public static int getFlag() {
+        return flag;
+    }
 
     Grid(int n, int m, GridPane grid, Player[] players) {
         this.n=n;
@@ -188,7 +193,7 @@ public class Grid implements Serializable {
         return matrix[i][j] == null || color.equals(matrix[i][j].getColor());
     }
 
-    private boolean checkWin() {
+    public static boolean checkWin() {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
                 if(matrix[i][j]!=null && matrix[i][j].getColor()!=color)
@@ -198,9 +203,9 @@ public class Grid implements Serializable {
         return true;
     }
 
-    boolean noAnimation() { return animation_count==0; }
+    static boolean noAnimation() { return animation_count==0; }
 
-    private void isGameOver() {
+    public void isGameOver() {
         if(checkWin() && flag!=0 && noAnimation()) {
             System.out.println("Game Over!!!");
             // Delete File

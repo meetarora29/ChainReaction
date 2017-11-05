@@ -140,7 +140,7 @@ class GamePage {
         borderPane.setStyle("-fx-background-color: rgb(" + r +","+ g + ","+ b+");");
     }
 
-    private void serialize() throws IOException {
+    public static void serialize() throws IOException {
         g.serializeMatrix();
         OutputStream outputStream=new FileOutputStream("game.dat");
         ObjectOutputStream out=null;
@@ -154,7 +154,7 @@ class GamePage {
         }
     }
 
-    private void deserialize() throws IOException, ClassNotFoundException {
+    public static void deserialize() throws IOException, ClassNotFoundException {
         InputStream input=new FileInputStream("game.dat");
         ObjectInputStream in=null;
         try {
