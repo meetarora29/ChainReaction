@@ -28,6 +28,7 @@ class GamePage {
     private static GridPane grid=new GridPane();
     private static Grid g;
     private static myRectangle[][] box;
+    private static BorderPane borderPane;
 
     // Make grid outline
     private void buildGrid(myRectangle[][] box, int n, int m) {
@@ -133,6 +134,10 @@ class GamePage {
         for(int i=0;i<n;i++)
             for (int j = 0; j < m; j++)
                 box[i][j].setStroke(color);
+        int r=(int)(color.getRed()*255);
+        int g=(int)(color.getGreen()*255);
+        int b=(int)(color.getBlue()*255);
+        borderPane.setStyle("-fx-background-color: rgb(" + r +","+ g + ","+ b+");");
     }
 
     private void serialize() throws IOException {
@@ -182,7 +187,7 @@ class GamePage {
         Player[] players=new Player[numPlayers];
         Color[] colors;
         g=new Grid(n, m, grid, players);
-        BorderPane borderPane=new BorderPane(grid);
+        borderPane=new BorderPane(grid);
         // TODO: Correct Resizing of Window
 
         colors=MainPage.getColours();
