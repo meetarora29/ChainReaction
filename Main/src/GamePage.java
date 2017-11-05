@@ -137,6 +137,8 @@ class GamePage {
         int r=(int)(color.getRed()*255);
         int g=(int)(color.getGreen()*255);
         int b=(int)(color.getBlue()*255);
+
+        // Background
         borderPane.setStyle("-fx-background-color: rgb(" + r +","+ g + ","+ b+");");
     }
 
@@ -191,10 +193,6 @@ class GamePage {
         // TODO: Correct Resizing of Window
 
         colors=MainPage.getColours();
-
-        // Background
-        String image= GamePage.class.getResource("images/gamepage.png").toExternalForm();
-        borderPane.setStyle("-fx-background-image: url('"+ image +"')");
 
         for(int i=0;i<numPlayers;i++)
             players[i]=new Player(colors[i]);
