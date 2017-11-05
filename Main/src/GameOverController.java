@@ -5,6 +5,8 @@
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -12,6 +14,8 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import static javafx.application.Application.launch;
 
 public class GameOverController {
 
@@ -55,6 +59,7 @@ public class GameOverController {
         gamePage.start(MainPage.window);
 
     }
+
 
 //    @FXML // This method is called by the FXMLLoader when initialization is complete
 //    void initialize() {

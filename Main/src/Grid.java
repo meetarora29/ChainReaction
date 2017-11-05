@@ -16,6 +16,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
@@ -212,6 +213,8 @@ public class Grid implements Serializable {
             AnchorPane pane;
             try {
                 pane = FXMLLoader.load(getClass().getResource("fxml_files/game_end.fxml"));
+                TextArea t=new TextArea();
+
                 stage.setScene(new Scene(pane));
             } catch (IOException e) {
                 e.printStackTrace();
