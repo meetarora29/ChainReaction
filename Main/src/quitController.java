@@ -19,9 +19,9 @@ public class quitController {
 
     @FXML
     void clickYes(ActionEvent event) throws IOException {
-        if(!(Grid.checkWin() && Grid.getFlag()!=0 && Grid.noAnimation())) {
-            GamePage.serialize();
-        }
+//        if(!(Grid.checkWin() && Grid.getFlag()!=0 && Grid.noAnimation())) {
+//            GamePage.serialize();
+//        }
         MainController.stage.close();
         MainPage.window.close();
     }
