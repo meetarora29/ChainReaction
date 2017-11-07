@@ -34,6 +34,8 @@ public class GameOverController {
 //        MainPage.window.close();
         Grid.stage.close();
 //        Stage stage=new Stage();
+        String image= GamePage.class.getResource("images/gamepage.png").toExternalForm();
+        pane.setStyle("-fx-background-image: url('"+ image +"')");
         Scene scene=new Scene(pane);
         MainPage.window.setScene(scene);
         MainPage.window.setTitle("Chain Reaction");
