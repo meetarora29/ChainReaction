@@ -15,9 +15,9 @@ public class NewGameController {
         newgamepane.getChildren().setAll(pane);
     }
     @FXML
-    public void clickResume()
-    {
-
+    public void clickResume() throws IOException, ClassNotFoundException {
+        GamePage gamePage=new GamePage();
+        gamePage.deserialize();
     }
     @FXML
     public void clickBack() throws IOException
