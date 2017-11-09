@@ -29,9 +29,10 @@ class GamePage {
     private static Grid g;
     private static myRectangle[][] box;
     private static BorderPane borderPane;
+    private static Player[] players;
 
     // Make grid outline
-    private void buildGrid(myRectangle[][] box, int n, int m) {
+    private static void buildGrid(myRectangle[][] box, int n, int m) {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
                 myRectangle r=new myRectangle(i, j);
@@ -66,7 +67,7 @@ class GamePage {
     }
 
     // Build UI Elements
-    private void buildButtons(BorderPane borderPane, Stage stage) {
+    private static void buildButtons(BorderPane borderPane, Stage stage) {
         Button button1=new Button("Save");
         button1.setOnAction(event -> {
             try {
@@ -75,9 +76,6 @@ class GamePage {
             catch (IOException e) {
                 e.printStackTrace();
             }
-//            catch (ClassNotFoundException e) {
-//                System.out.println(e);
-//            }
         });
 
         Button button2=new Button("Undo");
@@ -162,7 +160,14 @@ class GamePage {
         try {
             in=new ObjectInputStream(input);
             g=(Grid)in.readObject();
+            buildGrid(box, n, m);
             grid=g.resolve(grid);
+            borderPane=new BorderPane(grid);
+            buildButtons(borderPane, MainPage.window);
+//            changeGridLineColor(players[0].getColor());
+            Scene scene=new Scene(borderPane);
+            MainPage.window.setScene(scene);
+
         }
         finally {
             if(in!=null)
@@ -186,7 +191,7 @@ class GamePage {
         // Initialisations
         MainPage.window=primaryStage;
         box=new myRectangle[n][m];  // For grid outline
-        Player[] players=new Player[numPlayers];
+        players=new Player[numPlayers];
         Color[] colors;
         g=new Grid(n, m, grid, players);
         borderPane=new BorderPane(grid);
