@@ -1,7 +1,9 @@
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.AnchorPane;
 
 public class NewGameController2 {
@@ -16,13 +18,15 @@ public class NewGameController2 {
     private AnchorPane newgamepane;
 
     @FXML
-    void clickBack(ActionEvent event) {
-
+    void clickBack(ActionEvent event) throws IOException {
+        AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/sample_main.fxml"));
+        newgamepane.getChildren().setAll(pane);
     }
 
     @FXML
-    void clickNewGame(ActionEvent event) {
-
+    void clickNewGame(ActionEvent event) throws IOException {
+        AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/selectplayer.fxml"));
+        newgamepane.getChildren().setAll(pane);
     }
 
     @FXML

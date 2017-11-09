@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 
 import static javafx.application.Application.launch;
 
-public class GameOverController {
+public class GameOverController{
 
 //    @FXML // ResourceBundle that was given to the FXMLLoader
 //    private ResourceBundle resources;
@@ -29,6 +29,7 @@ public class GameOverController {
     private AnchorPane gamePane;
     @FXML
     void clickNewGame(ActionEvent event) throws IOException{
+        GamePage.destroyGrid();
         AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/selectplayer2.fxml"));
 //        gamePane.getChildren().setAll(pane);
 //        MainPage.window.close();
@@ -62,8 +63,5 @@ public class GameOverController {
     }
 
 
-//    @FXML // This method is called by the FXMLLoader when initialization is complete
-//    void initialize() {
-//
-//    }
+
 }

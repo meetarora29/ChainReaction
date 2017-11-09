@@ -28,6 +28,7 @@ class GamePage {
     private static GridPane grid=new GridPane();
     private static Grid g;
     private static myRectangle[][] box;
+    private static BorderPane borderPane;
 
     // Make grid outline
     private void buildGrid(myRectangle[][] box, int n, int m) {
@@ -53,6 +54,14 @@ class GamePage {
             for(int j=0;j<m;j++) {
                 grid.add(box[i][j], j, i);
             }
+        }
+    }
+
+    // Destroy Grid
+    static void destroyGrid() {
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<m;j++)
+                grid.getChildren().removeAll(box[i][j]);
         }
     }
 
@@ -89,6 +98,7 @@ class GamePage {
                     fadeTransition.play();
                     fadeTransition.setOnFinished(event1 -> {
                         try {
+                            destroyGrid();
                             mainPage.start(stage);
                         } catch (IOException e) {
                             e.printStackTrace();
@@ -124,9 +134,15 @@ class GamePage {
         for(int i=0;i<n;i++)
             for (int j = 0; j < m; j++)
                 box[i][j].setStroke(color);
+        int r=(int)(color.getRed()*255);
+        int g=(int)(color.getGreen()*255);
+        int b=(int)(color.getBlue()*255);
+
+        // Background
+        borderPane.setStyle("-fx-background-color: rgb(" + r +","+ g + ","+ b+");");
     }
 
-    private void serialize() throws IOException {
+    public static void serialize() throws IOException {
         g.serializeMatrix();
         OutputStream outputStream=new FileOutputStream("game.dat");
         ObjectOutputStream out=null;
@@ -140,7 +156,7 @@ class GamePage {
         }
     }
 
-    private void deserialize() throws IOException, ClassNotFoundException {
+    public static void deserialize() throws IOException, ClassNotFoundException {
         InputStream input=new FileInputStream("game.dat");
         ObjectInputStream in=null;
         try {
@@ -173,16 +189,10 @@ class GamePage {
         Player[] players=new Player[numPlayers];
         Color[] colors;
         g=new Grid(n, m, grid, players);
-        BorderPane borderPane=new BorderPane(grid);
+        borderPane=new BorderPane(grid);
         // TODO: Correct Resizing of Window
 
-
-        MainPage mainPage=new MainPage();
-        colors=mainPage.getColours();
-
-        // Background
-        String image= GamePage.class.getResource("images/gamepage.png").toExternalForm();
-        borderPane.setStyle("-fx-background-image: url('"+ image +"')");
+        colors=MainPage.getColours();
 
         for(int i=0;i<numPlayers;i++)
             players[i]=new Player(colors[i]);
