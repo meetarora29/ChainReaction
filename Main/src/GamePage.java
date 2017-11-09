@@ -29,7 +29,7 @@ class GamePage {
     private static Grid g;
     private static myRectangle[][] box;
     private static BorderPane borderPane;
-
+    private static Player[] players;
     // Make grid outline
     private void buildGrid(myRectangle[][] box, int n, int m) {
         for(int i=0;i<n;i++) {
@@ -156,13 +156,21 @@ class GamePage {
         }
     }
 
-    private void deserialize() throws IOException, ClassNotFoundException {
+    void deserialize() throws IOException, ClassNotFoundException {
         InputStream input=new FileInputStream("game.dat");
         ObjectInputStream in=null;
         try {
             in=new ObjectInputStream(input);
             g=(Grid)in.readObject();
+            buildGrid(box, n, m);
             grid=g.resolve(grid);
+            borderPane=new BorderPane(grid);
+            buildButtons(borderPane, MainPage.window);
+
+            changeGridLineColor(players[0].getColor());
+
+            Scene scene=new Scene(borderPane);
+            MainPage.window.setScene(scene);
         }
         finally {
             if(in!=null)
@@ -186,7 +194,7 @@ class GamePage {
         // Initialisations
         MainPage.window=primaryStage;
         box=new myRectangle[n][m];  // For grid outline
-        Player[] players=new Player[numPlayers];
+        players=new Player[numPlayers];
         Color[] colors;
         g=new Grid(n, m, grid, players);
         borderPane=new BorderPane(grid);

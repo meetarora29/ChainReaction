@@ -220,6 +220,7 @@ public class Grid implements Serializable {
                 e.printStackTrace();
             }
             stage.show();
+            stage.setOnCloseRequest(event -> event.consume());
         }
         else if (noAnimation())
             nextPlayer();
