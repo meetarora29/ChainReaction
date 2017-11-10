@@ -60,8 +60,11 @@ public class Grid implements Serializable {
 
     private void makeNode(int i, int j, Ball[][] matrix) {
         if(matrix[i][j]!=null) {
-            if(matrix[i][j].getMass()==1)
+            if(matrix[i][j].getMass()==1) {
                 makeCircle(matrix[i][j], i, j, matrix[i][j].getColor());
+                if(isCorner(i, j))
+                    rotateCorner(i, j);
+            }
             else if(matrix[i][j].getMass()==2 && !isCorner(i, j)) {
                 makeCircle(matrix[i][j], i, j, matrix[i][j].getColor());
                 makeCircle(matrix[i][j].two, i, j, matrix[i][j].getColor());
@@ -92,6 +95,7 @@ public class Grid implements Serializable {
 
         myRectangle[][] box=new myRectangle[n][m];
         GamePage.buildGrid(box, n, m);
+        GamePage.setPlayers(numPlayers, players);
 
         // Resolve Players
         for(int i=0;i<numPlayers;i++)
@@ -131,6 +135,7 @@ public class Grid implements Serializable {
     void restartGame() {
         removeGridNodes();
         matrix=new Ball[n][m];
+        s_matrix=new SerializableBall[n][m];
         flag=0;
         animation_count=0;
         curr_player=0;
@@ -297,6 +302,25 @@ public class Grid implements Serializable {
         timeline.play();
     }
 
+    private void rotateCorner(int i, int j) {
+        double pixel=0.75;
+        TranslateTransition left=new TranslateTransition(Duration.millis(75), matrix[i][j]);
+        left.setByX(-pixel);
+
+        TranslateTransition right=new TranslateTransition(Duration.millis(75), matrix[i][j]);
+        right.setByX(pixel);
+
+        TranslateTransition up=new TranslateTransition(Duration.millis(75), matrix[i][j]);
+        up.setByY(-pixel);
+
+        TranslateTransition down=new TranslateTransition(Duration.millis(75), matrix[i][j]);
+        down.setByY(pixel);
+
+        SequentialTransition sequentialTransition=new SequentialTransition(up, down, left, right);
+        sequentialTransition.setCycleCount(Animation.INDEFINITE);
+        sequentialTransition.play();
+    }
+
     private boolean isCorner(int i, int j) {
         if(i==0 && j==0)
             return true;
@@ -378,24 +402,8 @@ public class Grid implements Serializable {
             fadeTransition.play();
             animation_count++;
 
-            if(isCorner(i, j)) {
-                double pixel=0.75;
-                TranslateTransition left=new TranslateTransition(Duration.millis(75), matrix[i][j]);
-                left.setByX(-pixel);
-
-                TranslateTransition right=new TranslateTransition(Duration.millis(75), matrix[i][j]);
-                right.setByX(pixel);
-
-                TranslateTransition up=new TranslateTransition(Duration.millis(75), matrix[i][j]);
-                up.setByY(-pixel);
-
-                TranslateTransition down=new TranslateTransition(Duration.millis(75), matrix[i][j]);
-                down.setByY(pixel);
-
-                SequentialTransition sequentialTransition=new SequentialTransition(up, down, left, right);
-                sequentialTransition.setCycleCount(Animation.INDEFINITE);
-                sequentialTransition.play();
-            }
+            if(isCorner(i, j))
+                rotateCorner(i ,j);
         }
         checkMass(i, j);
     }

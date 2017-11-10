@@ -29,6 +29,12 @@ class GamePage {
     private static Grid g;
     private static myRectangle[][] box;
     private static BorderPane borderPane;
+    private static Player[] players;
+
+    static void setPlayers(int numPlayers, Player[] players) {
+        GamePage.numPlayers=numPlayers;
+        GamePage.players=players;
+    }
 
     // Make grid outline
     static void buildGrid(myRectangle[][] box, int n, int m) {
@@ -110,11 +116,11 @@ class GamePage {
                     System.out.println();
                 }
             }
-            else
+            else if(comboBox.getSelectionModel().getSelectedIndex()==0) {
                 g.restartGame();
-
-            // ComboBox reset
-            Platform.runLater(() -> comboBox.setValue(null));
+                // ComboBox reset
+                Platform.runLater(() -> comboBox.setValue(null));
+            }
         });
 
         HBox hBox=new HBox();
@@ -195,7 +201,7 @@ class GamePage {
         // Initialisations
         MainPage.window=primaryStage;
         box=new myRectangle[n][m];  // For grid outline
-        Player[] players = new Player[numPlayers];
+        players = new Player[numPlayers];
         Color[] colors;
         g=new Grid(n, m, grid, players);
         borderPane=new BorderPane(grid);
