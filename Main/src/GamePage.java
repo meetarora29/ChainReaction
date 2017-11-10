@@ -2,6 +2,7 @@ import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -14,6 +15,7 @@ import javafx.util.Duration;
 
 import java.awt.*;
 import java.io.*;
+import java.util.ArrayList;
 
 class myRectangle extends Rectangle {
     Point p;
@@ -69,10 +71,9 @@ class GamePage {
 
     // Destroy Grid
     static void destroyGrid() {
-        for(int i=0;i<n;i++) {
-            for(int j=0;j<m;j++)
-                grid.getChildren().removeAll(box[i][j]);
-        }
+        ArrayList<Node> list=new ArrayList<>();
+        list.addAll(grid.getChildren());
+        grid.getChildren().removeAll(list);
     }
 
     // Build UI Elements
@@ -96,31 +97,31 @@ class GamePage {
         comboBox.setPromptText("Choose Option");
         comboBox.getItems().addAll("Restart Game", "Return to Main Menu");
         comboBox.setOnAction(event -> {
-            if (comboBox.getSelectionModel().getSelectedIndex()==1){
-                MainPage mainPage=new MainPage();
-                try {
-                    serialize();
-                    FadeTransition fadeTransition=new FadeTransition(Duration.millis(1000), borderPane);
-                    fadeTransition.setToValue(0);
-                    fadeTransition.play();
-                    fadeTransition.setOnFinished(event1 -> {
-                        try {
-                            destroyGrid();
-                            mainPage.start(stage);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    });
-                }
-                catch (IOException e) {
-                    System.out.println();
+            if(g.noAnimation()) {
+                if (comboBox.getSelectionModel().getSelectedIndex() == 1) {
+                    MainPage mainPage = new MainPage();
+                    try {
+                        serialize();
+                        FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000), borderPane);
+                        fadeTransition.setToValue(0);
+                        fadeTransition.play();
+                        fadeTransition.setOnFinished(event1 -> {
+                            try {
+                                destroyGrid();
+                                mainPage.start(stage);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        });
+                    } catch (IOException e) {
+                        System.out.println();
+                    }
+                } else if (comboBox.getSelectionModel().getSelectedIndex() == 0) {
+                    g.restartGame();
                 }
             }
-            else if(comboBox.getSelectionModel().getSelectedIndex()==0) {
-                g.restartGame();
-                // ComboBox reset
-                Platform.runLater(() -> comboBox.setValue(null));
-            }
+            // ComboBox reset
+            Platform.runLater(() -> comboBox.setValue(null));
         });
 
         HBox hBox=new HBox();

@@ -31,6 +31,7 @@ public class SelectPlayerController2 {
 
     @FXML
     void clickPlay(ActionEvent event) {
+        GamePage.destroyGrid();
         GamePage gamePage=new GamePage();
         gamePage.setN(getGridSize().getKey());
         gamePage.setM(getGridSize().getValue());
