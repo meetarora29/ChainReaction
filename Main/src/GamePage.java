@@ -38,6 +38,14 @@ class GamePage {
         GamePage.players=players;
     }
 
+    static void makeBoxClickable(int i, int j) {
+        box[i][j].getStyleClass().add("clickable");
+    }
+
+    static void makeBoxUnclickable(int i, int j) {
+        box[i][j].getStyleClass().removeAll("clickable");
+    }
+
     // Make grid outline
     static void buildGrid(myRectangle[][] box, int n, int m) {
         GamePage.box=box;
@@ -54,6 +62,7 @@ class GamePage {
                 r.setStroke(Color.LIGHTGRAY);
                 r.setStrokeWidth(1);
                 r.setFill(Color.WHITE);
+                r.getStyleClass().add("clickable");
 
                 r.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                     if(g.noAnimation())
@@ -80,21 +89,12 @@ class GamePage {
 
     // Build UI Elements
     private void buildButtons(BorderPane borderPane, Stage stage) {
-        Button button1=new Button("Save");
-        button1.setOnAction(event -> {
-            try {
-                serialize();
-            }
-            catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
-
-        Button button2=new Button("Undo");
-        button2.setOnAction(event -> {
+        Button button=new Button("Undo");
+        button.setOnAction(event -> {
             if(g.noAnimation())
                 g.undo();
         });
+
         ComboBox<String> comboBox=new ComboBox<>();
         comboBox.setPromptText("Choose Option");
         comboBox.getItems().addAll("Restart Game", "Return to Main Menu");
@@ -129,14 +129,18 @@ class GamePage {
         HBox hBox=new HBox();
         Pane spacer=new Pane();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        hBox.getChildren().addAll(button1, spacer, comboBox);
-
+        hBox.getChildren().addAll(button, spacer, comboBox);
         borderPane.setTop(hBox);
-        borderPane.setBottom(button2);
+
+        HBox hBox1=new HBox();
+        Pane pane=new Pane();
+        HBox.setHgrow(pane, Priority.ALWAYS);
+        hBox1.getChildren().add(pane);
+        borderPane.setBottom(hBox1);
 
         BorderPane.setMargin(hBox, new Insets(10, 10, 10, 10));
-        BorderPane.setMargin(button2, new Insets(10, 10, 10, 10));
-        BorderPane.setMargin(grid, new Insets(0, 10, 0, 10));
+        BorderPane.setMargin(hBox1, new Insets(25, 10, 10, 10));
+        BorderPane.setMargin(grid, new Insets(0, 20, 0, 20));
     }
 
 
@@ -180,6 +184,7 @@ class GamePage {
 
             buildButtons(borderPane, MainPage.window);
             Scene scene=new Scene(borderPane);
+            scene.getStylesheets().add(this.getClass().getResource("css/GamePage.css").toExternalForm());
             MainPage.window.setScene(scene);
         }
         finally {
@@ -224,6 +229,7 @@ class GamePage {
         changeGridLineColor(players[0].getColor());
 
         Scene scene=new Scene(borderPane);
+        scene.getStylesheets().add(this.getClass().getResource("css/GamePage.css").toExternalForm());
 
         MainPage.window.setTitle("Chain Reaction");
         MainPage.window.setScene(scene);

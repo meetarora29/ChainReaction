@@ -120,6 +120,8 @@ public class Grid implements Serializable {
         }
 
         GamePage.changeGridLineColor(players[curr_player].getColor());
+        makeClickable();
+        makeUnclickable();
 
         return grid;
     }
@@ -185,17 +187,48 @@ public class Grid implements Serializable {
         moveStack.push(prev_state);
     }
 
+    // Only those belonging to a different player
+    private void makeUnclickable() {
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<m;j++) {
+                if(matrix[i][j]!=null && !matrix[i][j].getColor().equals(players[curr_player].getColor())) {
+                    matrix[i][j].getStyleClass().removeAll("clickable");
+                    matrix[i][j].stackPane.getStyleClass().removeAll("clickable");
+                    GamePage.makeBoxUnclickable(i ,j);
+                }
+            }
+        }
+    }
+
+    private void makeClickable() {
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<m;j++) {
+                if(matrix[i][j]!=null && matrix[i][j].getColor().equals(players[curr_player].getColor())) {
+                    matrix[i][j].getStyleClass().add("clickable");
+                    matrix[i][j].stackPane.getStyleClass().add("clickable");
+                    GamePage.makeBoxClickable(i, j);
+                }
+                else if(matrix[i][j]==null)
+                    GamePage.makeBoxClickable(i, j);
+            }
+        }
+    }
+
     private void prevPlayer() {
         if(curr_player>0)
             curr_player--;
         else
             curr_player=numPlayers-1;
         GamePage.changeGridLineColor(players[curr_player].getColor());
+        makeClickable();
+        makeUnclickable();
     }
 
     private void nextPlayer() {
         curr_player=(curr_player+1)%numPlayers;
         GamePage.changeGridLineColor(players[curr_player].getColor());
+        makeClickable();
+        makeUnclickable();
     }
 
     private boolean checkValidity(int i, int j) {

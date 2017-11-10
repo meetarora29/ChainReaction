@@ -1,0 +1,12 @@
+.button, .combo-box {
+    -fx-background-color: white;
+    -fx-font-weight: bold;
+}
+
+.button:hover, .combo-box:hover, .clickable:hover {
+    -fx-cursor: hand;
+}
+
+.button:pressed, .combo-box:pressed {
+    -fx-background-color: lightgray;
+}
