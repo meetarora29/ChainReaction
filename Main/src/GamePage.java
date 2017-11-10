@@ -49,6 +49,8 @@ class GamePage {
                 myRectangle r=new myRectangle(i, j);
                 r.setWidth(50);
                 r.setHeight(50);
+                r.setArcHeight(15);
+                r.setArcWidth(15);
                 r.setStroke(Color.LIGHTGRAY);
                 r.setStrokeWidth(1);
                 r.setFill(Color.WHITE);
