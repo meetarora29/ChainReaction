@@ -90,6 +90,9 @@ public class Grid implements Serializable {
         moveStack=new myStack<>(3*numPlayers);
         load=1;
 
+        myRectangle[][] box=new myRectangle[n][m];
+        GamePage.buildGrid(box, n, m);
+
         // Resolve Players
         for(int i=0;i<numPlayers;i++)
             players[i].makeColor();
@@ -110,6 +113,8 @@ public class Grid implements Serializable {
                 makeNode(i, j, matrix);
             }
         }
+
+        GamePage.changeGridLineColor(players[curr_player].getColor());
 
         return grid;
     }
@@ -138,6 +143,9 @@ public class Grid implements Serializable {
 
     void undo() {
         if(moveStack.isEmpty() || players[curr_player].getUndo()==0)
+            return;
+
+        if(moveStack.size()==1 && load==1)
             return;
 
         players[curr_player].undo();
