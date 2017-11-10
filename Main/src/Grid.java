@@ -122,7 +122,7 @@ public class Grid implements Serializable {
     private void removeGridNodes() {
         ArrayList<Node> list=new ArrayList<>();
         for(Node node : grid.getChildren()) {
-            if(node instanceof Circle)
+            if(node instanceof Circle || node instanceof Pane)
                 list.add(node);
         }
         grid.getChildren().removeAll(list);
