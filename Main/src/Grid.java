@@ -147,6 +147,9 @@ public class Grid implements Serializable {
         for(int i=0;i<numPlayers;i++)
             players[i].resetUndo();
         GamePage.changeGridLineColor(players[curr_player].getColor());
+        for(int i=0;i<n;i++)
+            for(int j=0;j<m;j++)
+                GamePage.makeBoxClickable(i, j);
     }
 
     void undo() {
