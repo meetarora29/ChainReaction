@@ -268,7 +268,6 @@ public class Grid implements Serializable {
             try {
                 pane = FXMLLoader.load(getClass().getResource("fxml_files/game_end.fxml"));
                 TextArea t=new TextArea();
-
                 stage.setScene(new Scene(pane));
             } catch (IOException e) {
                 e.printStackTrace();

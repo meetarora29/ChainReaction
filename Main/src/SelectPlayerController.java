@@ -7,9 +7,12 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
-import javafx.util.Pair;
+//import P;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Observable;
 class P<T1,T2>
 {
@@ -44,10 +47,13 @@ class P<T1,T2>
 }
 public class SelectPlayerController {
     ObservableList<Integer> list= FXCollections.observableArrayList(2,3,4,5,6,7,8);
-    ObservableList<P<Integer,Integer>> list1= FXCollections.observableArrayList(new P(9,6),new P(15,10));
+    P<Integer,Integer> p1=new P(9,6);
+    P<Integer,Integer> p2=new P(15,10);
+    ObservableList<P<Integer,Integer>> list1= FXCollections.observableArrayList(p1,p2);
 //    Stage primaryStage=new Stage();
     int numberofPlayers;
     P<Integer,Integer> grid;
+
 //    int n=9, m=6;
 //    int numPlayers=2;
 
@@ -83,6 +89,7 @@ public class SelectPlayerController {
     @FXML
     private ChoiceBox<P<Integer,Integer> > gridSize;
 
+
     @FXML
     private void initialize()
     {
@@ -93,7 +100,7 @@ public class SelectPlayerController {
 
 
         gridSize.setItems(list1);
-        gridSize.setValue(new P<>(9,6));
+        gridSize.setValue(p1);
 
 //        grid=gridSize.getValue();
 
@@ -119,7 +126,16 @@ public class SelectPlayerController {
     }
     @FXML
     void clickBack(ActionEvent event) throws IOException{
-        AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/sample_newgame.fxml"));
+        Path path= Paths.get("game.dat");
+        AnchorPane pane;
+        if(Files.exists(path)) {
+            pane = FXMLLoader.load(getClass().getResource("fxml_files/sample_newgame.fxml"));
+        }
+        else
+        {
+            pane = FXMLLoader.load(getClass().getResource("fxml_files/newGame2.fxml"));
+
+        }
         playerPane.getChildren().setAll(pane);
     }
     public int getNumberOfPlayers()

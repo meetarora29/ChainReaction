@@ -11,7 +11,9 @@ import javafx.scene.layout.AnchorPane;
 
 public class SelectPlayerController2 {
     ObservableList<Integer> list= FXCollections.observableArrayList(2,3,4,5,6,7,8);
-    ObservableList<P<Integer,Integer>> list1= FXCollections.observableArrayList(new P(9,6),new P<>(15,10));
+    P<Integer,Integer> p1=new P(9,6);
+    P<Integer,Integer> p2=new P(15,10);
+    ObservableList<P<Integer,Integer>> list1= FXCollections.observableArrayList(p1,p2);
     int numberofPlayers;
     P<Integer,Integer> grid;
 
@@ -49,7 +51,7 @@ public class SelectPlayerController2 {
 
 
         gridSize.setItems(list1);
-        gridSize.setValue(new P<>(9,6));
+        gridSize.setValue(p1);
     }
     public int getNumberOfPlayers()
     {
