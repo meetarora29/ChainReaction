@@ -6,6 +6,10 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -32,6 +36,7 @@ class GamePage {
     private static myRectangle[][] box;
     private static BorderPane borderPane;
     private static Player[] players;
+    private HBox hBox1;
 
     static void setPlayers(int numPlayers, Player[] players) {
         GamePage.numPlayers=numPlayers;
@@ -68,6 +73,16 @@ class GamePage {
                     if(g.noAnimation())
                         g.setPosition(r.p.x, r.p.y);
                 });
+                r.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+                    if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER))
+                        g.setPosition(r.p.x, r.p.y);
+                });
+                r.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                    if(newValue)
+                        r.setStroke(Color.GRAY);
+                    else
+                        r.setStroke(g.getCurrentColor());
+                });
 
                 box[i][j]=r;
             }
@@ -87,43 +102,69 @@ class GamePage {
         grid.getChildren().removeAll(list);
     }
 
+    private void addComboboxEvents(ComboBox<String> comboBox, BorderPane borderPane, Stage stage) {
+        if (comboBox.getSelectionModel().getSelectedIndex() == 1) {
+            MainPage mainPage = new MainPage();
+            try {
+                serialize();
+                FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000), borderPane);
+                fadeTransition.setToValue(0);
+                fadeTransition.play();
+                fadeTransition.setOnFinished(event1 -> {
+                    try {
+                        destroyGrid();
+                        mainPage.start(stage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch (IOException e) {
+                System.out.println();
+            }
+        } else if (comboBox.getSelectionModel().getSelectedIndex() == 0) {
+            g.restartGame();
+
+            // ComboBox reset
+            Platform.runLater(() -> comboBox.setValue(null));
+        }
+    }
+
     // Build UI Elements
     private void buildButtons(BorderPane borderPane, Stage stage) {
         Button button=new Button("Undo");
-        button.setOnAction(event -> {
+        button.setOnMouseClicked(event -> {
             if(g.noAnimation())
                 g.undo();
+            borderPane.requestFocus();
         });
+        button.setOnKeyPressed(event -> {
+            if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER))
+                g.undo();
+        });
+        button.getStyleClass().add("focus");
 
         ComboBox<String> comboBox=new ComboBox<>();
+        comboBox.getStyleClass().add("focus");
         comboBox.setPromptText("Choose Option");
         comboBox.getItems().addAll("Restart Game", "Return to Main Menu");
-        comboBox.setOnAction(event -> {
-            if(g.noAnimation()) {
-                if (comboBox.getSelectionModel().getSelectedIndex() == 1) {
-                    MainPage mainPage = new MainPage();
-                    try {
-                        serialize();
-                        FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000), borderPane);
-                        fadeTransition.setToValue(0);
-                        fadeTransition.play();
-                        fadeTransition.setOnFinished(event1 -> {
-                            try {
-                                destroyGrid();
-                                mainPage.start(stage);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        });
-                    } catch (IOException e) {
-                        System.out.println();
-                    }
-                } else if (comboBox.getSelectionModel().getSelectedIndex() == 0) {
-                    g.restartGame();
+        comboBox.setFocusTraversable(true);
+        comboBox.setOnKeyPressed(event -> {
+            if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER))
+                addComboboxEvents(comboBox, borderPane, stage);
+        });
+        comboBox.setCellFactory(event -> {
+            ListCell<String> cell = new ListCell<String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setText(empty ? null : item);
                 }
-            }
-            // ComboBox reset
-            Platform.runLater(() -> comboBox.setValue(null));
+            };
+            cell.setOnMousePressed(e -> {
+                if (!cell.isEmpty() && g.noAnimation())
+                    addComboboxEvents(comboBox, borderPane, stage);
+            });
+            return cell ;
         });
 
         HBox hBox=new HBox();
@@ -132,10 +173,11 @@ class GamePage {
         hBox.getChildren().addAll(button, spacer, comboBox);
         borderPane.setTop(hBox);
 
-        HBox hBox1=new HBox();
-        Pane pane=new Pane();
-        HBox.setHgrow(pane, Priority.ALWAYS);
-        hBox1.getChildren().add(pane);
+        hBox1=new HBox();
+        Label label=new Label("Press Shift+Enter to turn on Keyboard Mode");
+        label.setTextFill(Color.GRAY);
+        hBox1.getChildren().add(label);
+        hBox1.setAlignment(Pos.CENTER);
         borderPane.setBottom(hBox1);
 
         BorderPane.setMargin(hBox, new Insets(10, 10, 10, 10));
@@ -176,6 +218,7 @@ class GamePage {
         try {
             in=new ObjectInputStream(input);
             borderPane=new BorderPane(grid);
+            setBorderPaneProperties();
             g=(Grid)in.readObject();
             grid=g.resolve(grid);
             // GridPane properties
@@ -205,6 +248,39 @@ class GamePage {
         GamePage.numPlayers = numPlayers;
     }
 
+    private void turnOnKeyboardMode() {
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<m;j++)
+                box[i][j].setFocusTraversable(true);
+        }
+        box[0][0].requestFocus();
+        Label label=new Label("Press Escape to turn off Keyboard Mode");
+        label.setTextFill(Color.GRAY);
+        hBox1.getChildren().removeAll(hBox1.getChildren());
+        hBox1.getChildren().add(label);
+    }
+
+    private void turnOffKeyboardMode() {
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<m;j++)
+                box[i][j].setFocusTraversable(false);
+        }
+        borderPane.requestFocus();
+        Label label=new Label("Press Shift+Enter to turn on Keyboard Mode");
+        label.setTextFill(Color.GRAY);
+        hBox1.getChildren().removeAll(hBox1.getChildren());
+        hBox1.getChildren().add(label);
+    }
+
+    private void setBorderPaneProperties() {
+        borderPane.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER) && event.isShiftDown())
+                turnOnKeyboardMode();
+            else if(event.getCode().equals(KeyCode.ESCAPE))
+                turnOffKeyboardMode();
+        });
+    }
+
     void start(Stage primaryStage) {
         // Initialisations
         MainPage.window=primaryStage;
@@ -213,6 +289,7 @@ class GamePage {
         Color[] colors;
         g=new Grid(n, m, grid, players);
         borderPane=new BorderPane(grid);
+        setBorderPaneProperties();
         // TODO: Correct Resizing of Window
 
         colors=MainPage.getColours();
@@ -229,6 +306,7 @@ class GamePage {
         changeGridLineColor(players[0].getColor());
 
         Scene scene=new Scene(borderPane);
+        borderPane.requestFocus();
         scene.getStylesheets().add(this.getClass().getResource("css/GamePage.css").toExternalForm());
 
         MainPage.window.setTitle("Chain Reaction");
