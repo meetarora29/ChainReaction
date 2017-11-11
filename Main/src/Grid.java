@@ -50,16 +50,8 @@ public class Grid implements Serializable {
         count=0;
     }
 
-    Grid() {
-
-    }
-
     int getFlag() {
         return flag;
-    }
-
-    Color getCurrentColor() {
-        return players[curr_player].getColor();
     }
 
     void serializeMatrix() {
