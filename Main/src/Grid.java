@@ -28,7 +28,15 @@ public class Grid implements Serializable {
     private transient GridPane grid;
     private Player[] players;
     static Stage stage;
-    private int curr_player, numPlayers, flag, animation_count;
+    private int curr_player;
+    private int numPlayers;
+
+    int getFlag() {
+        return flag;
+    }
+
+    private int flag;
+    private int animation_count;
     private transient myStack<Ball[][]> moveStack;
     private int load, count;
 
@@ -45,7 +53,10 @@ public class Grid implements Serializable {
         moveStack=new myStack<>(3*numPlayers);
         count=0;
     }
+    Grid()
+    {
 
+    }
     void serializeMatrix() {
         s_matrix=new SerializableBall[n][m];
         for(int i=0;i<n;i++) {
@@ -236,7 +247,7 @@ public class Grid implements Serializable {
         return matrix[i][j] == null || color.equals(matrix[i][j].getColor());
     }
 
-    private boolean checkWin() {
+    boolean checkWin() {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
                 if(matrix[i][j]!=null && matrix[i][j].getColor()!=color)

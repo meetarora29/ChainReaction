@@ -15,15 +15,9 @@ import javafx.stage.Stage;
 
 import java.awt.Color.*;
 
-class ColorSelectedException extends Exception
-{
-    public ColorSelectedException(String message) {
-        super(message);
-    }
-}
 public class SettingsController {
 
-//    Stage stage;
+
     @FXML
     private ResourceBundle resources;
 
