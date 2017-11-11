@@ -102,6 +102,33 @@ class GamePage {
         grid.getChildren().removeAll(list);
     }
 
+    private void addComboboxEvents(ComboBox<String> comboBox, BorderPane borderPane, Stage stage) {
+        if (comboBox.getSelectionModel().getSelectedIndex() == 1) {
+            MainPage mainPage = new MainPage();
+            try {
+                serialize();
+                FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000), borderPane);
+                fadeTransition.setToValue(0);
+                fadeTransition.play();
+                fadeTransition.setOnFinished(event1 -> {
+                    try {
+                        destroyGrid();
+                        mainPage.start(stage);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
+            } catch (IOException e) {
+                System.out.println();
+            }
+        } else if (comboBox.getSelectionModel().getSelectedIndex() == 0) {
+            g.restartGame();
+
+            // ComboBox reset
+            Platform.runLater(() -> comboBox.setValue(null));
+        }
+    }
+
     // Build UI Elements
     private void buildButtons(BorderPane borderPane, Stage stage) {
         Button button=new Button("Undo");
@@ -122,34 +149,10 @@ class GamePage {
         comboBox.getItems().addAll("Restart Game", "Return to Main Menu");
         comboBox.setFocusTraversable(true);
         comboBox.setOnKeyPressed(event -> {
-            if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER)) {
-                if (comboBox.getSelectionModel().getSelectedIndex() == 1) {
-                    MainPage mainPage = new MainPage();
-                    try {
-                        serialize();
-                        FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000), borderPane);
-                        fadeTransition.setToValue(0);
-                        fadeTransition.play();
-                        fadeTransition.setOnFinished(event1 -> {
-                            try {
-                                destroyGrid();
-                                mainPage.start(stage);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-                        });
-                    } catch (IOException e) {
-                        System.out.println();
-                    }
-                } else if (comboBox.getSelectionModel().getSelectedIndex() == 0) {
-                    g.restartGame();
-                    // ComboBox reset
-                    Platform.runLater(() -> comboBox.setValue(null));
-                }
-            }
-
+            if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER))
+                addComboboxEvents(comboBox, borderPane, stage);
         });
-        comboBox.setCellFactory(lv -> {
+        comboBox.setCellFactory(event -> {
             ListCell<String> cell = new ListCell<String>() {
                 @Override
                 protected void updateItem(String item, boolean empty) {
@@ -158,35 +161,10 @@ class GamePage {
                 }
             };
             cell.setOnMousePressed(e -> {
-                if (!cell.isEmpty()) {
-                    if(g.noAnimation()) {
-                        if (comboBox.getSelectionModel().getSelectedIndex() == 1) {
-                            MainPage mainPage = new MainPage();
-                            try {
-                                serialize();
-                                FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000), borderPane);
-                                fadeTransition.setToValue(0);
-                                fadeTransition.play();
-                                fadeTransition.setOnFinished(event1 -> {
-                                    try {
-                                        destroyGrid();
-                                        mainPage.start(stage);
-                                    } catch (IOException e1) {
-                                        e1.printStackTrace();
-                                    }
-                                });
-                            } catch (IOException e1) {
-                                System.out.println();
-                            }
-                        } else if (comboBox.getSelectionModel().getSelectedIndex() == 0) {
-                            g.restartGame();
-                            // ComboBox reset
-                            Platform.runLater(() -> comboBox.setValue(null));
-                        }
-                    }
-                }
+                if (!cell.isEmpty() && g.noAnimation())
+                    addComboboxEvents(comboBox, borderPane, stage);
             });
-        return cell ;
+            return cell ;
         });
 
         HBox hBox=new HBox();
