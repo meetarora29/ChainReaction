@@ -9,12 +9,12 @@
 <AnchorPane fx:id="playerPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="SelectPlayerController2">
    <children>
       <Button layoutX="450.0" layoutY="316.0" mnemonicParsing="false" onAction="#clickPlay" prefWidth="80.0" text="PLAY" />
-      <Label layoutX="84.0" layoutY="83.0" prefHeight="22.0" prefWidth="216.0" text="Select Number of Players">
+      <Label layoutX="84.0" layoutY="83.0" prefHeight="22.0" prefWidth="216.0" text="Select Number of Players" textFill="WHITE">
          <font>
             <Font size="17.0" />
          </font>
       </Label>
-      <Label layoutX="128.0" layoutY="191.0" text="Select Grid Size">
+      <Label layoutX="128.0" layoutY="191.0" text="Select Grid Size" textFill="WHITE">
          <font>
             <Font size="17.0" />
          </font>

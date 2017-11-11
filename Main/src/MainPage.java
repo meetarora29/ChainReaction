@@ -69,6 +69,7 @@ public class MainPage extends Application {
         String image= GamePage.class.getResource("images/image.jpg").toExternalForm();
         pane.setStyle("-fx-background-image: url('"+ image +"')");
         scene1=new Scene(pane);
+        scene1.getStylesheets().add("css/MainPage.css");
         window.setScene(scene1);
         // Display the stage
         window.show();
