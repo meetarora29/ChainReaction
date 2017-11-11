@@ -20,7 +20,7 @@ public class quitController {
     @FXML
     void clickYes(ActionEvent event) throws IOException {
         Grid grid=GamePage.getGrid();
-        if(!(grid.checkWin() && grid.getFlag()!=0 && grid.noAnimation()))
+        if(grid!=null && !(grid.checkWin() && grid.getFlag()!=0 && grid.noAnimation()))
         {
             GamePage gamePage=new GamePage();
             gamePage.serialize();

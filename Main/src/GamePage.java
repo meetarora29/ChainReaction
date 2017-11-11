@@ -39,8 +39,6 @@ class GamePage {
     private HBox hBox1;
 
     static Grid getGrid() {
-        if(g==null)
-            g=new Grid();
         return g;
     }
 
