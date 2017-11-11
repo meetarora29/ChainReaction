@@ -33,6 +33,8 @@ public class GameOverController {
         AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/selectplayer2.fxml"));
 //        gamePane.getChildren().setAll(pane);
 //        MainPage.window.close();
+        String image= GamePage.class.getResource("images/gamepage.png").toExternalForm();
+        pane.setStyle("-fx-background-image: url('"+ image +"')");
         Grid.stage.close();
 //        Stage stage=new Stage();
         Scene scene=new Scene(pane);

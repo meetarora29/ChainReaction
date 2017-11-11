@@ -1,6 +1,7 @@
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -50,6 +51,8 @@ public class MainPage extends Application {
 
         window=primaryStage;
         window.setTitle("Chain Reaction");//set the title as "CHAIN_REACTION"
+
+        window.getIcons().add(new Image("images/icon.png"));
         //loading the fxml file from scene builder
         window.setOnCloseRequest(e -> {
             try {
