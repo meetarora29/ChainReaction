@@ -19,7 +19,7 @@ public class quitController {
 
     @FXML
     void clickYes(ActionEvent event) throws IOException {
-        Grid grid=new Grid();
+        Grid grid=GamePage.getGrid();
         if(!(grid.checkWin() && grid.getFlag()!=0 && grid.noAnimation()))
         {
             GamePage gamePage=new GamePage();

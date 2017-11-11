@@ -38,6 +38,10 @@ class GamePage {
     private static Player[] players;
     private HBox hBox1;
 
+    static Grid getGrid() {
+        return g;
+    }
+
     static void setPlayers(int numPlayers, Player[] players) {
         GamePage.numPlayers=numPlayers;
         GamePage.players=players;
