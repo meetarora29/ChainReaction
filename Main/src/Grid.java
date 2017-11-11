@@ -5,9 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -256,15 +254,17 @@ public class Grid implements Serializable {
             // Delete File
             File file=new File("game.dat");
             file.delete();
-
+            int i=9;
             stage=new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Congratulations!!");
             AnchorPane pane;
             try {
                 pane = FXMLLoader.load(getClass().getResource("fxml_files/game_end.fxml"));
-                TextArea t=new TextArea();
-                stage.setScene(new Scene(pane));
+                Label label=new Label();
+//                pane.getChildren().add(label);
+                Scene scene=new Scene(pane);
+                stage.setScene(scene);
             } catch (IOException e) {
                 e.printStackTrace();
             }
