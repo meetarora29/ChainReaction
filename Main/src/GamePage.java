@@ -283,6 +283,7 @@ class GamePage {
 
     void start(Stage primaryStage) {
         // Initialisations
+        MainPage.game_count=1;
         MainPage.window=primaryStage;
         box=new myRectangle[n][m];  // For grid outline
         players = new Player[numPlayers];

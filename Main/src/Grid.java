@@ -32,15 +32,15 @@ public class Grid implements Serializable {
     private int curr_player;
     private int numPlayers;
 
-    int getFlag() {
-        return flag;
-    }
+
 
     private int flag;
     private int animation_count;
     private transient myStack<Ball[][]> moveStack;
     private int load, count;
-
+    int getFlag() {
+        return flag;
+    }
     private static final long serialVersionUID = 1L;
 
     Grid(int n, int m, GridPane grid, Player[] players) {
@@ -54,9 +54,9 @@ public class Grid implements Serializable {
         moveStack=new myStack<>(3*numPlayers);
         count=0;
     }
-    Grid()
-    {
-    }
+//    Grid()
+//    {
+//    }
 
     Color getCurrentColor() {
         return players[curr_player].getColor();
@@ -266,11 +266,12 @@ public class Grid implements Serializable {
 
     private void isGameOver() {
         if(checkWin() && flag!=0 && noAnimation()) {
+            MainPage.game_count=0;
             System.out.println("Game Over!!!");
             // Delete File
             File file=new File("game.dat");
             file.delete();
-            int i=9;
+//            int i=9;
             stage=new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Congratulations!!");
