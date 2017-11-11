@@ -79,7 +79,23 @@ public class SettingsController {
     @FXML
     void selectColor1(ActionEvent event) throws IOException {
         Color c=color1.getValue();
+
         MainPage.colours[0]=c;
+        if(c.equals(Color.WHITE))
+        {
+            AnchorPane pane;
+            Stage stage=new Stage();
+            stage.setTitle("Error");
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.setOnCloseRequest(event1 -> {
+                color1.setValue(Color.web("#42f4d7"));
+                Color c1=color1.getValue();
+                MainPage.colours[0]=c1;
+            });
+            pane=FXMLLoader.load(getClass().getResource("fxml_files/error2.fxml"));
+            stage.setScene(new Scene(pane));
+            stage.show();
+        }
         if(c.equals(MainPage.colours[1]) ||c.equals(MainPage.colours[2]) || c.equals(MainPage.colours[3])||c.equals(MainPage.colours[4])||c.equals(MainPage.colours[5]) ||c.equals(MainPage.colours[6]) ||c.equals(MainPage.colours[7])  )
         {
             AnchorPane pane;
@@ -95,7 +111,7 @@ public class SettingsController {
                 stage.setScene(new Scene(pane));
                 stage.show();
         }
-//        color1.setValue(c);
+
 
     }
 
@@ -103,6 +119,21 @@ public class SettingsController {
     void selectColor2(ActionEvent event) throws IOException {
         Color c=color2.getValue();
         MainPage.colours[1]=c;
+        if(c.equals(Color.WHITE))
+        {
+            AnchorPane pane;
+            Stage stage=new Stage();
+            stage.setTitle("Error");
+            stage.setOnCloseRequest(event1 -> {
+                color2.setValue(Color.web("#FA8072"));
+                Color c1=color2.getValue();
+                MainPage.colours[1]=c1;
+            });
+            stage.initModality(Modality.APPLICATION_MODAL);
+            pane=FXMLLoader.load(getClass().getResource("fxml_files/error2.fxml"));
+            stage.setScene(new Scene(pane));
+            stage.show();
+        }
         if(c.equals(MainPage.colours[0]) ||c.equals(MainPage.colours[2]) || c.equals(MainPage.colours[3])||c.equals(MainPage.colours[4])||c.equals(MainPage.colours[5]) ||c.equals(MainPage.colours[6]) ||c.equals(MainPage.colours[7])  )
         {
             AnchorPane pane;
@@ -125,6 +156,21 @@ public class SettingsController {
     void selectColor3(ActionEvent event) throws IOException {
         Color c=color3.getValue();
         MainPage.colours[2]=c;
+        if(c.equals(Color.WHITE))
+        {
+            AnchorPane pane;
+            Stage stage=new Stage();
+            stage.setTitle("Error");
+            stage.setOnCloseRequest(event1 -> {
+                color3.setValue(Color.web("#f44168"));
+                Color c1=color3.getValue();
+                MainPage.colours[2]=c1;
+            });
+            stage.initModality(Modality.APPLICATION_MODAL);
+            pane=FXMLLoader.load(getClass().getResource("fxml_files/error2.fxml"));
+            stage.setScene(new Scene(pane));
+            stage.show();
+        }
         if(c.equals(MainPage.colours[1]) ||c.equals(MainPage.colours[0]) || c.equals(MainPage.colours[3])||c.equals(MainPage.colours[4])||c.equals(MainPage.colours[5]) ||c.equals(MainPage.colours[6]) ||c.equals(MainPage.colours[7])  )
         {
             AnchorPane pane;
@@ -143,10 +189,26 @@ public class SettingsController {
 
     }
 
+
     @FXML
     void selectColor4(ActionEvent event) throws IOException {
         Color c=color4.getValue();
         MainPage.colours[3]=c;
+        if(c.equals(Color.WHITE))
+        {
+            AnchorPane pane;
+            Stage stage=new Stage();
+            stage.setTitle("Error");
+            stage.setOnCloseRequest(event1 -> {
+                color4.setValue(Color.web("#c7f441"));
+                Color c1=color4.getValue();
+                MainPage.colours[3]=c1;
+            });
+            stage.initModality(Modality.APPLICATION_MODAL);
+            pane=FXMLLoader.load(getClass().getResource("fxml_files/error2.fxml"));
+            stage.setScene(new Scene(pane));
+            stage.show();
+        }
         if(c.equals(MainPage.colours[1]) ||c.equals(MainPage.colours[2]) || c.equals(MainPage.colours[0])||c.equals(MainPage.colours[4])||c.equals(MainPage.colours[5]) ||c.equals(MainPage.colours[6]) ||c.equals(MainPage.colours[7])  )
         {
             AnchorPane pane;
@@ -169,6 +231,21 @@ public class SettingsController {
     void selectColor5(ActionEvent event) throws IOException {
         Color c=color5.getValue();
         MainPage.colours[4]=c;
+        if(c.equals(Color.WHITE))
+        {
+            AnchorPane pane;
+            Stage stage=new Stage();
+            stage.setTitle("Error");
+            stage.setOnCloseRequest(event1 -> {
+                color5.setValue(Color.web("#b541f4"));
+                Color c1=color5.getValue();
+                MainPage.colours[4]=c1;
+            });
+            stage.initModality(Modality.APPLICATION_MODAL);
+            pane=FXMLLoader.load(getClass().getResource("fxml_files/error2.fxml"));
+            stage.setScene(new Scene(pane));
+            stage.show();
+        }
         if(c.equals(MainPage.colours[1]) ||c.equals(MainPage.colours[2]) || c.equals(MainPage.colours[3])||c.equals(MainPage.colours[0])||c.equals(MainPage.colours[5]) ||c.equals(MainPage.colours[6]) ||c.equals(MainPage.colours[7])  )
         {
             AnchorPane pane;
@@ -180,7 +257,7 @@ public class SettingsController {
                 MainPage.colours[4]=c1;
             });
             stage.initModality(Modality.APPLICATION_MODAL);
-            pane=FXMLLoader.load(getClass().getResource("fxml_files/error.fxml"));
+            pane=FXMLLoader.load(getClass().getResource("fxml_files/error2.fxml"));
             stage.setScene(new Scene(pane));
             stage.show();
         }
@@ -191,6 +268,21 @@ public class SettingsController {
     void selectColor6(ActionEvent event) throws IOException {
         Color c=color6.getValue();
         MainPage.colours[5]=c;
+        if(c.equals(Color.WHITE))
+        {
+            AnchorPane pane;
+            Stage stage=new Stage();
+            stage.setTitle("Error");
+            stage.setOnCloseRequest(event1 -> {
+                color6.setValue(Color.web("#40E0D0"));
+                Color c1=color6.getValue();
+                MainPage.colours[5]=c1;
+            });
+            stage.initModality(Modality.APPLICATION_MODAL);
+            pane=FXMLLoader.load(getClass().getResource("fxml_files/error2.fxml"));
+            stage.setScene(new Scene(pane));
+            stage.show();
+        }
         if(c.equals(MainPage.colours[1]) ||c.equals(MainPage.colours[2]) || c.equals(MainPage.colours[3])||c.equals(MainPage.colours[4])||c.equals(MainPage.colours[0]) ||c.equals(MainPage.colours[6]) ||c.equals(MainPage.colours[7])  )
         {
             AnchorPane pane;
@@ -213,6 +305,21 @@ public class SettingsController {
     void selectColor7(ActionEvent event) throws IOException {
         Color c=color7.getValue();
         MainPage.colours[6]=c;
+        if(c.equals(Color.WHITE))
+        {
+            AnchorPane pane;
+            Stage stage=new Stage();
+            stage.setTitle("Error");
+            stage.setOnCloseRequest(event1 -> {
+                color7.setValue(Color.web("#f5f900"));
+                Color c1=color7.getValue();
+                MainPage.colours[6]=c1;
+            });
+            stage.initModality(Modality.APPLICATION_MODAL);
+            pane=FXMLLoader.load(getClass().getResource("fxml_files/error2.fxml"));
+            stage.setScene(new Scene(pane));
+            stage.show();
+        }
         if(c.equals(MainPage.colours[1]) ||c.equals(MainPage.colours[2]) || c.equals(MainPage.colours[3])||c.equals(MainPage.colours[4])||c.equals(MainPage.colours[5]) ||c.equals(MainPage.colours[0]) ||c.equals(MainPage.colours[7])  )
         {
             AnchorPane pane;
@@ -235,6 +342,21 @@ public class SettingsController {
     void selectColor8(ActionEvent event) throws IOException {
         Color c=color8.getValue();
         MainPage.colours[7]=c;
+        if(c.equals(Color.WHITE))
+        {
+            AnchorPane pane;
+            Stage stage=new Stage();
+            stage.setTitle("Error");
+            stage.setOnCloseRequest(event1 -> {
+                color8.setValue(Color.web("#000"));
+                Color c1=color8.getValue();
+                MainPage.colours[7]=c1;
+            });
+            stage.initModality(Modality.APPLICATION_MODAL);
+            pane=FXMLLoader.load(getClass().getResource("fxml_files/error2.fxml"));
+            stage.setScene(new Scene(pane));
+            stage.show();
+        }
         if(c.equals(MainPage.colours[1]) ||c.equals(MainPage.colours[2]) || c.equals(MainPage.colours[3])||c.equals(MainPage.colours[4])||c.equals(MainPage.colours[5]) ||c.equals(MainPage.colours[6]) ||c.equals(MainPage.colours[0])  )
         {
             AnchorPane pane;
