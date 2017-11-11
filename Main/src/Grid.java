@@ -1,6 +1,7 @@
 import javafx.animation.*;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
@@ -273,10 +274,16 @@ public class Grid implements Serializable {
             stage=new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Congratulations!!");
-            AnchorPane pane;
+            BorderPane pane;
             try {
+                javafx.scene.control.Label label=new javafx.scene.control.Label("Player "+(curr_player+1)+" Wins!!");
+
                 pane = FXMLLoader.load(getClass().getResource("fxml_files/game_end.fxml"));
-                Label label=new Label();
+//                pane.setTop(label);
+                pane.setCenter(label);
+//                hBox.setAlignment(Pos.CENTER);
+//
+//                pane.getChildren().addAll(hBox);
 //                pane.getChildren().add(label);
                 Scene scene=new Scene(pane);
                 stage.setScene(scene);
