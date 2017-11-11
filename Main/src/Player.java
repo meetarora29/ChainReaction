@@ -1,6 +1,7 @@
 import javafx.scene.paint.Color;
 
 import java.io.Serializable;
+import java.util.Random;
 
 class Player implements Serializable {
     private transient Color color;
@@ -40,5 +41,16 @@ class Player implements Serializable {
 
     Color getColor() {
         return color;
+    }
+}
+
+class Computer extends Player {
+    Computer(Color color) {
+        super(color);
+    }
+
+    void takeTurn(Ball[][] matrix) {
+        Random random=new Random();
+
     }
 }
