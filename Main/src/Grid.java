@@ -30,11 +30,6 @@ public class Grid implements Serializable {
     static Stage stage;
     private int curr_player;
     private int numPlayers;
-
-    int getFlag() {
-        return flag;
-    }
-
     private int flag;
     private int animation_count;
     private transient myStack<Ball[][]> moveStack;
@@ -53,8 +48,13 @@ public class Grid implements Serializable {
         moveStack=new myStack<>(3*numPlayers);
         count=0;
     }
-    Grid()
-    {
+
+    Grid() {
+
+    }
+
+    int getFlag() {
+        return flag;
     }
 
     Color getCurrentColor() {
@@ -269,7 +269,7 @@ public class Grid implements Serializable {
             // Delete File
             File file=new File("game.dat");
             file.delete();
-            int i=9;
+            
             stage=new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Congratulations!!");

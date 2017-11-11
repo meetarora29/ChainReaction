@@ -227,6 +227,7 @@ class GamePage {
 
             buildButtons(borderPane, MainPage.window);
             Scene scene=new Scene(borderPane);
+            borderPane.requestFocus();
             scene.getStylesheets().add(this.getClass().getResource("css/GamePage.css").toExternalForm());
             MainPage.window.setScene(scene);
         }
