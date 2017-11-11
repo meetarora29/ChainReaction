@@ -198,7 +198,7 @@ class GamePage {
         borderPane.setStyle("-fx-background-color: rgb(" + r +","+ g + ","+ b+");");
     }
 
-    private void serialize() throws IOException {
+    void serialize() throws IOException {
         g.serializeMatrix();
         OutputStream outputStream=new FileOutputStream("game.dat");
         ObjectOutputStream out=null;

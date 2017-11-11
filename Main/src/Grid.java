@@ -5,9 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.Node;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
@@ -30,7 +28,15 @@ public class Grid implements Serializable {
     private transient GridPane grid;
     private Player[] players;
     static Stage stage;
-    private int curr_player, numPlayers, flag, animation_count;
+    private int curr_player;
+    private int numPlayers;
+
+    int getFlag() {
+        return flag;
+    }
+
+    private int flag;
+    private int animation_count;
     private transient myStack<Ball[][]> moveStack;
     private int load, count;
 
@@ -46,6 +52,9 @@ public class Grid implements Serializable {
         numPlayers=players.length;
         moveStack=new myStack<>(3*numPlayers);
         count=0;
+    }
+    Grid()
+    {
     }
 
     Color getCurrentColor() {
@@ -242,7 +251,7 @@ public class Grid implements Serializable {
         return matrix[i][j] == null || color.equals(matrix[i][j].getColor());
     }
 
-    private boolean checkWin() {
+    boolean checkWin() {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
                 if(matrix[i][j]!=null && matrix[i][j].getColor()!=color)
@@ -260,15 +269,17 @@ public class Grid implements Serializable {
             // Delete File
             File file=new File("game.dat");
             file.delete();
-
+            int i=9;
             stage=new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Congratulations!!");
             AnchorPane pane;
             try {
                 pane = FXMLLoader.load(getClass().getResource("fxml_files/game_end.fxml"));
-                TextArea t=new TextArea();
-                stage.setScene(new Scene(pane));
+                Label label=new Label();
+//                pane.getChildren().add(label);
+                Scene scene=new Scene(pane);
+                stage.setScene(scene);
             } catch (IOException e) {
                 e.printStackTrace();
             }

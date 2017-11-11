@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
@@ -17,7 +18,13 @@ public class quitController {
     }
 
     @FXML
-    void clickYes(ActionEvent event) {
+    void clickYes(ActionEvent event) throws IOException {
+        Grid grid=new Grid();
+        if(!(grid.checkWin() && grid.getFlag()!=0 && grid.noAnimation()))
+        {
+            GamePage gamePage=new GamePage();
+            gamePage.serialize();
+        }
         MainController.stage.close();
         MainPage.window.close();
     }
