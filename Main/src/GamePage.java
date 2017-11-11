@@ -83,9 +83,9 @@ class GamePage {
                 });
                 r.focusedProperty().addListener((observable, oldValue, newValue) -> {
                     if(newValue)
-                        r.setStroke(Color.GRAY);
+                        r.setFill(Color.LIGHTGRAY);
                     else
-                        r.setStroke(g.getCurrentColor());
+                        r.setFill(Color.WHITE);
                 });
 
                 box[i][j]=r;
