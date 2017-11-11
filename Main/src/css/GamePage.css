@@ -10,3 +10,7 @@
 .button:pressed, .combo-box:pressed {
     -fx-background-color: lightgray;
 }
+
+.focus:focused {
+    -fx-background-color: linear-gradient(white, lightgray);
+}

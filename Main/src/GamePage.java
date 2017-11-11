@@ -6,6 +6,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
@@ -63,10 +65,21 @@ class GamePage {
                 r.setStrokeWidth(1);
                 r.setFill(Color.WHITE);
                 r.getStyleClass().add("clickable");
+                r.setFocusTraversable(true);
 
                 r.addEventHandler(MouseEvent.MOUSE_CLICKED, e -> {
                     if(g.noAnimation())
                         g.setPosition(r.p.x, r.p.y);
+                });
+                r.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
+                    if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER))
+                        g.setPosition(r.p.x, r.p.y);
+                });
+                r.focusedProperty().addListener((observable, oldValue, newValue) -> {
+                    if(newValue)
+                        r.setStroke(Color.GRAY);
+                    else
+                        r.setStroke(g.getCurrentColor());
                 });
 
                 box[i][j]=r;
@@ -90,14 +103,20 @@ class GamePage {
     // Build UI Elements
     private void buildButtons(BorderPane borderPane, Stage stage) {
         Button button=new Button("Undo");
-        button.setOnAction(event -> {
+        button.setOnMouseClicked(event -> {
             if(g.noAnimation())
                 g.undo();
         });
+        button.setOnKeyPressed(event -> {
+            if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER))
+                g.undo();
+        });
+        button.getStyleClass().add("focus");
 
         ComboBox<String> comboBox=new ComboBox<>();
         comboBox.setPromptText("Choose Option");
         comboBox.getItems().addAll("Restart Game", "Return to Main Menu");
+        comboBox.setFocusTraversable(false);
         comboBox.setOnAction(event -> {
             if(g.noAnimation()) {
                 if (comboBox.getSelectionModel().getSelectedIndex() == 1) {

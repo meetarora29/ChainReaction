@@ -48,6 +48,10 @@ public class Grid implements Serializable {
         count=0;
     }
 
+    Color getCurrentColor() {
+        return players[curr_player].getColor();
+    }
+
     void serializeMatrix() {
         s_matrix=new SerializableBall[n][m];
         for(int i=0;i<n;i++) {
