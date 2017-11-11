@@ -1,12 +1,15 @@
 import javafx.application.Application;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import javax.naming.Binding;
 import java.awt.*;
 import java.io.IOException;
 
@@ -23,7 +26,7 @@ public class MainPage extends Application {
 
     public static Color[] getColours() {
 
-        print();
+//        print();
         return colours;
     }
     public static void print()
@@ -63,7 +66,7 @@ public class MainPage extends Application {
             }
         });
         AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/sample_main.fxml"));
-        String image= GamePage.class.getResource("images/gamepage.png").toExternalForm();
+        String image= GamePage.class.getResource("images/image.jpg").toExternalForm();
         pane.setStyle("-fx-background-image: url('"+ image +"')");
         scene1=new Scene(pane);
         window.setScene(scene1);
