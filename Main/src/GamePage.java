@@ -7,6 +7,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
@@ -116,11 +117,12 @@ class GamePage {
         button.getStyleClass().add("focus");
 
         ComboBox<String> comboBox=new ComboBox<>();
+        comboBox.getStyleClass().add("focus");
         comboBox.setPromptText("Choose Option");
         comboBox.getItems().addAll("Restart Game", "Return to Main Menu");
-        comboBox.setFocusTraversable(false);
-        comboBox.setOnAction(event -> {
-            if(g.noAnimation()) {
+        comboBox.setFocusTraversable(true);
+        comboBox.setOnKeyPressed(event -> {
+            if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER)) {
                 if (comboBox.getSelectionModel().getSelectedIndex() == 1) {
                     MainPage mainPage = new MainPage();
                     try {
@@ -141,10 +143,50 @@ class GamePage {
                     }
                 } else if (comboBox.getSelectionModel().getSelectedIndex() == 0) {
                     g.restartGame();
+                    // ComboBox reset
+                    Platform.runLater(() -> comboBox.setValue(null));
                 }
             }
-            // ComboBox reset
-            Platform.runLater(() -> comboBox.setValue(null));
+
+        });
+        comboBox.setCellFactory(lv -> {
+            ListCell<String> cell = new ListCell<String>() {
+                @Override
+                protected void updateItem(String item, boolean empty) {
+                    super.updateItem(item, empty);
+                    setText(empty ? null : item);
+                }
+            };
+            cell.setOnMousePressed(e -> {
+                if (!cell.isEmpty()) {
+                    if(g.noAnimation()) {
+                        if (comboBox.getSelectionModel().getSelectedIndex() == 1) {
+                            MainPage mainPage = new MainPage();
+                            try {
+                                serialize();
+                                FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000), borderPane);
+                                fadeTransition.setToValue(0);
+                                fadeTransition.play();
+                                fadeTransition.setOnFinished(event1 -> {
+                                    try {
+                                        destroyGrid();
+                                        mainPage.start(stage);
+                                    } catch (IOException e1) {
+                                        e1.printStackTrace();
+                                    }
+                                });
+                            } catch (IOException e1) {
+                                System.out.println();
+                            }
+                        } else if (comboBox.getSelectionModel().getSelectedIndex() == 0) {
+                            g.restartGame();
+                            // ComboBox reset
+                            Platform.runLater(() -> comboBox.setValue(null));
+                        }
+                    }
+                }
+            });
+        return cell ;
         });
 
         HBox hBox=new HBox();
