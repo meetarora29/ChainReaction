@@ -210,6 +210,9 @@ class GamePage {
     }
 
     void serialize() throws IOException {
+        if (g.getFlag()==0)
+            return;
+
         g.serializeMatrix();
         OutputStream outputStream=new FileOutputStream("game.dat");
         ObjectOutputStream out=null;
