@@ -288,10 +288,11 @@ class GamePage {
 
     void start(Stage primaryStage) {
         // Initialisations
-//        MainPage.game_count=1;
         MainPage.window=primaryStage;
         box=new myRectangle[n][m];  // For grid outline
         players = new Player[numPlayers];
+        if(numPlayers==1)
+            players = new Player[2];
         Color[] colors;
         g=new Grid(n, m, grid, players);
         borderPane=new BorderPane(grid);
@@ -302,6 +303,12 @@ class GamePage {
 
         for(int i=0;i<numPlayers;i++)
             players[i]=new Player(colors[i]);
+
+        // Computer
+        if(numPlayers==1) {
+            players[1] = new Computer(colors[1]);
+            g.setComputerMode();
+        }
 
         // GridPane properties
         grid.setMinSize(500, 500);
