@@ -3,6 +3,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -33,6 +34,8 @@ public class Grid implements Serializable {
     private int animation_count;
     private transient myStack<Ball[][]> moveStack;
     private int load, count, computerMode;
+    private transient Media media;
+    private transient MediaPlayer mediaPlayer;
 
     private static final long serialVersionUID = 1L;
 
@@ -46,6 +49,8 @@ public class Grid implements Serializable {
         numPlayers=players.length;
         moveStack=new myStack<>(3*numPlayers);
         count=0;
+        media=new Media(new File("src/sounds/pop.mp3").toURI().toString());
+        mediaPlayer=new MediaPlayer(media);
     }
 
 
@@ -73,7 +78,7 @@ public class Grid implements Serializable {
             if(matrix[i][j].getMass()==1) {
                 makeCircle(matrix[i][j], i, j, matrix[i][j].getColor());
                 if(isCorner(i, j))
-                    rotateCorner(i, j);
+                    rotateCorner(i, j, matrix);
             }
             else if(matrix[i][j].getMass()==2 && !isCorner(i, j)) {
                 makeCircle(matrix[i][j], i, j, matrix[i][j].getColor());
@@ -102,6 +107,8 @@ public class Grid implements Serializable {
         this.grid=grid;
         moveStack=new myStack<>(3*numPlayers);
         load=1;
+        media=new Media(new File("src/sounds/pop.mp3").toURI().toString());
+        mediaPlayer=new MediaPlayer(media);
 
         myRectangle[][] box=new myRectangle[n][m];
         GamePage.buildGrid(box, n, m);
@@ -272,15 +279,19 @@ public class Grid implements Serializable {
 
             stage=new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Congratulations!!");
+            stage.setTitle("Congratulations!!!");
             BorderPane pane;
             try {
-                javafx.scene.control.Label label=new javafx.scene.control.Label("Player "+(curr_player+1)+" Wins!!");
+                Label label=new Label("Player "+(curr_player+1)+" Wins!!!");
+
+                // Computer Wins
+                if(computerMode==1 && players[curr_player].getClass()==Computer.class)
+                    label=new Label("Computer Wins!!!");
 
                 pane = FXMLLoader.load(getClass().getResource("fxml_files/game_end.fxml"));
 //                pane.setTop(label);
                 pane.setCenter(label);
-//                hBox.setAlignment(Pos.CENTER);
+//                hBox.setAlignment(Pos.CENTER);q
 //
 //                pane.getChildren().addAll(hBox);
 //                pane.getChildren().add(label);
@@ -360,7 +371,7 @@ public class Grid implements Serializable {
         timeline.play();
     }
 
-    private void rotateCorner(int i, int j) {
+    private void rotateCorner(int i, int j, Ball[][] matrix) {
         double pixel=0.75;
         TranslateTransition left=new TranslateTransition(Duration.millis(75), matrix[i][j]);
         left.setByX(-pixel);
@@ -379,7 +390,7 @@ public class Grid implements Serializable {
         sequentialTransition.play();
     }
 
-    private boolean isCorner(int i, int j) {
+    boolean isCorner(int i, int j) {
         if(i==0 && j==0)
             return true;
         if(i==n-1 && j==m-1)
@@ -391,7 +402,7 @@ public class Grid implements Serializable {
         return false;
     }
 
-    private boolean isExtremeSide(int i, int j) {
+    boolean isExtremeSide(int i, int j) {
         if(i==0 || i==n-1 || j==0 || j==m-1)
             return true;
         return false;
@@ -430,16 +441,25 @@ public class Grid implements Serializable {
             matrix[i][j].increaseMass();
             if(matrix[i][j].getMass()==2 && !isCorner(i, j)) {
                 makeCircle(matrix[i][j].two, i, j, color);
-                matrix[i][j].setTranslateX(-7.5);
-                matrix[i][j].two.setTranslateX(7.5);
+                TranslateTransition left=new TranslateTransition(Duration.millis(500), matrix[i][j]);
+                TranslateTransition right=new TranslateTransition(Duration.millis(500), matrix[i][j].two);
+                left.setByX(-7.5);
+                right.setByX(7.5);
+                ParallelTransition parallelTransition=new ParallelTransition(left, right);
+                parallelTransition.play();
                 rotateTwo(i, j, matrix);
                 isGameOver();
             }
             else if(matrix[i][j].getMass()==3 && !isExtremeSide(i, j)) {
                 makeCircle(matrix[i][j].three, i, j, color);
-                matrix[i][j].setTranslateY(-7.5);
-                matrix[i][j].two.setTranslateY(-7.5);
-                matrix[i][j].three.setTranslateY(7.5);
+                TranslateTransition down=new TranslateTransition(Duration.millis(500), matrix[i][j]);
+                TranslateTransition down1=new TranslateTransition(Duration.millis(500), matrix[i][j].two);
+                TranslateTransition up=new TranslateTransition(Duration.millis(500), matrix[i][j].three);
+                down.setByY(-7.5);
+                down1.setByY(-7.5);
+                up.setByY(7.5);
+                ParallelTransition parallelTransition=new ParallelTransition(down, up, down1);
+                parallelTransition.play();
                 rotateThree(i, j, matrix);
                 isGameOver();
             }
@@ -461,7 +481,7 @@ public class Grid implements Serializable {
             animation_count++;
 
             if(isCorner(i, j))
-                rotateCorner(i ,j);
+                rotateCorner(i ,j, matrix);
         }
         checkMass(i, j);
     }
@@ -633,10 +653,8 @@ public class Grid implements Serializable {
         }
 
         // Pop Sound on Burst
-        Media media=new Media(new File("src/sounds/pop.mp3").toURI().toString());
-        MediaPlayer mediaPlayer=new MediaPlayer(media);
         mediaPlayer.play();
-        // TODO: Buggy media when game taking a lot of memory
+        mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.stop());
 
         parallelTransition.play();
         animation_count++;
