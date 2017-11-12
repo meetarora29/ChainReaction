@@ -6,11 +6,12 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 //import P;
 
 public class SelectPlayerController2 {
-    ObservableList<Integer> list= FXCollections.observableArrayList(2,3,4,5,6,7,8);
+    ObservableList<Integer> list= FXCollections.observableArrayList(1,2,3,4,5,6,7,8);
     P<Integer,Integer> p1=new P(9,6);
     P<Integer,Integer> p2=new P(15,10);
     ObservableList<P<Integer,Integer>> list1= FXCollections.observableArrayList(p1,p2);
@@ -46,12 +47,15 @@ public class SelectPlayerController2 {
     @FXML
     void initialize() {
         choiceBox.setItems(list);
-        choiceBox.setValue(2);
+        choiceBox.setValue(1);
+        choiceBox.setTooltip(new Tooltip("Select number of players"));
 //        numberofPlayers=choiceBox.getValue();
 
 
         gridSize.setItems(list1);
         gridSize.setValue(p1);
+        gridSize.setTooltip(new Tooltip("Select grid size"));
+
     }
     public int getNumberOfPlayers()
     {
