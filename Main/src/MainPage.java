@@ -15,7 +15,7 @@ import java.io.IOException;
 
 public class MainPage extends Application {
 
-    public Scene scene1;
+//    public Scene scene1;
 //    public static int game_count=0;
     public static Stage window;
     public static void main(String[] args)
@@ -69,7 +69,7 @@ public class MainPage extends Application {
         AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/sample_main.fxml"));
         String image= GamePage.class.getResource("images/image.jpg").toExternalForm();
         pane.setStyle("-fx-background-image: url('"+ image +"')");
-        scene1=new Scene(pane);
+         Scene scene1=new Scene(pane);
         scene1.getStylesheets().add("css/MainPage.css");
         window.setScene(scene1);
         // Display the stage

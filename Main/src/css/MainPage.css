@@ -6,24 +6,24 @@
 }
 .button:pressed, .choice-box:pressed {
     -fx-background-color:
-            radial-gradient(center 50% 0%, radius 100%, #ffffff, #999999);
+            radial-gradient(center 50% 0%, radius 100%, #ffffff, #b3b3b3);
 }
-.choice-box{
+.choice-box,.combo-box{
 
      -fx-background-radius: 5;
 }
  .combo-box:hover, .clickable:hover , .choice-box:hover{
     -fx-cursor: hand;
     -fx-background-color:
-                radial-gradient(center 50% 0%, radius 100%, #ffffff, #999999);
+                radial-gradient(center 50% 0%, radius 100%, #ffffff, #b3b3b3);
 
     
 }
 .button:hover{
     -fx-cursor: hand;
     -fx-background-color:
-                radial-gradient(center 50% 0%, radius 100%, #ffffff, #999999);
+                radial-gradient(center 50% 0%, radius 100%, #ffffff, #b3b3b3);
 }
-.choice-box .menu-item:focused { -fx-background-color: #005087;
+.choice-box .menu-item:focused , .combo-box .menu-item:focused{ -fx-background-color: #005087;
 -fx-text-fill:white;
  }
