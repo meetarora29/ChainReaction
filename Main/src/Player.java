@@ -107,6 +107,8 @@ class Computer extends Player {
                 j = random.nextInt(m);
             }
         }
+        // To show which cell was chosen by the computer
+        GamePage.setFocus(i, j);
         grid.setPosition(i, j);
     }
 }

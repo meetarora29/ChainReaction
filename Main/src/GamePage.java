@@ -55,6 +55,10 @@ class GamePage {
         box[i][j].getStyleClass().removeAll("clickable");
     }
 
+    static void setFocus(int i, int j) {
+        box[i][j].requestFocus();
+    }
+
     // Make grid outline
     static void buildGrid(myRectangle[][] box, int n, int m) {
         GamePage.box=box;
@@ -140,6 +144,7 @@ class GamePage {
             if(g.noAnimation())
                 g.undo();
             borderPane.requestFocus();
+            turnOffKeyboardMode();
         });
         button.setOnKeyPressed(event -> {
             if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER))

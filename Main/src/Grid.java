@@ -448,7 +448,7 @@ public class Grid implements Serializable {
                 ParallelTransition parallelTransition=new ParallelTransition(left, right);
                 parallelTransition.play();
                 rotateTwo(i, j, matrix);
-                parallelTransition.setOnFinished(event -> isGameOver());
+                isGameOver();
             }
             else if(matrix[i][j].getMass()==3 && !isExtremeSide(i, j)) {
                 makeCircle(matrix[i][j].three, i, j, color);
@@ -461,7 +461,7 @@ public class Grid implements Serializable {
                 ParallelTransition parallelTransition=new ParallelTransition(down, up, down1);
                 parallelTransition.play();
                 rotateThree(i, j, matrix);
-                parallelTransition.setOnFinished(event -> isGameOver());
+                isGameOver();
             }
         }
         else {
