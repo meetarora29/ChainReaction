@@ -88,10 +88,9 @@ public class GameOverController {
     @FXML
     void clickRestart1(KeyEvent event) {
         if(event.getCode()==KeyCode.ENTER) {
-            GamePage gamePage = new GamePage();
-            MainPage.window.close();
             Grid.stage.close();
-            gamePage.start(MainPage.window);
+            Grid grid=GamePage.getGrid();
+            grid.restartGame();
         }
 
     }
