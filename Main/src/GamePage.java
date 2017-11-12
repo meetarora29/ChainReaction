@@ -313,7 +313,7 @@ class GamePage {
 
         Scene scene=new Scene(borderPane);
         borderPane.requestFocus();
-        scene.getStylesheets().add(this.getClass().getResource("css/MainPage.css").toExternalForm());
+        scene.getStylesheets().add(this.getClass().getResource("css/GamePage.css").toExternalForm());
 
         MainPage.window.setTitle("Chain Reaction");
         MainPage.window.setScene(scene);
