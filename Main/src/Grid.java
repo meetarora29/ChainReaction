@@ -184,8 +184,8 @@ public class Grid implements Serializable {
         }
 
         matrix=prev_state;
-        prevPlayer();
         count--;
+        prevPlayer();
     }
 
     private void saveState() {
@@ -265,7 +265,6 @@ public class Grid implements Serializable {
 
     private void isGameOver() {
         if(checkWin() && flag!=0 && noAnimation()) {
-//            MainPage.game_count=0;
             System.out.println("Game Over!!!");
             // Delete File
             File file=new File("game.dat");
