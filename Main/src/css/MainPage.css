@@ -5,3 +5,8 @@
   	-fx-font-weight:bold;
 
 }
+.choicebox{
+	-fx-background-color: 
+        radial-gradient(center 50% 0%, radius 100%, #ffffff, #999999);
+     -fx-background-radius: 5;
+}

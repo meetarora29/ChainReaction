@@ -42,7 +42,7 @@ public class MainPage extends Application {
         MainPage.colours[0]=Color.web("#42f4d7");
         MainPage.colours[1]=Color.web("#FA8072");
         MainPage.colours[2]=Color.web("#f44168");
-        MainPage.colours[3]=Color.web("#c7f441");
+        MainPage.colours[3]=Color.web("#1a3399");
         MainPage.colours[4]=Color.web("#b541f4");
         MainPage.colours[5]=Color.web("#40E0D0");
         MainPage.colours[6]=Color.web("#f5f900");
