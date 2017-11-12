@@ -82,7 +82,7 @@ class GamePage {
                         g.setPosition(r.p.x, r.p.y);
                 });
                 r.addEventHandler(KeyEvent.KEY_PRESSED, event -> {
-                    if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER))
+                    if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER) && !event.isShiftDown())
                         g.setPosition(r.p.x, r.p.y);
                 });
                 r.focusedProperty().addListener((observable, oldValue, newValue) -> {
@@ -147,7 +147,7 @@ class GamePage {
             turnOffKeyboardMode();
         });
         button.setOnKeyPressed(event -> {
-            if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER))
+            if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER) && !event.isShiftDown())
                 g.undo();
         });
         button.getStyleClass().add("focus");
@@ -158,7 +158,7 @@ class GamePage {
         comboBox.getItems().addAll("Restart Game", "Return to Main Menu");
         comboBox.setFocusTraversable(true);
         comboBox.setOnKeyPressed(event -> {
-            if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER))
+            if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER) && !event.isShiftDown())
                 addComboboxEvents(comboBox, borderPane, stage);
         });
         comboBox.setCellFactory(event -> {
