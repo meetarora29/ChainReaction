@@ -33,6 +33,8 @@ public class Grid implements Serializable {
     private int animation_count;
     private transient myStack<Ball[][]> moveStack;
     private int load, count, computerMode;
+    private transient Media media;
+    private transient MediaPlayer mediaPlayer;
 
     private static final long serialVersionUID = 1L;
 
@@ -46,6 +48,8 @@ public class Grid implements Serializable {
         numPlayers=players.length;
         moveStack=new myStack<>(3*numPlayers);
         count=0;
+        media=new Media(new File("src/sounds/pop.mp3").toURI().toString());
+        mediaPlayer=new MediaPlayer(media);
     }
 
 
@@ -102,6 +106,8 @@ public class Grid implements Serializable {
         this.grid=grid;
         moveStack=new myStack<>(3*numPlayers);
         load=1;
+        media=new Media(new File("src/sounds/pop.mp3").toURI().toString());
+        mediaPlayer=new MediaPlayer(media);
 
         myRectangle[][] box=new myRectangle[n][m];
         GamePage.buildGrid(box, n, m);
@@ -633,10 +639,8 @@ public class Grid implements Serializable {
         }
 
         // Pop Sound on Burst
-        Media media=new Media(new File("src/sounds/pop.mp3").toURI().toString());
-        MediaPlayer mediaPlayer=new MediaPlayer(media);
         mediaPlayer.play();
-        // TODO: Buggy media when game taking a lot of memory
+        mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.stop());
 
         parallelTransition.play();
         animation_count++;
