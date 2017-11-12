@@ -3,6 +3,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.Node;
+import javafx.scene.control.Label;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -278,15 +279,19 @@ public class Grid implements Serializable {
 
             stage=new Stage();
             stage.initModality(Modality.APPLICATION_MODAL);
-            stage.setTitle("Congratulations!!");
+            stage.setTitle("Congratulations!!!");
             BorderPane pane;
             try {
-                javafx.scene.control.Label label=new javafx.scene.control.Label("Player "+(curr_player+1)+" Wins!!");
+                Label label=new Label("Player "+(curr_player+1)+" Wins!!!");
+
+                // Computer Wins
+                if(computerMode==1 && players[curr_player].getClass()==Computer.class)
+                    label=new Label("Computer Wins!!!");
 
                 pane = FXMLLoader.load(getClass().getResource("fxml_files/game_end.fxml"));
 //                pane.setTop(label);
                 pane.setCenter(label);
-//                hBox.setAlignment(Pos.CENTER);
+//                hBox.setAlignment(Pos.CENTER);q
 //
 //                pane.getChildren().addAll(hBox);
 //                pane.getChildren().add(label);
@@ -385,7 +390,7 @@ public class Grid implements Serializable {
         sequentialTransition.play();
     }
 
-    private boolean isCorner(int i, int j) {
+    boolean isCorner(int i, int j) {
         if(i==0 && j==0)
             return true;
         if(i==n-1 && j==m-1)
@@ -397,7 +402,7 @@ public class Grid implements Serializable {
         return false;
     }
 
-    private boolean isExtremeSide(int i, int j) {
+    boolean isExtremeSide(int i, int j) {
         if(i==0 || i==n-1 || j==0 || j==m-1)
             return true;
         return false;
@@ -436,18 +441,27 @@ public class Grid implements Serializable {
             matrix[i][j].increaseMass();
             if(matrix[i][j].getMass()==2 && !isCorner(i, j)) {
                 makeCircle(matrix[i][j].two, i, j, color);
-                matrix[i][j].setTranslateX(-7.5);
-                matrix[i][j].two.setTranslateX(7.5);
+                TranslateTransition left=new TranslateTransition(Duration.millis(500), matrix[i][j]);
+                TranslateTransition right=new TranslateTransition(Duration.millis(500), matrix[i][j].two);
+                left.setByX(-7.5);
+                right.setByX(7.5);
+                ParallelTransition parallelTransition=new ParallelTransition(left, right);
+                parallelTransition.play();
                 rotateTwo(i, j, matrix);
-                isGameOver();
+                parallelTransition.setOnFinished(event -> isGameOver());
             }
             else if(matrix[i][j].getMass()==3 && !isExtremeSide(i, j)) {
                 makeCircle(matrix[i][j].three, i, j, color);
-                matrix[i][j].setTranslateY(-7.5);
-                matrix[i][j].two.setTranslateY(-7.5);
-                matrix[i][j].three.setTranslateY(7.5);
+                TranslateTransition down=new TranslateTransition(Duration.millis(500), matrix[i][j]);
+                TranslateTransition down1=new TranslateTransition(Duration.millis(500), matrix[i][j].two);
+                TranslateTransition up=new TranslateTransition(Duration.millis(500), matrix[i][j].three);
+                down.setByY(-7.5);
+                down1.setByY(-7.5);
+                up.setByY(7.5);
+                ParallelTransition parallelTransition=new ParallelTransition(down, up, down1);
+                parallelTransition.play();
                 rotateThree(i, j, matrix);
-                isGameOver();
+                parallelTransition.setOnFinished(event -> isGameOver());
             }
         }
         else {
