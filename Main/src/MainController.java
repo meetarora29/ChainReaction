@@ -4,10 +4,13 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.layout.Background;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,14 +19,15 @@ import java.nio.file.Paths;
 public class MainController {
 
     public static Stage stage;
-    SettingsController settingsController=new SettingsController();
+//    SettingsController settingsController=new SettingsController();
     Color[] colours=new Color[8];
-    public Color[] getColours() {
-        return colours;
-    }
+//    public Color[] getColours() {
+//        return colours;
+//    }
     @FXML
     private AnchorPane rootPane;
-
+    @FXML
+    private Button playGame;
     @FXML
     void clickPlayGame(ActionEvent event) throws IOException {
 //        settingsController.initialize();
@@ -41,6 +45,7 @@ public class MainController {
         rootPane.getChildren().setAll(pane);
     }
 
+
     @FXML
     void clickQuit(ActionEvent event) throws IOException {
         stage=new Stage();
@@ -57,5 +62,7 @@ public class MainController {
         AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/settings.fxml"));
         rootPane.getChildren().setAll(pane);
     }
-
+    @FXML
+    public void initialize() {
+    }
 }
