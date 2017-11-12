@@ -19,8 +19,12 @@ public class quitController {
 
     @FXML
     void clickYes(ActionEvent event) throws IOException {
+
+//        if(MainPage.game_count==1)
+
         Grid grid=GamePage.getGrid();
         if(grid!=null && !(grid.checkWin() && grid.getFlag()!=0 && grid.noAnimation()))
+
         {
             GamePage gamePage=new GamePage();
             gamePage.serialize();

@@ -15,7 +15,8 @@ import java.io.IOException;
 
 public class MainPage extends Application {
 
-    public Scene scene1;
+//    public Scene scene1;
+//    public static int game_count=0;
     public static Stage window;
     public static void main(String[] args)
     {
@@ -41,7 +42,7 @@ public class MainPage extends Application {
         MainPage.colours[0]=Color.web("#42f4d7");
         MainPage.colours[1]=Color.web("#FA8072");
         MainPage.colours[2]=Color.web("#f44168");
-        MainPage.colours[3]=Color.web("#c7f441");
+        MainPage.colours[3]=Color.web("#1a3399");
         MainPage.colours[4]=Color.web("#b541f4");
         MainPage.colours[5]=Color.web("#40E0D0");
         MainPage.colours[6]=Color.web("#f5f900");
@@ -68,7 +69,7 @@ public class MainPage extends Application {
         AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/sample_main.fxml"));
         String image= GamePage.class.getResource("images/image.jpg").toExternalForm();
         pane.setStyle("-fx-background-image: url('"+ image +"')");
-        scene1=new Scene(pane);
+         Scene scene1=new Scene(pane);
         scene1.getStylesheets().add("css/MainPage.css");
         window.setScene(scene1);
         // Display the stage
