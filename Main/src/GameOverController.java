@@ -56,11 +56,9 @@ public class GameOverController {
 
     @FXML
     void clickRestart(ActionEvent event) {
-        GamePage gamePage=new GamePage();
-        MainPage.window.close();
         Grid.stage.close();
-        gamePage.start(MainPage.window);
-
+        Grid grid=GamePage.getGrid();
+        grid.restartGame();
     }
 
 
