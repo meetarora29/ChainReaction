@@ -1,12 +1,29 @@
 .button{
-	-fx-background-color: 
-        radial-gradient(center 50% 0%, radius 100%, #ffffff, #999999);
+
      -fx-background-radius: 5;
   	-fx-font-weight:bold;
 
 }
-.choicebox{
-	-fx-background-color: 
-        radial-gradient(center 50% 0%, radius 100%, #ffffff, #999999);
+.button:pressed, .choice-box:pressed {
+    -fx-background-color:
+            radial-gradient(center 50% 0%, radius 100%, #ffffff, #999999);
+}
+.choice-box{
+
      -fx-background-radius: 5;
 }
+ .combo-box:hover, .clickable:hover , .choice-box:hover{
+    -fx-cursor: hand;
+    -fx-background-color:
+                radial-gradient(center 50% 0%, radius 100%, #ffffff, #999999);
+
+    
+}
+.button:hover{
+    -fx-cursor: hand;
+    -fx-background-color:
+                radial-gradient(center 50% 0%, radius 100%, #ffffff, #999999);
+}
+.choice-box .menu-item:focused { -fx-background-color: #005087;
+-fx-text-fill:white;
+ }

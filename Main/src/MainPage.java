@@ -16,7 +16,7 @@ import java.io.IOException;
 public class MainPage extends Application {
 
     public Scene scene1;
-    public static int game_count=0;
+//    public static int game_count=0;
     public static Stage window;
     public static void main(String[] args)
     {
