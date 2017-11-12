@@ -38,6 +38,10 @@ class GamePage {
     private static Player[] players;
     private HBox hBox1;
 
+    static Grid getGrid() {
+        return g;
+    }
+
     static void setPlayers(int numPlayers, Player[] players) {
         GamePage.numPlayers=numPlayers;
         GamePage.players=players;
@@ -79,9 +83,9 @@ class GamePage {
                 });
                 r.focusedProperty().addListener((observable, oldValue, newValue) -> {
                     if(newValue)
-                        r.setStroke(Color.GRAY);
+                        r.setFill(Color.LIGHTGRAY);
                     else
-                        r.setStroke(g.getCurrentColor());
+                        r.setFill(Color.WHITE);
                 });
 
                 box[i][j]=r;
@@ -227,6 +231,7 @@ class GamePage {
 
             buildButtons(borderPane, MainPage.window);
             Scene scene=new Scene(borderPane);
+            borderPane.requestFocus();
             scene.getStylesheets().add(this.getClass().getResource("css/GamePage.css").toExternalForm());
             MainPage.window.setScene(scene);
         }
