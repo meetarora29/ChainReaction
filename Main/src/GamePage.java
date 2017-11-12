@@ -129,12 +129,14 @@ class GamePage {
             } catch (IOException e) {
                 System.out.println();
             }
-        } else if (comboBox.getSelectionModel().getSelectedIndex() == 0) {
+        }
+        else if(comboBox.getSelectionModel().getSelectedIndex()==2)
+            g.toggleSoundMode();
+        else if (comboBox.getSelectionModel().getSelectedIndex() == 0)
             g.restartGame();
 
-            // ComboBox reset
-            Platform.runLater(() -> comboBox.setValue(null));
-        }
+        // ComboBox reset
+        Platform.runLater(() -> comboBox.setValue(null));
     }
 
     // Build UI Elements
@@ -155,7 +157,7 @@ class GamePage {
         ComboBox<String> comboBox=new ComboBox<>();
         comboBox.getStyleClass().add("focus");
         comboBox.setPromptText("Choose Option");
-        comboBox.getItems().addAll("Restart Game", "Return to Main Menu");
+        comboBox.getItems().addAll("Restart Game", "Return to Main Menu", "Mute/Unmute Sounds");
         comboBox.setFocusTraversable(true);
         comboBox.setOnKeyPressed(event -> {
             if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER) && !event.isShiftDown())

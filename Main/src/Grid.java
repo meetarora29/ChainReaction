@@ -33,7 +33,7 @@ public class Grid implements Serializable {
     private int flag;
     private int animation_count;
     private transient myStack<Ball[][]> moveStack;
-    private int load, count, computerMode;
+    private int load, count, computerMode, soundMode;
     private transient Media media;
     private transient MediaPlayer mediaPlayer;
 
@@ -49,6 +49,7 @@ public class Grid implements Serializable {
         numPlayers=players.length;
         moveStack=new myStack<>(3*numPlayers);
         count=0;
+        soundMode=1;
         media=new Media(new File("src/sounds/pop.mp3").toURI().toString());
         mediaPlayer=new MediaPlayer(media);
     }
@@ -60,6 +61,13 @@ public class Grid implements Serializable {
 
     void setComputerMode() {
         computerMode=1;
+    }
+
+    void toggleSoundMode() {
+        if(soundMode==0)
+            soundMode=1;
+        else
+            soundMode=0;
     }
 
     void serializeMatrix() {
@@ -653,8 +661,10 @@ public class Grid implements Serializable {
         }
 
         // Pop Sound on Burst
-        mediaPlayer.play();
-        mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.stop());
+        if(soundMode==1) {
+            mediaPlayer.play();
+            mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.stop());
+        }
 
         parallelTransition.play();
         animation_count++;
