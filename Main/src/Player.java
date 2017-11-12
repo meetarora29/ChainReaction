@@ -6,7 +6,7 @@ import java.util.Random;
 class Player implements Serializable {
     private transient Color color;
     private double red, green, blue, opacity;
-    protected int undo_left;
+    private int undo_left;
 
     private static final long serialVersionUID = 3L;
 
@@ -51,12 +51,6 @@ class Player implements Serializable {
 class Computer extends Player {
     Computer(Color color) {
         super(color);
-        resetUndo();
-    }
-
-    @Override
-    void resetUndo() {
-        undo_left=Integer.MAX_VALUE;
     }
 
     @Override
