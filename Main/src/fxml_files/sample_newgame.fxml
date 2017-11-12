@@ -3,11 +3,10 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane fx:id="newgamepane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="NewGameController">
    <children>
-      <Button layoutX="250.0" layoutY="80.0" mnemonicParsing="false" onAction="#clickNewGame" prefHeight="30.0" prefWidth="100.0" text="New Game" />
-      <Button layoutX="250.0" layoutY="185.0" mnemonicParsing="false" onAction="#clickResume" prefHeight="30.0" prefWidth="100.0" text="Resume" />
-      <Button layoutX="250.0" layoutY="290.0" mnemonicParsing="false" onAction="#clickBack" prefHeight="30.0" prefWidth="100.0" text="Back" />
+      <Button layoutX="250.0" layoutY="80.0" mnemonicParsing="false" onAction="#clickNewGame" onKeyPressed="#clickNewGame1" prefHeight="30.0" prefWidth="100.0" text="New Game" />
+      <Button layoutX="250.0" layoutY="185.0" mnemonicParsing="false" onAction="#clickResume" onKeyPressed="#clickResume1" prefHeight="30.0" prefWidth="100.0" text="Resume" />
+      <Button layoutX="250.0" layoutY="290.0" mnemonicParsing="false" onAction="#clickBack" onKeyPressed="#clickBack1" prefHeight="30.0" prefWidth="100.0" text="Back" />
    </children>
 </AnchorPane>

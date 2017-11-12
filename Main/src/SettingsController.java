@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
@@ -69,7 +71,25 @@ public class SettingsController {
         settingsPane.getChildren().setAll(pane);
 
     }
+    @FXML
+    void clickDone1(KeyEvent event) throws IOException {
+//        color1.setValue(MainPage.colours[0]);
 
+        if(event.getCode()== KeyCode.ENTER) {
+            color1.setValue(MainPage.colours[0]);
+            color2.setValue(MainPage.colours[1]);
+            color3.setValue(MainPage.colours[2]);
+            color4.setValue(MainPage.colours[3]);
+            color5.setValue(MainPage.colours[4]);
+            color6.setValue(MainPage.colours[5]);
+            color7.setValue(MainPage.colours[6]);
+            color8.setValue(MainPage.colours[7]);
+        //        print();
+            AnchorPane pane = FXMLLoader.load(getClass().getResource("fxml_files/sample_main.fxml"));
+            settingsPane.getChildren().setAll(pane);
+        }
+
+    }
     @FXML
     void selectColor1(ActionEvent event) throws IOException {
         Color c=color1.getValue();

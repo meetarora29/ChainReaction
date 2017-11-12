@@ -14,7 +14,7 @@
          </font>
       </Label>
       <ColorPicker fx:id="color1" layoutX="300.0" layoutY="50.0" onAction="#selectColor1" prefHeight="27.0" prefWidth="199.0" />
-      <Button layoutX="521.0" layoutY="359.0" mnemonicParsing="false" onAction="#clickDone" text="Done" />
+      <Button layoutX="521.0" layoutY="359.0" mnemonicParsing="false" onAction="#clickDone" onKeyPressed="#clickDone1" text="Done" />
       <ColorPicker fx:id="color2" layoutX="300.0" layoutY="86.0" onAction="#selectColor2" prefHeight="27.0" prefWidth="199.0" />
       <ColorPicker fx:id="color3" layoutX="300.0" layoutY="122.0" onAction="#selectColor3" prefHeight="27.0" prefWidth="199.0" />
       <ColorPicker fx:id="color4" layoutX="300.0" layoutY="158.0" onAction="#selectColor4" prefHeight="27.0" prefWidth="199.0" />

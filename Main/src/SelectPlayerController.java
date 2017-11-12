@@ -5,6 +5,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
@@ -14,6 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.security.Key;
 import java.util.Observable;
 class P<T1,T2>
 {
@@ -116,14 +119,20 @@ public class SelectPlayerController {
             MainPage.window.close();
 
             gamePage.start(MainPage.window);
-//        System.out.println(numberofPlayers);
-//        System.out.println(grid.getKey()+"x"+grid.getValue());
-//        GamePage game=new GamePage();
 
-//        Stage stage=new Stage();
-//        game.start(stage);
-//        playerPane.getChildren().removeAll();
-//        playerPane.getChildren().setAll(GamePage.grid);
+
+    }
+    @FXML
+    void clickPlay1(KeyEvent event) {
+        if(event.getCode()== KeyCode.ENTER) {
+            GamePage gamePage = new GamePage();
+            gamePage.setN(getGridSize().getKey());
+            gamePage.setM(getGridSize().getValue());
+            gamePage.setNumPlayers(getNumberOfPlayers());
+            MainPage.window.close();
+
+            gamePage.start(MainPage.window);
+        }
 
     }
     @FXML
@@ -139,6 +148,20 @@ public class SelectPlayerController {
 
         }
         playerPane.getChildren().setAll(pane);
+    }
+    @FXML
+    void clickBack1(KeyEvent event) throws IOException{
+        if(event.getCode()== KeyCode.ENTER) {
+            Path path = Paths.get("game.dat");
+            AnchorPane pane;
+            if (Files.exists(path)) {
+                pane = FXMLLoader.load(getClass().getResource("fxml_files/sample_newgame.fxml"));
+            } else {
+                pane = FXMLLoader.load(getClass().getResource("fxml_files/newGame2.fxml"));
+
+            }
+            playerPane.getChildren().setAll(pane);
+        }
     }
     public int getNumberOfPlayers()
     {

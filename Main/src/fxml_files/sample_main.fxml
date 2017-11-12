@@ -3,11 +3,10 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
 <AnchorPane fx:id="rootPane" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" nodeOrientation="LEFT_TO_RIGHT" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/9" xmlns:fx="http://javafx.com/fxml/1" fx:controller="MainController">
    <children>
-      <Button layoutX="250.0" layoutY="80.0" mnemonicParsing="false" onAction="#clickPlayGame" prefHeight="30.0" prefWidth="100.0" text="Play Game" />
-      <Button layoutX="250.0" layoutY="185.0" mnemonicParsing="false" onAction="#clickSettings" prefHeight="30.0" prefWidth="100.0" text="Settings" />
-      <Button cancelButton="true" layoutX="250.0" layoutY="290.0" mnemonicParsing="false" onAction="#clickQuit" prefHeight="30.0" prefWidth="100.0" text="Quit" />
+      <Button layoutX="250.0" layoutY="80.0" mnemonicParsing="false" onAction="#clickPlayGame" onKeyPressed="#clickPlayGame1" prefHeight="30.0" prefWidth="100.0" text="Play Game" />
+      <Button layoutX="250.0" layoutY="185.0" mnemonicParsing="false" onAction="#clickSettings" onKeyPressed="#clickSettings1" prefHeight="30.0" prefWidth="100.0" text="Settings" />
+      <Button cancelButton="true" layoutX="250.0" layoutY="290.0" mnemonicParsing="false" onAction="#clickQuit" onKeyPressed="#clickQuit1" prefHeight="30.0" prefWidth="100.0" text="Quit" />
    </children>
 </AnchorPane>

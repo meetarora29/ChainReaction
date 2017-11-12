@@ -1,12 +1,16 @@
+import javafx.event.EventHandler;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 //import P;
 
@@ -43,7 +47,19 @@ public class SelectPlayerController2 {
 
         gamePage.start(MainPage.window);
     }
+    @FXML
+    void clickPlay1(KeyEvent event) {
+        if(event.getCode()== KeyCode.ENTER) {
+            GamePage.destroyGrid();
+            GamePage gamePage = new GamePage();
+            gamePage.setN(getGridSize().getKey());
+            gamePage.setM(getGridSize().getValue());
+            gamePage.setNumPlayers(getNumberOfPlayers());
+            MainPage.window.close();
 
+            gamePage.start(MainPage.window);
+        }
+    }
     @FXML
     void initialize() {
         choiceBox.setItems(list);
@@ -69,4 +85,6 @@ public class SelectPlayerController2 {
         System.out.println(grid.getKey()+"x"+grid.getValue());
         return grid;
     }
+
+
 }
