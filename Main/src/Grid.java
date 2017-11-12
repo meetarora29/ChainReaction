@@ -73,7 +73,7 @@ public class Grid implements Serializable {
             if(matrix[i][j].getMass()==1) {
                 makeCircle(matrix[i][j], i, j, matrix[i][j].getColor());
                 if(isCorner(i, j))
-                    rotateCorner(i, j);
+                    rotateCorner(i, j, matrix);
             }
             else if(matrix[i][j].getMass()==2 && !isCorner(i, j)) {
                 makeCircle(matrix[i][j], i, j, matrix[i][j].getColor());
@@ -360,7 +360,7 @@ public class Grid implements Serializable {
         timeline.play();
     }
 
-    private void rotateCorner(int i, int j) {
+    private void rotateCorner(int i, int j, Ball[][] matrix) {
         double pixel=0.75;
         TranslateTransition left=new TranslateTransition(Duration.millis(75), matrix[i][j]);
         left.setByX(-pixel);
@@ -461,7 +461,7 @@ public class Grid implements Serializable {
             animation_count++;
 
             if(isCorner(i, j))
-                rotateCorner(i ,j);
+                rotateCorner(i ,j, matrix);
         }
         checkMass(i, j);
     }
