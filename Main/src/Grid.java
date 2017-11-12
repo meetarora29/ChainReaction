@@ -10,9 +10,6 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.CubicCurveTo;
-import javafx.scene.shape.MoveTo;
-import javafx.scene.shape.Path;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -32,11 +29,10 @@ public class Grid implements Serializable {
     static Stage stage;
     private int curr_player;
     private int numPlayers;
-
     private int flag;
     private int animation_count;
     private transient myStack<Ball[][]> moveStack;
-    private int load, count;
+    private int load, count, computerMode;
 
     private static final long serialVersionUID = 1L;
 
@@ -55,6 +51,10 @@ public class Grid implements Serializable {
 
     int getFlag() {
         return flag;
+    }
+
+    void setComputerMode() {
+        computerMode=1;
     }
 
     void serializeMatrix() {
@@ -162,7 +162,7 @@ public class Grid implements Serializable {
     }
 
     void undo() {
-        if(moveStack.isEmpty() || players[curr_player].getUndo()==0)
+        if(moveStack.isEmpty() || (computerMode==0 && players[curr_player].getUndo()<=0))
             return;
 
         if(moveStack.size()==1 && load==1)
@@ -234,6 +234,8 @@ public class Grid implements Serializable {
         GamePage.changeGridLineColor(players[curr_player].getColor());
         makeClickable();
         makeUnclickable();
+        if(players[curr_player].getClass()==Computer.class)
+            undo();
     }
 
     private void nextPlayer() {
@@ -241,10 +243,12 @@ public class Grid implements Serializable {
         GamePage.changeGridLineColor(players[curr_player].getColor());
         makeClickable();
         makeUnclickable();
+        if(players[curr_player].getClass()==Computer.class)
+            players[curr_player].takeTurn(matrix, n, m);
     }
 
-    private boolean checkValidity(int i, int j) {
-        return matrix[i][j] == null || color.equals(matrix[i][j].getColor());
+    boolean checkValidity(int i, int j) {
+        return matrix[i][j] == null || players[curr_player].getColor().equals(matrix[i][j].getColor());
     }
 
     boolean checkWin() {

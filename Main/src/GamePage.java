@@ -288,12 +288,13 @@ class GamePage {
 
     void start(Stage primaryStage) {
         // Initialisations
-//        MainPage.game_count=1;
         MainPage.window=primaryStage;
         box=new myRectangle[n][m];  // For grid outline
         players = new Player[numPlayers];
-        if(numPlayers==1)
+        if(numPlayers==1) {
             players = new Player[2];
+            g.setComputerMode();
+        }
         Color[] colors;
         g=new Grid(n, m, grid, players);
         borderPane=new BorderPane(grid);
@@ -319,7 +320,7 @@ class GamePage {
 
         Scene scene=new Scene(borderPane);
         borderPane.requestFocus();
-        scene.getStylesheets().add(this.getClass().getResource("css/MainPage.css").toExternalForm());
+        scene.getStylesheets().add(this.getClass().getResource("css/GamePage.css").toExternalForm());
 
         MainPage.window.setTitle("Chain Reaction");
         MainPage.window.setScene(scene);
