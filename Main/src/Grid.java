@@ -10,6 +10,9 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.CubicCurveTo;
+import javafx.scene.shape.MoveTo;
+import javafx.scene.shape.Path;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -29,6 +32,7 @@ public class Grid implements Serializable {
     static Stage stage;
     private int curr_player;
     private int numPlayers;
+
     private int flag;
     private int animation_count;
     private transient myStack<Ball[][]> moveStack;
@@ -47,6 +51,7 @@ public class Grid implements Serializable {
         moveStack=new myStack<>(3*numPlayers);
         count=0;
     }
+
 
     int getFlag() {
         return flag;
@@ -256,6 +261,7 @@ public class Grid implements Serializable {
 
     private void isGameOver() {
         if(checkWin() && flag!=0 && noAnimation()) {
+//            MainPage.game_count=0;
             System.out.println("Game Over!!!");
             // Delete File
             File file=new File("game.dat");
@@ -282,6 +288,7 @@ public class Grid implements Serializable {
             }
             stage.show();
             stage.setOnCloseRequest(event -> event.consume());
+
         }
         else if (noAnimation())
             nextPlayer();

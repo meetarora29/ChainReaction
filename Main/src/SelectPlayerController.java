@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.AnchorPane;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
@@ -96,12 +97,13 @@ public class SelectPlayerController {
 
         choiceBox.setItems(list);
         choiceBox.setValue(2);
+        choiceBox.setTooltip(new Tooltip("Select number of players"));
 //        numberofPlayers=choiceBox.getValue();
 
 
         gridSize.setItems(list1);
         gridSize.setValue(p1);
-
+        gridSize.setTooltip(new Tooltip("Select grid size"));
 //        grid=gridSize.getValue();
 
     }

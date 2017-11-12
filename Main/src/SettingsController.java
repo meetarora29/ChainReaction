@@ -194,7 +194,7 @@ public class SettingsController {
             Stage stage=new Stage();
             stage.setTitle("Error");
             stage.setOnCloseRequest(event1 -> {
-                color4.setValue(Color.web("#c7f441"));
+                color4.setValue(Color.web("#1a3399"));
                 Color c1=color4.getValue();
                 MainPage.colours[3]=c1;
             });
