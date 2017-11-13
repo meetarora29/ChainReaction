@@ -100,6 +100,12 @@ public class SelectPlayerController {
 
         choiceBox.setItems(list);
         choiceBox.setValue(2);
+        choiceBox.addEventHandler(KeyEvent.KEY_PRESSED,event -> {
+            if (event.getCode()==KeyCode.ENTER)
+            {
+                choiceBox.show();
+            }
+        });
         choiceBox.setTooltip(new Tooltip("Select number of players"));
 //        numberofPlayers=choiceBox.getValue();
 
