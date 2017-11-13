@@ -21,14 +21,29 @@ import java.awt.*;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * myRectangle is a custom class inheriting from Rectangle and contains
+ * information of the coordinates in the grid they occupy.
+ * The objects of this class will be used to create the visual grid for the game.
+ */
 class myRectangle extends Rectangle {
     Point p;
 
+    /**
+     * Class Constructor specifying the coordinates for the cell
+     *
+     * @param x the x-coordinate of the cell
+     * @param y the y-coordinate of the cell
+     */
     myRectangle(int x, int y) {
         p=new Point(x, y);
     }
 }
 
+/**
+ * GamePage is the class used to signify the page the game will be played on.
+ * It contains all the components required to make the visual page.
+ */
 class GamePage {
     private static int n, m,numPlayers;
     private static GridPane grid=new GridPane();
@@ -38,28 +53,68 @@ class GamePage {
     private static Player[] players;
     private HBox hBox1;
 
+    /**
+     * Gets the Grid of the class
+     *
+     * @return the Grid object of the class
+     */
     static Grid getGrid() {
         return g;
     }
 
+    /**
+     * Sets the variable numPlayers and the Player object array players
+     *
+     * @param numPlayers the number of players selected
+     * @param players the array of Player objects
+     */
     static void setPlayers(int numPlayers, Player[] players) {
         GamePage.numPlayers=numPlayers;
         GamePage.players=players;
     }
 
+    /**
+     * Makes the cells that are valid for the current player have the
+     * 'click' cursor on hover
+     *
+     * @param i the row index of the cell
+     * @param j the column index of the cell
+     */
     static void makeBoxClickable(int i, int j) {
         box[i][j].getStyleClass().add("clickable");
     }
 
+    /**
+     * Makes the cells that are invalid for the current player have the
+     * 'default' cursor on hover
+     *
+     * @param i the row index of the cell
+     * @param j the column index of the cell
+     */
     static void makeBoxUnclickable(int i, int j) {
         box[i][j].getStyleClass().removeAll("clickable");
     }
 
+    /**
+     * Gives focus to the cell in the ith row and jth column.
+     * Mainly used to signify which cell the computer played on.
+     *
+     * @param i the row index of the cell
+     * @param j the column index of the cell
+     */
     static void setFocus(int i, int j) {
         box[i][j].requestFocus();
     }
 
-    // Make grid outline
+    /**
+     * Makes the grid that will be used for the game.
+     * The cells are given all the required properties as well as event handlers.
+     * Once made, they are added to the gridpane.
+     *
+     * @param box the 2D array of myRectangle type that are used to create the visual grid
+     * @param n the number of rows
+     * @param m the number of columns
+     */
     static void buildGrid(myRectangle[][] box, int n, int m) {
         GamePage.box=box;
         GamePage.n=n;
@@ -103,13 +158,24 @@ class GamePage {
         }
     }
 
-    // Destroy Grid
+    /**
+     * Removes the visual grid when changing scenes so that no part of a previous
+     * grid remains on resuming or starting a new game.
+     */
     static void destroyGrid() {
         ArrayList<Node> list=new ArrayList<>();
         list.addAll(grid.getChildren());
         grid.getChildren().removeAll(list);
     }
 
+    /**
+     * Adds the required event handlers for the combobox choices.
+     * Also adds fade out effect on the BorderPane.
+     *
+     * @param comboBox the ComboBox whose choices need the appropriate event handlers
+     * @param borderPane the BorderPane to which the fade out effect is added
+     * @param stage the Stage being used on the game page
+     */
     private void addComboboxEvents(ComboBox<String> comboBox, BorderPane borderPane, Stage stage) {
         if (comboBox.getSelectionModel().getSelectedIndex() == 1) {
             MainPage mainPage = new MainPage();
@@ -139,7 +205,14 @@ class GamePage {
         Platform.runLater(() -> comboBox.setValue(null));
     }
 
-    // Build UI Elements
+    /**
+     * Builds the UI elements on the game page.
+     * Makes the button, combobox, and the label that appears below the grid.
+     * Also sets the event handlers for mouse clicks as well as key presses.
+     *
+     * @param borderPane the BorderPane used to align the UI elements
+     * @param stage the Stage being used on the game page
+     */
     private void buildButtons(BorderPane borderPane, Stage stage) {
         Button button=new Button("Undo");
         button.setOnMouseClicked(event -> {
@@ -197,6 +270,12 @@ class GamePage {
     }
 
 
+    /**
+     * Changes the colour of the lines of the grid as well the background in
+     * accordance with the current player's color.
+     *
+     * @param color the color of the current player whose turn it is
+     */
     static void changeGridLineColor(Color color) {
         for(int i=0;i<n;i++)
             for (int j = 0; j < m; j++)
@@ -209,6 +288,12 @@ class GamePage {
         borderPane.setStyle("-fx-background-color: rgb(" + r +","+ g + ","+ b+");");
     }
 
+    /**
+     * Serializes the state of the Grid object in order to save the current game
+     * that's being played.
+     *
+     * @throws IOException if a generic output error occurs with ObjectOutputStream
+     */
     void serialize() throws IOException {
         if (g.getFlag()==0)
             return;
@@ -226,6 +311,13 @@ class GamePage {
         }
     }
 
+    /**
+     * Deserializes the serialised file in order to restore the saved state of the
+     * game so that the user can resume the game where they left it.
+     *
+     * @throws IOException if a generic input error occurs with ObjectInputStream
+     * @throws ClassNotFoundException if the serialised class is not found when reading back
+     */
     void deserialize() throws IOException, ClassNotFoundException {
         InputStream input=new FileInputStream("game.dat");
         ObjectInputStream in=null;
@@ -255,18 +347,36 @@ class GamePage {
         }
     }
 
+    /**
+     * Sets the number of rows for the grid
+     *
+     * @param n the number of rows
+     */
     void setN(int n) {
         GamePage.n = n;
     }
 
+    /**
+     * Sets the number of columns for the grid
+     *
+     * @param m the number of columns
+     */
     void setM(int m) {
         GamePage.m = m;
     }
 
+    /**
+     * Sets the number of players selected
+     * @param numPlayers the number of players
+     */
     void setNumPlayers(int numPlayers) {
         GamePage.numPlayers = numPlayers;
     }
 
+    /**
+     * Turns on the keyboard mode so that the game can be played using the
+     * keyboard as well and not just the mouse.
+     */
     private void turnOnKeyboardMode() {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++)
@@ -279,6 +389,10 @@ class GamePage {
         hBox1.getChildren().add(label);
     }
 
+    /**
+     * Turns off the keyboard mode so that the game cannot be influenced by the keyboard.
+     * Only the mouse can be used to play the game in this case.
+     */
     private void turnOffKeyboardMode() {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++)
@@ -291,6 +405,10 @@ class GamePage {
         hBox1.getChildren().add(label);
     }
 
+    /**
+     * Adds event handlers to the BorderPane that will be used to toggle
+     * keyboard mode.
+     */
     private void setBorderPaneProperties() {
         borderPane.setOnKeyPressed(event -> {
             if(event.getCode().equals(KeyCode.ENTER) && event.isShiftDown())
@@ -300,6 +418,12 @@ class GamePage {
         });
     }
 
+    /**
+     * The main function for the game page that initialises the required properties
+     * for the game to start, builds the visual components, and displays once completed.
+     *
+     * @param primaryStage is the Stage on which the visuals will be shown
+     */
     void start(Stage primaryStage) {
         // Initialisations
         MainPage.window=primaryStage;
