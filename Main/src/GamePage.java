@@ -307,10 +307,8 @@ class GamePage {
         g=new Grid(n, m, grid, players);
         borderPane=new BorderPane(grid);
         setBorderPaneProperties();
-        // TODO: Correct Resizing of Window
 
         colors=MainPage.getColours();
-
         for(int i=0;i<numPlayers;i++)
             players[i]=new Player(colors[i]);
 
