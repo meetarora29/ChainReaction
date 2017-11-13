@@ -1,4 +1,5 @@
 import javafx.animation.*;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
@@ -309,7 +310,7 @@ public class Grid implements Serializable {
                 e.printStackTrace();
             }
             stage.show();
-            stage.setOnCloseRequest(event -> event.consume());
+            stage.setOnCloseRequest(Event::consume);
 
         }
         else if (noAnimation())
@@ -493,7 +494,7 @@ public class Grid implements Serializable {
         }
         checkMass(i, j);
     }
-    
+
     private void checkMass(int i, int j) {
         // Fade out on remove
         ScaleTransition transition1=new ScaleTransition(Duration.millis(150));

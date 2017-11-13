@@ -118,7 +118,7 @@ class GamePage {
                 FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000), borderPane);
                 fadeTransition.setToValue(0);
                 fadeTransition.play();
-                fadeTransition.setOnFinished(event1 -> {
+                fadeTransition.setOnFinished(event -> {
                     try {
                         destroyGrid();
                         mainPage.start(stage);
@@ -244,6 +244,10 @@ class GamePage {
             borderPane.requestFocus();
             scene.getStylesheets().add(this.getClass().getResource("css/GamePage.css").toExternalForm());
             MainPage.window.setScene(scene);
+            FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000), borderPane);
+            fadeTransition.setFromValue(0);
+            fadeTransition.setToValue(1);
+            fadeTransition.play();
         }
         finally {
             if(in!=null)
@@ -333,5 +337,10 @@ class GamePage {
         MainPage.window.setTitle("Chain Reaction");
         MainPage.window.setScene(scene);
         MainPage.window.show();
+
+        FadeTransition fadeTransition = new FadeTransition(Duration.millis(1000), borderPane);
+        fadeTransition.setFromValue(0);
+        fadeTransition.setToValue(1);
+        fadeTransition.play();
     }
 }
