@@ -11,6 +11,7 @@ import javafx.stage.Stage;
 
 import javax.naming.Binding;
 import java.awt.*;
+import java.awt.event.KeyEvent;
 import java.io.IOException;
 
 public class MainPage extends Application {
@@ -44,7 +45,7 @@ public class MainPage extends Application {
         MainPage.colours[2]=Color.web("#f44168");
         MainPage.colours[3]=Color.web("#1a3399");
         MainPage.colours[4]=Color.web("#b541f4");
-        MainPage.colours[5]=Color.web("#40E0D0");
+        MainPage.colours[5]=Color.web("#994d66");
         MainPage.colours[6]=Color.web("#f5f900");
         MainPage.colours[7]=Color.web("#000");
     }
@@ -72,6 +73,7 @@ public class MainPage extends Application {
         pane.setStyle("-fx-background-image: url('"+ image +"')");
          Scene scene1=new Scene(pane);
         scene1.getStylesheets().add("css/MainPage.css");
+
         window.setScene(scene1);
         // Display the stage
         window.show();
