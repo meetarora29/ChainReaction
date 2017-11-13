@@ -33,7 +33,7 @@ public class GameOverController {
     @FXML
     void clickNewGame(ActionEvent event) throws IOException{
         GamePage.destroyGrid();
-        AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/selectplayer2.fxml"));
+        AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/selectplayer.fxml"));
 
         String image= GamePage.class.getResource("images/image.jpg").toExternalForm();
         pane.setStyle("-fx-background-image: url('"+ image +"')");
@@ -47,7 +47,7 @@ public class GameOverController {
     void clickNewGame1(KeyEvent event) throws IOException{
         if(event.getCode()== KeyCode.ENTER) {
             GamePage.destroyGrid();
-            AnchorPane pane = FXMLLoader.load(getClass().getResource("fxml_files/selectplayer2.fxml"));
+            AnchorPane pane = FXMLLoader.load(getClass().getResource("fxml_files/selectplayer.fxml"));
 
             String image = GamePage.class.getResource("images/image.jpg").toExternalForm();
             pane.setStyle("-fx-background-image: url('" + image + "')");
