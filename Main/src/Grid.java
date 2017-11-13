@@ -14,7 +14,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.File;
@@ -36,8 +35,8 @@ public class Grid implements Serializable {
     private int animation_count;
     private transient myStack<Ball[][]> moveStack;
     private int load, count, computerMode, soundMode;
-    private transient Media media;
-    private transient MediaPlayer mediaPlayer;
+    private transient Media media, error_media;
+    private transient MediaPlayer mediaPlayer, error_player;
 
     private static final long serialVersionUID = 1L;
 
@@ -54,6 +53,8 @@ public class Grid implements Serializable {
         soundMode=1;
         media=new Media(new File("src/sounds/pop.mp3").toURI().toString());
         mediaPlayer=new MediaPlayer(media);
+        error_media=new Media(new File("src/sounds/NO.mp3").toURI().toString());
+        error_player=new MediaPlayer(error_media);
     }
 
 
@@ -119,6 +120,8 @@ public class Grid implements Serializable {
         load=1;
         media=new Media(new File("src/sounds/pop.mp3").toURI().toString());
         mediaPlayer=new MediaPlayer(media);
+        error_media=new Media(new File("src/sounds/NO.mp3").toURI().toString());
+        error_player=new MediaPlayer(error_media);
 
         myRectangle[][] box=new myRectangle[n][m];
         GamePage.buildGrid(box, n, m);
@@ -302,12 +305,7 @@ public class Grid implements Serializable {
                 label.setId("winner");
 
                 pane = FXMLLoader.load(getClass().getResource("fxml_files/game_end.fxml"));
-//                pane.setTop(label);
                 pane.setCenter(label);
-//                hBox.setAlignment(Pos.CENTER);q
-//
-//                pane.getChildren().addAll(hBox);
-//                pane.getChildren().add(label);
                 Scene scene=new Scene(pane);
                 scene.getStylesheets().add("css/GameOver.css");
                 stage.setScene(scene);
@@ -324,8 +322,12 @@ public class Grid implements Serializable {
 
     void setPosition(int i, int j) {
         color=players[curr_player].getColor();
-        if(!checkValidity(i, j))
+        if(!checkValidity(i, j)) {
+            // Error Sound
+            error_player.play();
+            error_player.setOnEndOfMedia(() -> error_player.stop());
             return;
+        }
         saveState();
         setMass(i, j);
         count++;
