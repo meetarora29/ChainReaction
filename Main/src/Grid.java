@@ -1,4 +1,5 @@
 import javafx.animation.*;
+import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
@@ -13,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.File;
@@ -284,11 +286,11 @@ public class Grid implements Serializable {
             // Delete File
             File file=new File("game.dat");
             file.delete();
-
             stage=new Stage();
             stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Congratulations!!!");
+            stage.setOpacity(0.85);
             BorderPane pane;
             try {
                 Label label=new Label("Player "+(curr_player+1)+" Wins!!!");
@@ -296,6 +298,8 @@ public class Grid implements Serializable {
                 // Computer Wins
                 if(computerMode==1 && players[curr_player].getClass()==Computer.class)
                     label=new Label("Computer Wins!!!");
+                label.setTextFill(Color.NAVY);
+                label.setId("winner");
 
                 pane = FXMLLoader.load(getClass().getResource("fxml_files/game_end.fxml"));
 //                pane.setTop(label);
@@ -305,12 +309,13 @@ public class Grid implements Serializable {
 //                pane.getChildren().addAll(hBox);
 //                pane.getChildren().add(label);
                 Scene scene=new Scene(pane);
+                scene.getStylesheets().add("css/GameOver.css");
                 stage.setScene(scene);
             } catch (IOException e) {
                 e.printStackTrace();
             }
             stage.show();
-            stage.setOnCloseRequest(event -> event.consume());
+            stage.setOnCloseRequest(Event::consume);
 
         }
         else if (noAnimation())
@@ -426,15 +431,15 @@ public class Grid implements Serializable {
             if (matrix[i][j].getColor() != color) {
                 // Changing Color
                 matrix[i][j].setColor(color);
-                FillTransition fillTransition1=new FillTransition(Duration.millis(1000));
+                FillTransition fillTransition1=new FillTransition(Duration.millis(250));
                 fillTransition1.setShape(matrix[i][j]);
                 fillTransition1.setToValue(color);
 
-                FillTransition fillTransition2=new FillTransition(Duration.millis(1000));
+                FillTransition fillTransition2=new FillTransition(Duration.millis(250));
                 fillTransition2.setShape(matrix[i][j].two);
                 fillTransition2.setToValue(color);
 
-                FillTransition fillTransition3=new FillTransition(Duration.millis(1000));
+                FillTransition fillTransition3=new FillTransition(Duration.millis(250));
                 fillTransition3.setShape(matrix[i][j].three);
                 fillTransition3.setToValue(color);
 
@@ -495,20 +500,19 @@ public class Grid implements Serializable {
         checkMass(i, j);
     }
 
-    // TODO: Speed up animation
     private void checkMass(int i, int j) {
         // Fade out on remove
-        ScaleTransition transition1=new ScaleTransition(Duration.millis(500));
+        ScaleTransition transition1=new ScaleTransition(Duration.millis(150));
         transition1.setNode(matrix[i][j]);
         transition1.setToX(1.2);
         transition1.setToY(1.2);
 
-        ScaleTransition transition2=new ScaleTransition(Duration.millis(500));
+        ScaleTransition transition2=new ScaleTransition(Duration.millis(150));
         transition2.setNode(matrix[i][j].two);
         transition2.setToX(1.2);
         transition2.setToY(1.2);
 
-        ScaleTransition transition3=new ScaleTransition(Duration.millis(500));
+        ScaleTransition transition3=new ScaleTransition(Duration.millis(150));
         transition3.setNode(matrix[i][j].three);
         transition3.setToX(1.2);
         transition3.setToY(1.2);
@@ -565,7 +569,7 @@ public class Grid implements Serializable {
         one.setRadius(15);
         one.setFill(color);
         GridPane.setHalignment(one, HPos.CENTER);
-        TranslateTransition right=new TranslateTransition(Duration.millis(500));
+        TranslateTransition right=new TranslateTransition(Duration.millis(250));
         right.setNode(one);
         right.setByX(25);
 
@@ -573,7 +577,7 @@ public class Grid implements Serializable {
         two.setRadius(15);
         two.setFill(color);
         GridPane.setHalignment(two, HPos.CENTER);
-        TranslateTransition left=new TranslateTransition(Duration.millis(500));
+        TranslateTransition left=new TranslateTransition(Duration.millis(250));
         left.setNode(two);
         left.setByX(-25);
 
@@ -581,7 +585,7 @@ public class Grid implements Serializable {
         three.setFill(color);
         three.setRadius(15);
         GridPane.setHalignment(three, HPos.CENTER);
-        TranslateTransition up=new TranslateTransition(Duration.millis(500));
+        TranslateTransition up=new TranslateTransition(Duration.millis(250));
         up.setNode(three);
         up.setByY(-25);
 
@@ -589,7 +593,7 @@ public class Grid implements Serializable {
         four.setRadius(15);
         four.setFill(color);
         GridPane.setHalignment(four, HPos.CENTER);
-        TranslateTransition down=new TranslateTransition(Duration.millis(500));
+        TranslateTransition down=new TranslateTransition(Duration.millis(250));
         down.setNode(four);
         down.setByY(25);
 

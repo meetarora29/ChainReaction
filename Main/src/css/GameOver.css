@@ -1,0 +1,13 @@
+.root {
+    -fx-background-image: url("../images/game-over.gif");
+}
+
+#winner {
+    -fx-font-weight: bolder;
+    -fx-font-size: 350%;
+    -fx-font-family: "Apple Garamond";
+}
+
+.button {
+    -fx-text-fill: navy;
+}
