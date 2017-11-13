@@ -61,6 +61,7 @@ public class GameOverController {
     @FXML
     void clickQuit(ActionEvent event) throws IOException {
         stage1 = new Stage();
+        stage1.setResizable(false);
         stage1.initModality(Modality.APPLICATION_MODAL);
         stage1.setTitle("Quit");
         AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/quit2.fxml"));
@@ -71,6 +72,7 @@ public class GameOverController {
     void clickQuit1(KeyEvent event) throws IOException {
         if(event.getCode()==KeyCode.ENTER) {
             stage1 = new Stage();
+            stage1.setResizable(false);
             stage1.initModality(Modality.APPLICATION_MODAL);
             stage1.setTitle("Quit");
             AnchorPane pane = FXMLLoader.load(getClass().getResource("fxml_files/quit2.fxml"));
