@@ -286,6 +286,7 @@ public class Grid implements Serializable {
             file.delete();
 
             stage=new Stage();
+            stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Congratulations!!!");
             BorderPane pane;

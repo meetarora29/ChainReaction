@@ -55,8 +55,9 @@ public class MainPage extends Application {
 
         window=primaryStage;
         window.setTitle("Chain Reaction");//set the title as "CHAIN_REACTION"
+//        window.getIcons().add(new Image("images/icon.png"));
+        window.setResizable(false);
 
-        window.getIcons().add(new Image("images/icon.png"));
         //loading the fxml file from scene builder
         window.setOnCloseRequest(e -> {
             try {

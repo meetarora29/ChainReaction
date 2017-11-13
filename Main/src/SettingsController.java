@@ -99,6 +99,7 @@ public class SettingsController {
         {
             AnchorPane pane;
             Stage stage=new Stage();
+            stage.setResizable(false);
             stage.setTitle("Error");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setOnCloseRequest(event1 -> {
@@ -114,6 +115,7 @@ public class SettingsController {
         {
             AnchorPane pane;
                 Stage stage=new Stage();
+                stage.setResizable(false);
                 stage.setTitle("Error");
                 stage.initModality(Modality.APPLICATION_MODAL);
                 stage.setOnCloseRequest(event1 -> {
@@ -137,6 +139,7 @@ public class SettingsController {
         {
             AnchorPane pane;
             Stage stage=new Stage();
+            stage.setResizable(false);
             stage.setTitle("Error");
             stage.setOnCloseRequest(event1 -> {
                 color2.setValue(Color.web("#FA8072"));
@@ -152,6 +155,7 @@ public class SettingsController {
         {
             AnchorPane pane;
             Stage stage=new Stage();
+            stage.setResizable(false);
             stage.setTitle("Error");
             stage.setOnCloseRequest(event1 -> {
                 color2.setValue(Color.web("#FA8072"));
@@ -174,6 +178,7 @@ public class SettingsController {
         {
             AnchorPane pane;
             Stage stage=new Stage();
+            stage.setResizable(false);
             stage.setTitle("Error");
             stage.setOnCloseRequest(event1 -> {
                 color3.setValue(Color.web("#f44168"));
@@ -189,6 +194,7 @@ public class SettingsController {
         {
             AnchorPane pane;
             Stage stage=new Stage();
+            stage.setResizable(false);
             stage.setTitle("Error");
             stage.setOnCloseRequest(event1 -> {
                 color3.setValue(Color.web("#f44168"));
@@ -212,6 +218,7 @@ public class SettingsController {
         {
             AnchorPane pane;
             Stage stage=new Stage();
+            stage.setResizable(false);
             stage.setTitle("Error");
             stage.setOnCloseRequest(event1 -> {
                 color4.setValue(Color.web("#1a3399"));
@@ -227,6 +234,7 @@ public class SettingsController {
         {
             AnchorPane pane;
             Stage stage=new Stage();
+            stage.setResizable(false);
             stage.setTitle("Error");
             stage.setOnCloseRequest(event1 -> {
                 color4.setValue(Color.web("#c7f441"));
@@ -249,6 +257,7 @@ public class SettingsController {
         {
             AnchorPane pane;
             Stage stage=new Stage();
+            stage.setResizable(false);
             stage.setTitle("Error");
             stage.setOnCloseRequest(event1 -> {
                 color5.setValue(Color.web("#b541f4"));
@@ -264,6 +273,7 @@ public class SettingsController {
         {
             AnchorPane pane;
             Stage stage=new Stage();
+            stage.setResizable(false);
             stage.setTitle("Error");
             stage.setOnCloseRequest(event1 -> {
                 color5.setValue(Color.web("#b541f4"));
@@ -286,6 +296,7 @@ public class SettingsController {
         {
             AnchorPane pane;
             Stage stage=new Stage();
+            stage.setResizable(false);
             stage.setTitle("Error");
             stage.setOnCloseRequest(event1 -> {
                 color6.setValue(Color.web("#40E0D0"));
@@ -301,6 +312,7 @@ public class SettingsController {
         {
             AnchorPane pane;
             Stage stage=new Stage();
+            stage.setResizable(false);
             stage.setTitle("Error");
             stage.setOnCloseRequest(event1 -> {
                 color6.setValue(Color.web("#40E0D0"));
@@ -323,6 +335,7 @@ public class SettingsController {
         {
             AnchorPane pane;
             Stage stage=new Stage();
+            stage.setResizable(false);
             stage.setTitle("Error");
             stage.setOnCloseRequest(event1 -> {
                 color7.setValue(Color.web("#f5f900"));
@@ -338,6 +351,7 @@ public class SettingsController {
         {
             AnchorPane pane;
             Stage stage=new Stage();
+            stage.setResizable(false);
             stage.setTitle("Error");
             stage.setOnCloseRequest(event1 -> {
                 color7.setValue(Color.web("#f5f900"));
@@ -360,6 +374,7 @@ public class SettingsController {
         {
             AnchorPane pane;
             Stage stage=new Stage();
+            stage.setResizable(false);
             stage.setTitle("Error");
             stage.setOnCloseRequest(event1 -> {
                 color8.setValue(Color.web("#000"));
@@ -375,6 +390,7 @@ public class SettingsController {
         {
             AnchorPane pane;
             Stage stage=new Stage();
+            stage.setResizable(false);
             stage.setTitle("Error");
             stage.setOnCloseRequest(event1 -> {
                 color8.setValue(Color.web("#000"));
