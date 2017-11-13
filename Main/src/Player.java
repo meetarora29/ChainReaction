@@ -50,7 +50,10 @@ class Player implements Serializable {
     }
 }
 
-class Computer extends Player {
+class Computer extends Player implements Serializable {
+    
+    private static final long serialVersionUID = 4L;
+
     Computer(Color color) {
         super(color);
     }
