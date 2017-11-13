@@ -297,10 +297,14 @@ public class Grid implements Serializable {
             BorderPane pane;
             try {
                 Label label=new Label("Player "+(curr_player+1)+" Wins!!!");
+                Media winner=new Media(new File("src/sounds/cheering.mp3").toURI().toString());
 
                 // Computer Wins
-                if(computerMode==1 && players[curr_player].getClass()==Computer.class)
-                    label=new Label("Computer Wins!!!");
+                if(computerMode==1 && players[curr_player].getClass()==Computer.class) {
+                    label = new Label("Computer Wins!!!");
+                    winner=new Media(new File("src/sounds/tada.mp3").toURI().toString());
+                }
+
                 label.setTextFill(Color.NAVY);
                 label.setId("winner");
 
@@ -309,6 +313,8 @@ public class Grid implements Serializable {
                 Scene scene=new Scene(pane);
                 scene.getStylesheets().add("css/GameOver.css");
                 stage.setScene(scene);
+                MediaPlayer win_player=new MediaPlayer(winner);
+                win_player.play();
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -324,8 +330,10 @@ public class Grid implements Serializable {
         color=players[curr_player].getColor();
         if(!checkValidity(i, j)) {
             // Error Sound
-            error_player.play();
-            error_player.setOnEndOfMedia(() -> error_player.stop());
+            if(soundMode==1) {
+                error_player.play();
+                error_player.setOnEndOfMedia(() -> error_player.stop());
+            }
             return;
         }
         saveState();
