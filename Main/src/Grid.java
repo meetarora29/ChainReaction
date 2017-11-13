@@ -313,8 +313,10 @@ public class Grid implements Serializable {
                 Scene scene=new Scene(pane);
                 scene.getStylesheets().add("css/GameOver.css");
                 stage.setScene(scene);
-                MediaPlayer win_player=new MediaPlayer(winner);
-                win_player.play();
+                if(soundMode==1) {
+                    MediaPlayer win_player = new MediaPlayer(winner);
+                    win_player.play();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
