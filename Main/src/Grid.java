@@ -14,6 +14,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.File;
@@ -285,11 +286,11 @@ public class Grid implements Serializable {
             // Delete File
             File file=new File("game.dat");
             file.delete();
-
             stage=new Stage();
             stage.setResizable(false);
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setTitle("Congratulations!!!");
+            stage.setOpacity(0.85);
             BorderPane pane;
             try {
                 Label label=new Label("Player "+(curr_player+1)+" Wins!!!");
@@ -297,6 +298,8 @@ public class Grid implements Serializable {
                 // Computer Wins
                 if(computerMode==1 && players[curr_player].getClass()==Computer.class)
                     label=new Label("Computer Wins!!!");
+                label.setTextFill(Color.NAVY);
+                label.setId("winner");
 
                 pane = FXMLLoader.load(getClass().getResource("fxml_files/game_end.fxml"));
 //                pane.setTop(label);
@@ -306,6 +309,7 @@ public class Grid implements Serializable {
 //                pane.getChildren().addAll(hBox);
 //                pane.getChildren().add(label);
                 Scene scene=new Scene(pane);
+                scene.getStylesheets().add("css/GameOver.css");
                 stage.setScene(scene);
             } catch (IOException e) {
                 e.printStackTrace();
