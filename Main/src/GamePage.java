@@ -348,7 +348,7 @@ class GamePage {
     }
 
     /**
-     * Sets the number of rows for the grid
+     * Sets the number of rows for the grid.
      *
      * @param n the number of rows
      */
@@ -357,7 +357,7 @@ class GamePage {
     }
 
     /**
-     * Sets the number of columns for the grid
+     * Sets the number of columns for the grid.
      *
      * @param m the number of columns
      */
@@ -366,7 +366,7 @@ class GamePage {
     }
 
     /**
-     * Sets the number of players selected
+     * Sets the number of players selected.
      * @param numPlayers the number of players
      */
     void setNumPlayers(int numPlayers) {
