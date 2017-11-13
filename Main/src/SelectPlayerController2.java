@@ -63,7 +63,7 @@ public class SelectPlayerController2 {
     @FXML
     void initialize() {
         choiceBox.setItems(list);
-        choiceBox.setValue(1);
+        choiceBox.setValue(2);
         choiceBox.setTooltip(new Tooltip("Select number of players"));
 //        numberofPlayers=choiceBox.getValue();
 
