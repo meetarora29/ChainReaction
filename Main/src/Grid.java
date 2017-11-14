@@ -184,8 +184,11 @@ public class Grid implements Serializable {
         count=0;
         animation_frequency=0;
         notEnded=true;
-        for(int i=0;i<numPlayers;i++)
+        for(int i=0;i<numPlayers;i++) {
             players[i].resetUndo();
+            players[i].setTakenTurn(false);
+            players[i].setHasLost(false);
+        }
         GamePage.changeGridLineColor(players[curr_player].getColor());
         for(int i=0;i<n;i++)
             for(int j=0;j<m;j++)
@@ -257,6 +260,19 @@ public class Grid implements Serializable {
         }
     }
 
+    private boolean hasPlayerLost() {
+        for(int i=0;i<n;i++) {
+            for(int j=0;j<m;j++) {
+                if(matrix[i][j]!=null && matrix[i][j].getColor().equals(players[curr_player].getColor())) {
+                    players[curr_player].setHasLost(false);
+                    return false;
+                }
+            }
+        }
+        players[curr_player].setHasLost(true);
+        return true;
+    }
+
     private void prevPlayer() {
         if(curr_player>0)
             curr_player--;
@@ -267,6 +283,8 @@ public class Grid implements Serializable {
         makeUnclickable();
         if(players[curr_player].getClass()==Computer.class)
             undo();
+        else if(players[curr_player].hasLost() && players[curr_player].hasTakenTurn())
+            prevPlayer();
     }
 
     private void nextPlayer() {
@@ -276,16 +294,18 @@ public class Grid implements Serializable {
         makeUnclickable();
         if(players[curr_player].getClass()==Computer.class)
             players[curr_player].takeTurn(matrix, n, m);
+        else if(hasPlayerLost() && players[curr_player].hasTakenTurn())
+            nextPlayer();
     }
 
     boolean checkValidity(int i, int j) {
         return matrix[i][j] == null || players[curr_player].getColor().equals(matrix[i][j].getColor());
     }
 
-    boolean checkWin() {
+    private boolean checkWin() {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
-                if(matrix[i][j]!=null && matrix[i][j].getColor()!=color)
+                if(matrix[i][j]!=null && !matrix[i][j].getColor().equals(color))
                     return false;
             }
         }
@@ -355,6 +375,7 @@ public class Grid implements Serializable {
         }
         saveState();
         setMass(i, j);
+        players[curr_player].setTakenTurn(true);
         count++;
     }
 
@@ -455,7 +476,7 @@ public class Grid implements Serializable {
             return;
 
         if(matrix[i][j]!=null) {
-            if (matrix[i][j].getColor() != color) {
+            if (!matrix[i][j].getColor().equals(color)) {
                 // Changing Color
                 matrix[i][j].setColor(color);
                 FillTransition fillTransition1=new FillTransition(Duration.millis(250));

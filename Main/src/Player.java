@@ -14,6 +14,7 @@ class Player implements Serializable {
     private transient Color color;
     private double red, green, blue, opacity;
     private int undo_left;
+    private boolean takenTurn, hasLost;
 
     private static final long serialVersionUID = 3L;
 
@@ -27,6 +28,8 @@ class Player implements Serializable {
         this.color=color;
         undo_left=3;
         resolveColor();
+        takenTurn=false;
+        hasLost=false;
     }
 
     /**
@@ -92,6 +95,22 @@ class Player implements Serializable {
     void takeTurn(Ball[][] matrix, int n, int m) {
         // Only for Computer
     }
+
+    void setTakenTurn(boolean b) {
+        takenTurn=b;
+    }
+
+    boolean hasTakenTurn() {
+        return takenTurn;
+    }
+
+    void setHasLost(boolean b) {
+        hasLost=b;
+    }
+
+    boolean hasLost() {
+        return hasLost;
+    }
 }
 
 class Computer extends Player implements Serializable {
@@ -147,7 +166,7 @@ class Computer extends Player implements Serializable {
 
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
-                if(matrix[i][j]!=null && matrix[i][j].getColor()==getColor()) {
+                if(matrix[i][j]!=null && matrix[i][j].getColor().equals(getColor())) {
                     if (isBurstable(matrix, i, j, grid))
                         burst_points.add(new Point(i, j));
                     else
