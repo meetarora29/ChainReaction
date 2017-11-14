@@ -52,6 +52,13 @@ class GamePage {
     private static BorderPane borderPane;
     private static Player[] players;
     private HBox hBox1;
+    private Label undo_label;
+
+    {
+        undo_label=new Label();
+        undo_label.setTextFill(Color.GRAY);
+        undo_label.setFocusTraversable(false);
+    }
 
     /**
      * Gets the Grid of the class
@@ -71,6 +78,17 @@ class GamePage {
     static void setPlayers(int numPlayers, Player[] players) {
         GamePage.numPlayers=numPlayers;
         GamePage.players=players;
+    }
+
+    /**
+     * Sets the label showing the number of undo moves left for the player
+     * that just played their chance.
+     *
+     * @param undo_left is the number of undo moves left for the player that
+     *                  just played their chance
+     */
+    void setUndoLabel(int undo_left) {
+        undo_label.setText("Left : "+undo_left);
     }
 
     /**
@@ -254,7 +272,8 @@ class GamePage {
         HBox hBox=new HBox();
         Pane spacer=new Pane();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        hBox.getChildren().addAll(button, spacer, comboBox);
+        hBox.getChildren().addAll(button, undo_label, spacer, comboBox);
+        HBox.setMargin(undo_label, new Insets(5, 10, 10, 10));
         borderPane.setTop(hBox);
 
         hBox1=new HBox();
@@ -326,7 +345,7 @@ class GamePage {
             borderPane=new BorderPane(grid);
             setBorderPaneProperties();
             g=(Grid)in.readObject();
-            g.resolve(grid);
+            g.resolve(grid, this);
             // GridPane properties
             grid.setMinSize(500, 500);
             grid.setAlignment(Pos.CENTER);
@@ -433,7 +452,7 @@ class GamePage {
         if(numPlayers==1)
             players = new Player[2];
         Color[] colors;
-        g=new Grid(n, m, grid, players);
+        g=new Grid(n, m, grid, players, this);
         borderPane=new BorderPane(grid);
         setBorderPaneProperties();
 

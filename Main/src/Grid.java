@@ -29,6 +29,7 @@ import java.util.ArrayList;
  */
 public class Grid implements Serializable {
     private int n, m;
+    private transient GamePage gamePage;
     private transient Ball[][] matrix, prev_state;
     private SerializableBall[][] s_matrix;
     private transient Color color;
@@ -50,16 +51,18 @@ public class Grid implements Serializable {
 
     /**
      * Constructor using values of number of rows, number of columns, the GridPane,
-     * and the Players array.
+     * and the Players array. It also stores the reference to the GamePage object.
      *
      * @param n is the number of rows
      * @param m is the number of columns
      * @param grid is the GridPane which will be used for the layout
      * @param players is the array of Players playing the game
+     * @param gamePage is the GamePage object
      */
-    Grid(int n, int m, GridPane grid, Player[] players) {
+    Grid(int n, int m, GridPane grid, Player[] players, GamePage gamePage) {
         this.n=n;
         this.m=m;
+        this.gamePage = gamePage;
         matrix=new Ball[n][m];
         s_matrix=new SerializableBall[n][m];
         this.grid=grid;
@@ -172,8 +175,9 @@ public class Grid implements Serializable {
      * It then serves as the layout for the scene of the game page.
      *
      * @param grid is the GridPane which will serve as the layout for the game page
+     * @param game is the reference to the GamePage object
      */
-    void resolve(GridPane grid) {
+    void resolve(GridPane grid, GamePage game) {
         // Transient Initialisations
         matrix=new Ball[n][m];
         this.grid=grid;
@@ -183,6 +187,7 @@ public class Grid implements Serializable {
         mediaPlayer=new MediaPlayer(media);
         error_media=new Media(new File("src/sounds/NO.mp3").toURI().toString());
         error_player=new MediaPlayer(error_media);
+        gamePage=game;
 
         myRectangle[][] box=new myRectangle[n][m];
         GamePage.buildGrid(box, n, m);
@@ -364,6 +369,7 @@ public class Grid implements Serializable {
         GamePage.changeGridLineColor(players[curr_player].getColor());
         makeClickable();
         makeUnclickable();
+        gamePage.setUndoLabel(players[curr_player].getUndo());
 
         // If while undo, the player's balls get deleted, mark that player has not taken turn
         if(hasPlayerLost())
@@ -383,6 +389,8 @@ public class Grid implements Serializable {
         GamePage.changeGridLineColor(players[curr_player].getColor());
         makeClickable();
         makeUnclickable();
+        gamePage.setUndoLabel(players[curr_player].getUndo());
+
         if(players[curr_player].getClass()==Computer.class)
             players[curr_player].takeTurn(matrix, n, m);
         else if(players[curr_player].hasTakenTurn() && hasPlayerLost())
