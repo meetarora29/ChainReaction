@@ -44,6 +44,7 @@ public class Grid implements Serializable {
     private int load, count, computerMode, soundMode;
     private transient Media media, error_media;
     private transient MediaPlayer mediaPlayer, error_player;
+    transient MediaPlayer win_player;
 
     private static final long serialVersionUID = 1L;
 
@@ -457,7 +458,7 @@ public class Grid implements Serializable {
                 scene.getStylesheets().add("css/GameOver.css");
                 stage.setScene(scene);
                 if(soundMode==1) {
-                    MediaPlayer win_player = new MediaPlayer(winner);
+                    win_player = new MediaPlayer(winner);
                     win_player.play();
                 }
             } catch (IOException e) {

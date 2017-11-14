@@ -45,6 +45,7 @@ public class GameOverController {
         pane.setStyle("-fx-background-image: url('"+ image +"')");
         Grid.stage.close();
         Scene scene=new Scene(pane);
+        GamePage.getGrid().win_player.stop();
         MainPage.window.setScene(scene);
         MainPage.window.setTitle("Chain Reaction");
 
@@ -65,6 +66,7 @@ public class GameOverController {
             pane.setStyle("-fx-background-image: url('" + image + "')");
             Grid.stage.close();
             Scene scene = new Scene(pane);
+            GamePage.getGrid().win_player.stop();
             MainPage.window.setScene(scene);
             MainPage.window.setTitle("Chain Reaction");
         }
@@ -113,6 +115,7 @@ public class GameOverController {
     void clickRestart(ActionEvent event) {
         Grid.stage.close();
         Grid grid=GamePage.getGrid();
+        grid.win_player.stop();
         grid.restartGame();
     }
 
@@ -125,6 +128,7 @@ public class GameOverController {
         if(event.getCode()==KeyCode.ENTER) {
             Grid.stage.close();
             Grid grid=GamePage.getGrid();
+            grid.win_player.stop();
             grid.restartGame();
         }
 
