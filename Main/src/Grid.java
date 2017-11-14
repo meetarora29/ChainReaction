@@ -71,9 +71,9 @@ public class Grid implements Serializable {
         moveStack=new myStack<>(3*numPlayers);
         count=0;
         soundMode=1;
-        media=new Media(new File("src/sounds/pop.mp3").toURI().toString());
+        media=new Media(getClass().getResource("sounds/pop.mp3").toExternalForm());
         mediaPlayer=new MediaPlayer(media);
-        error_media=new Media(new File("src/sounds/NO.mp3").toURI().toString());
+        error_media=new Media(getClass().getResource("sounds/NO.mp3").toExternalForm());
         error_player=new MediaPlayer(error_media);
         notEnded=true;
         if(n==9)
@@ -192,9 +192,9 @@ public class Grid implements Serializable {
         this.grid=grid;
         moveStack=new myStack<>(3*numPlayers);
         load=1;
-        media=new Media(new File("src/sounds/pop.mp3").toURI().toString());
+        media=new Media(getClass().getResource("sounds/pop.mp3").toExternalForm());
         mediaPlayer=new MediaPlayer(media);
-        error_media=new Media(new File("src/sounds/NO.mp3").toURI().toString());
+        error_media=new Media(getClass().getResource("sounds/NO.mp3").toExternalForm());
         error_player=new MediaPlayer(error_media);
         gamePage=game;
 
@@ -496,12 +496,12 @@ public class Grid implements Serializable {
             BorderPane pane;
             try {
                 Label label=new Label("Player "+(curr_player+1)+" Wins!!!");
-                Media winner=new Media(new File("src/sounds/cheering.mp3").toURI().toString());
+                Media winner=new Media(getClass().getResource("sounds/cheering.mp3").toExternalForm());
 
                 // Computer Wins
                 if(computerMode==1 && players[curr_player].getClass()==Computer.class) {
                     label = new Label("Computer Wins!!!");
-                    winner=new Media(new File("src/sounds/tada.mp3").toURI().toString());
+                    winner=new Media(getClass().getResource("sounds/tada.mp3").toExternalForm());
                 }
 
                 label.setTextFill(Color.NAVY);
