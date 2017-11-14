@@ -367,6 +367,7 @@ class GamePage {
 
     /**
      * Sets the number of players selected.
+     *
      * @param numPlayers the number of players
      */
     void setNumPlayers(int numPlayers) {

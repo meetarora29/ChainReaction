@@ -239,6 +239,7 @@ public class Grid implements Serializable {
         curr_player=0;
         moveStack=new myStack<>(3*numPlayers);
         count=0;
+        load=0;
         animation_frequency=0;
         notEnded=true;
         for(int i=0;i<numPlayers;i++) {
@@ -363,6 +364,11 @@ public class Grid implements Serializable {
         GamePage.changeGridLineColor(players[curr_player].getColor());
         makeClickable();
         makeUnclickable();
+
+        // If while undo, the player's balls get deleted, mark that player has not taken turn
+        if(hasPlayerLost())
+            players[curr_player].setTakenTurn(false);
+
         if(players[curr_player].getClass()==Computer.class)
             undo();
         else if(players[curr_player].hasLost() && players[curr_player].hasTakenTurn())
@@ -379,7 +385,7 @@ public class Grid implements Serializable {
         makeUnclickable();
         if(players[curr_player].getClass()==Computer.class)
             players[curr_player].takeTurn(matrix, n, m);
-        else if(hasPlayerLost() && players[curr_player].hasTakenTurn())
+        else if(players[curr_player].hasTakenTurn() && hasPlayerLost())
             nextPlayer();
     }
 
