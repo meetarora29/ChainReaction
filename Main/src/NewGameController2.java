@@ -8,17 +8,22 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 
+/**
+ *This is the controller class for the New Game page
+ * It consists of 3 buttons
+ *          1. New Game: Starts a new game
+ *          2. Back: Takes us to the previous page
+ * @author Gagandeep Singh-2016037
+ */
 public class NewGameController2 {
-
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
 
     @FXML
     private AnchorPane newgamepane;
 
+    /**
+     * onAction function for Back button
+     * @throws IOException
+     */
     @FXML
     void clickBack(ActionEvent event) {
         AnchorPane pane= null;
@@ -29,6 +34,11 @@ public class NewGameController2 {
         }
         newgamepane.getChildren().setAll(pane);
     }
+
+    /**
+     * onKeyPressed function for Back button
+     * @throws IOException
+     */
     @FXML
     void clickBack1(KeyEvent event) {
         if(event.getCode()==KeyCode.ENTER) {
@@ -42,6 +52,10 @@ public class NewGameController2 {
         }
     }
 
+    /**
+     *  onAction function for new Game button
+     * @param event
+     */
     @FXML
     void clickNewGame(ActionEvent event) {
         AnchorPane pane= null;
@@ -52,6 +66,11 @@ public class NewGameController2 {
         }
         newgamepane.getChildren().setAll(pane);
     }
+
+    /**
+     * onKeyPressed function for new Game button
+     * @param event
+     */
     @FXML
     void clickNewGame1(KeyEvent event) {
         if(event.getCode()== KeyCode.ENTER) {
@@ -65,6 +84,10 @@ public class NewGameController2 {
         }
     }
 
+    /*
+    initializing function for the pane
+    (auto-generated)
+     */
     @FXML
     void initialize() {
         assert newgamepane != null : "fx:id=\"newgamepane\" was not injected: check your FXML file 'newGame2.fxml'.";

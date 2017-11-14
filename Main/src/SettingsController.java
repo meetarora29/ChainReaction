@@ -17,45 +17,59 @@ import javafx.stage.Stage;
 
 import java.awt.Color.*;
 
+/**
+ * This class is the controller class for Settings page
+ * This page consists of 8 Color Pickers corresponding to
+ * the 8 players
+ * @author Gagandeep Singh-2016037
+ */
 public class SettingsController {
 
-
-    @FXML
-    private ResourceBundle resources;
-
-    @FXML
-    private URL location;
-
+    //Pane on which the following scenes of the game are shown
     @FXML
     private AnchorPane settingsPane;
 
+    //Color Picker1
     @FXML
     private ColorPicker color1;
 
+    //Color Picker2
     @FXML
     private ColorPicker color2;
 
+    //Color Picker3
     @FXML
     private ColorPicker color3;
 
+    //Color Picker4
     @FXML
     private ColorPicker color4;
 
+    //Color Picker5
     @FXML
     private ColorPicker color5;
 
+    //Color Picker6
     @FXML
     private ColorPicker color6;
 
+    //Color Picker7
     @FXML
     private ColorPicker color7;
 
+    //Color Picker8
     @FXML
     private ColorPicker color8;
 
+    /**
+     * onAction function for the done button
+     * it confirms the colours selected on the 8 colour pickers
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void clickDone(ActionEvent event) throws IOException {
-//        color1.setValue(MainPage.colours[0]);
+
 
 
         color1.setValue(MainPage.colours[0]);
@@ -66,14 +80,20 @@ public class SettingsController {
         color6.setValue(MainPage.colours[5]);
         color7.setValue(MainPage.colours[6]);
         color8.setValue(MainPage.colours[7]);
-//        print();
         AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/sample_main.fxml"));
         settingsPane.getChildren().setAll(pane);
 
     }
+
+    /**
+     * onKeyPressed function for the done button
+     * it confirms the colours selected on the 8 colour pickers
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void clickDone1(KeyEvent event) throws IOException {
-//        color1.setValue(MainPage.colours[0]);
+
 
         if(event.getCode()== KeyCode.ENTER) {
             color1.setValue(MainPage.colours[0]);
@@ -84,12 +104,22 @@ public class SettingsController {
             color6.setValue(MainPage.colours[5]);
             color7.setValue(MainPage.colours[6]);
             color8.setValue(MainPage.colours[7]);
-        //        print();
             AnchorPane pane = FXMLLoader.load(getClass().getResource("fxml_files/sample_main.fxml"));
             settingsPane.getChildren().setAll(pane);
         }
 
     }
+
+    /**
+     * This function takes the value of 1st color picker
+     * initialises the 0th index of the main colour array
+     * If the colour selected is white it shows an error
+     * If the colour selected is already selected by another player then also it shows an error
+     * The error is shown in a pop up window which can be exited by pressing ESCAPE button
+     * It resets the value to the original on after exiting the error window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void selectColor1(ActionEvent event) throws IOException {
         Color c=color1.getValue();
@@ -151,6 +181,16 @@ public class SettingsController {
 
     }
 
+    /**
+     * This function takes the value of 2nd color picker
+     * initialises the 1st index of the main colour array
+     * If the colour selected is white it shows an error
+     * If the colour selected is already selected by another player then also it shows an error
+     * The error is shown in a pop up window which can be exited by pressing ESCAPE button
+     * It resets the value to the original on after exiting the error window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void selectColor2(ActionEvent event) throws IOException {
         Color c=color2.getValue();
@@ -210,6 +250,16 @@ public class SettingsController {
 
     }
 
+    /**
+     * This function takes the value of 3rd color picker
+     * initialises the 2nd index of the main colour array
+     * If the colour selected is white it shows an error
+     * If the colour selected is already selected by another player then also it shows an error
+     * The error is shown in a pop up window which can be exited by pressing ESCAPE button
+     * It resets the value to the original on after exiting the error window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void selectColor3(ActionEvent event) throws IOException {
         Color c=color3.getValue();
@@ -269,7 +319,16 @@ public class SettingsController {
 
     }
 
-
+    /**
+     * This function takes the value of 4th color picker
+     * initialises the 3rd index of the main colour array
+     * If the colour selected is white it shows an error
+     * If the colour selected is already selected by another player then also it shows an error
+     * The error is shown in a pop up window which can be exited by pressing ESCAPE button
+     * It resets the value to the original on after exiting the error window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void selectColor4(ActionEvent event) throws IOException {
         Color c=color4.getValue();
@@ -329,6 +388,17 @@ public class SettingsController {
 
     }
 
+
+    /**
+     * This function takes the value of 5th color picker
+     * initialises the 4th index of the main colour array
+     * If the colour selected is white it shows an error
+     * If the colour selected is already selected by another player then also it shows an error
+     * The error is shown in a pop up window which can be exited by pressing ESCAPE button
+     * It resets the value to the original on after exiting the error window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void selectColor5(ActionEvent event) throws IOException {
         Color c=color5.getValue();
@@ -388,6 +458,16 @@ public class SettingsController {
 
     }
 
+    /**
+     * This function takes the value of 6th color picker
+     * initialises the 5th index of the main colour array
+     * If the colour selected is white it shows an error
+     * If the colour selected is already selected by another player then also it shows an error
+     * The error is shown in a pop up window which can be exited by pressing ESCAPE button
+     * It resets the value to the original on after exiting the error window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void selectColor6(ActionEvent event) throws IOException {
         Color c=color6.getValue();
@@ -447,6 +527,16 @@ public class SettingsController {
 
     }
 
+    /**
+     * This function takes the value of 7th color picker
+     * initialises the 6th index of the main colour array
+     * If the colour selected is white it shows an error
+     * If the colour selected is already selected by another player then also it shows an error
+     * The error is shown in a pop up window which can be exited by pressing ESCAPE button
+     * It resets the value to the original on after exiting the error window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void selectColor7(ActionEvent event) throws IOException {
         Color c=color7.getValue();
@@ -506,10 +596,25 @@ public class SettingsController {
 
     }
 
+    /**
+     * This function takes the value of 8th color picker
+     * initialises the 7th index of the main colour array
+     * If the colour selected is white it shows an error
+     * If the colour selected is already selected by another player then also it shows an error
+     * The error is shown in a pop up window which can be exited by pressing ESCAPE button
+     * It resets the value to the original on after exiting the error window
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void selectColor8(ActionEvent event) throws IOException {
         Color c=color8.getValue();
         MainPage.colours[7]=c;
+        /*
+        if colour selected is white
+        show an error window and on exiting th error window
+        reset the colour with the initial value
+         */
         if(c.equals(Color.WHITE))
         {
             AnchorPane pane;
@@ -526,6 +631,9 @@ public class SettingsController {
             Scene scene=new Scene(pane);
             stage.setScene(scene);
             stage.show();
+            /*
+            Exit error window on pressing ESCAPE button
+             */
             scene.addEventHandler(KeyEvent.KEY_PRESSED,event1 -> {
                 if(event1.getCode()==KeyCode.ESCAPE)
                 {
@@ -536,6 +644,7 @@ public class SettingsController {
                 }
             });
         }
+        //if selected colour is similar to any of the other colour of the color picker
         if(c.equals(MainPage.colours[1]) ||c.equals(MainPage.colours[2]) || c.equals(MainPage.colours[3])||c.equals(MainPage.colours[4])||c.equals(MainPage.colours[5]) ||c.equals(MainPage.colours[6]) ||c.equals(MainPage.colours[0])  )
         {
             AnchorPane pane;
@@ -552,6 +661,9 @@ public class SettingsController {
             Scene scene=new Scene(pane);
             stage.setScene(scene);
             stage.show();
+            /*
+            Exit error window on pressing ESCAPE button
+             */
             scene.addEventHandler(KeyEvent.KEY_PRESSED,event1 -> {
                 if(event1.getCode()==KeyCode.ESCAPE)
                 {
@@ -567,13 +679,9 @@ public class SettingsController {
 
 
 
-    private void print()
-    {
-        for(int i=0;i<8;i++)
-        {
-            System.out.println(MainPage.colours[i]);
-        }
-    }
+    /**
+     * Initializing the values in the color picker whenever the Settings page is entered
+     */
     @FXML
     public void initialize() {
         assert settingsPane != null : "fx:id=\"settingsPane\" was not injected: check your FXML file 'settings.fxml'.";
@@ -585,6 +693,9 @@ public class SettingsController {
         assert color6 != null : "fx:id=\"color6\" was not injected: check your FXML file 'settings.fxml'.";
         assert color7 != null : "fx:id=\"color7\" was not injected: check your FXML file 'settings.fxml'.";
         assert color8 != null : "fx:id=\"color8\" was not injected: check your FXML file 'settings.fxml'.";
+        /*Setting value for 8 color picker
+        corresponding to 8 players
+         */
         color1.setValue(MainPage.colours[0]);
         color2.setValue(MainPage.colours[1]);
         color3.setValue(MainPage.colours[2]);
