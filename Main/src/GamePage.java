@@ -1,3 +1,5 @@
+import de.jensd.fx.glyphs.GlyphsDude;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.geometry.Insets;
@@ -217,8 +219,6 @@ class GamePage {
                 System.out.println();
             }
         }
-        else if(comboBox.getSelectionModel().getSelectedIndex()==2)
-            g.toggleSoundMode();
         else if (comboBox.getSelectionModel().getSelectedIndex() == 0)
             g.restartGame();
 
@@ -251,7 +251,7 @@ class GamePage {
         ComboBox<String> comboBox=new ComboBox<>();
         comboBox.getStyleClass().add("focus");
         comboBox.setPromptText("Choose Option");
-        comboBox.getItems().addAll("Restart Game", "Return to Main Menu", "Mute/Unmute Sounds");
+        comboBox.getItems().addAll("Restart Game", "Return to Main Menu");
         comboBox.setFocusTraversable(true);
         comboBox.setOnKeyPressed(event -> {
             if(g.noAnimation() && event.getCode().equals(KeyCode.ENTER) && !event.isShiftDown())
@@ -272,12 +272,54 @@ class GamePage {
             return cell ;
         });
 
+        Button volume_off=GlyphsDude.createIconButton(FontAwesomeIcon.BELL_ALT);
+        Button volume_up=GlyphsDude.createIconButton(FontAwesomeIcon.BELL_SLASH_ALT);
+        volume_off.getStyleClass().add("focus");
+        volume_up.getStyleClass().add("focus");
+
         HBox hBox=new HBox();
         Pane spacer=new Pane();
         HBox.setHgrow(spacer, Priority.ALWAYS);
         hBox.getChildren().addAll(button, undo_label, spacer, comboBox);
         HBox.setMargin(undo_label, new Insets(5, 10, 10, 10));
         borderPane.setTop(hBox);
+
+        if(g.getSoundMode()==0)
+            hBox.getChildren().add(3, volume_up);
+        else
+            hBox.getChildren().add(3, volume_off);
+
+        HBox.setMargin(volume_off, new Insets(0, 10, 0, 0));
+        volume_off.setOnAction(event -> {
+            hBox.getChildren().removeAll(volume_off);
+            hBox.getChildren().add(3, volume_up);
+            borderPane.requestFocus();
+            g.toggleSoundMode();
+        });
+        volume_off.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER) && !event.isShiftDown()) {
+                hBox.getChildren().removeAll(volume_off);
+                hBox.getChildren().add(3, volume_up);
+                volume_up.requestFocus();
+                g.toggleSoundMode();
+            }
+        });
+
+        HBox.setMargin(volume_up, new Insets(0, 10, 0, 0));
+        volume_up.setOnAction(event -> {
+            hBox.getChildren().removeAll(volume_up);
+            hBox.getChildren().add(3, volume_off);
+            borderPane.requestFocus();
+            g.toggleSoundMode();
+        });
+        volume_up.setOnKeyPressed(event -> {
+            if(event.getCode().equals(KeyCode.ENTER) && !event.isShiftDown()) {
+                hBox.getChildren().removeAll(volume_up);
+                hBox.getChildren().add(3, volume_off);
+                volume_off.requestFocus();
+                g.toggleSoundMode();
+            }
+        });
 
         hBox1=new HBox();
         Label label=new Label("Press Shift+Enter to turn on Keyboard Mode");

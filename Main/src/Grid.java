@@ -109,6 +109,15 @@ public class Grid implements Serializable {
     }
 
     /**
+     * Gets soundMode which is 1 when sounds are playing and 0 when not.
+     *
+     * @return soundMode which is an integer representing whether sounds are muted or not
+     */
+    int getSoundMode() {
+        return soundMode;
+    }
+
+    /**
      * Toggles sound mode. Turns on sound mode if off and vice-versa.
      */
     void toggleSoundMode() {
