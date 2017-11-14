@@ -32,7 +32,7 @@ public class quitController {
 //        if(MainPage.game_count==1)
 
         Grid grid=GamePage.getGrid();
-        if(grid!=null && !(grid.checkWin() && grid.getFlag()!=0 && grid.noAnimation()))
+        if(grid!=null && grid.isNotEnded())
 
         {
             GamePage gamePage=new GamePage();
