@@ -13,12 +13,6 @@ import javafx.scene.input.KeyEvent;
  */
 public class quitController {
 
-//    @FXML
-//    private ResourceBundle resources;
-//
-//    @FXML
-//    private URL location;
-
     /**
      * onAction function of the no button
      * it closes the quit window
@@ -75,8 +69,7 @@ public class quitController {
         //only if ENTER key is pressed
         if(event.getCode()== KeyCode.ENTER) {
             Grid grid = GamePage.getGrid();
-            if (grid != null && !(grid.checkWin() && grid.getFlag() != 0 && grid.noAnimation()))
-
+            if (grid != null && grid.isNotEnded())
             {
                 GamePage gamePage = new GamePage();
                 gamePage.serialize();
