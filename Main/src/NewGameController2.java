@@ -22,7 +22,6 @@ public class NewGameController2 {
 
     /**
      * onAction function for Back button
-     * @throws IOException
      */
     @FXML
     void clickBack(ActionEvent event) {
@@ -37,7 +36,6 @@ public class NewGameController2 {
 
     /**
      * onKeyPressed function for Back button
-     * @throws IOException
      */
     @FXML
     void clickBack1(KeyEvent event) {
