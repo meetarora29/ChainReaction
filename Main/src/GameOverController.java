@@ -1,6 +1,3 @@
-/**
- * Sample Skeleton for 'game_end.fxml' Controller Class
- */
 
 import java.io.IOException;
 import java.net.URL;
@@ -20,16 +17,25 @@ import javafx.stage.Stage;
 
 import static javafx.application.Application.launch;
 
+/**
+ * This class gives you three options when
+ * the game gets over
+ *          1. New Game: Helps user to again select number of players and
+ *                       grid size and start a new game
+ *          2. Restart: Restarts the game just played
+ *          3. Quit: Quits the game
+ * @author Gagandeep Singh-2016037
+ */
 public class GameOverController {
 
-//    @FXML // ResourceBundle that was given to the FXMLLoader
-//    private ResourceBundle resources;
-//
-//    @FXML // URL location of the FXML file that was given to the FXMLLoader
-//    private URL location;
+
     public static Stage stage1;
-    @FXML
-    private BorderPane gamePane;
+
+    /**
+     * onAction function for New Game button
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void clickNewGame(ActionEvent event) throws IOException{
         GamePage.destroyGrid();
@@ -43,6 +49,12 @@ public class GameOverController {
         MainPage.window.setTitle("Chain Reaction");
 
     }
+
+    /**
+     * onKeyPressed function for New Game button
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void clickNewGame1(KeyEvent event) throws IOException{
         if(event.getCode()== KeyCode.ENTER) {
@@ -58,6 +70,12 @@ public class GameOverController {
         }
 
     }
+
+    /**
+     * onAction function for Ouit button
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void clickQuit(ActionEvent event) throws IOException {
         stage1 = new Stage();
@@ -68,6 +86,12 @@ public class GameOverController {
         stage1.setScene(new Scene(pane));
         stage1.show();
     }
+
+    /**
+     * onKeyPressed function for Ouit button
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void clickQuit1(KeyEvent event) throws IOException {
         if(event.getCode()==KeyCode.ENTER) {
@@ -81,12 +105,21 @@ public class GameOverController {
         }
     }
 
+    /**
+     * onAction function for Restart button
+     * @param event
+     */
     @FXML
     void clickRestart(ActionEvent event) {
         Grid.stage.close();
         Grid grid=GamePage.getGrid();
         grid.restartGame();
     }
+
+    /**
+     * onKeyPR\ressed function for Restart button
+     * @param event
+     */
     @FXML
     void clickRestart1(KeyEvent event) {
         if(event.getCode()==KeyCode.ENTER) {
@@ -98,9 +131,4 @@ public class GameOverController {
     }
 
 
-
-//    @FXML // This method is called by the FXMLLoader when initialization is complete
-//    void initialize() {
-//
-//    }
 }

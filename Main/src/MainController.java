@@ -19,22 +19,34 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * This class is the controller class for the main page.
+ * It implements the action handler(Mouseclick,KeyEvents)
+ * of the buttons on the MainPage
+ * @author Gagandeep Singh-2016037
+ */
 public class MainController {
 
+    //Stage for confirming exit from the game
     public static Stage stage;
-//    SettingsController settingsController=new SettingsController();
+
+    //Color array for storing the colors of the main Color array
     Color[] colours=new Color[8];
-//    public Color[] getColours() {
-//        return colours;
-//    }
+
+    /*Pane on which the the following
+        game panes are shown
+     */
     @FXML
     private AnchorPane rootPane;
-    @FXML
-    private Button playGame;
 
+
+    /**
+     * onAction function for  Play Game Button
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void clickPlayGame(ActionEvent event) throws IOException {
-//        settingsController.initialize();
         colours=MainPage.getColours();
         Path path= Paths.get("game.dat");
         AnchorPane pane;
@@ -49,60 +61,127 @@ public class MainController {
         rootPane.getChildren().setAll(pane);
     }
 
+    /**
+     * onKeyPressed function of Play Game button
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void clickPlayGame1(KeyEvent event) throws IOException {
-//        settingsController.initialize();
+        //only if ENTER key is pressed
         if(event.getCode()== KeyCode.ENTER) {
+            //initialising color array
             colours = MainPage.getColours();
+
+            //creating a path which consists a file that contains of the state of the game
             Path path = Paths.get("game.dat");
             AnchorPane pane;
+            //checking if the file to the given path exists
             if (Files.exists(path)) {
+                /*
+                if file exists, go to a "sample_newgame.fxml"
+                 */
                 pane = FXMLLoader.load(getClass().getResource("fxml_files/sample_newgame.fxml"));
-            } else {
+            }
+            /*
+            else go to a "newGame2.fxml"
+             */
+            else {
                 pane = FXMLLoader.load(getClass().getResource("fxml_files/newGame2.fxml"));
 
             }
             rootPane.getChildren().setAll(pane);
         }
     }
+
+    /**
+     * onAction function for  Quit Button
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void clickQuit(ActionEvent event) throws IOException {
+        //make a new stage
         stage=new Stage();
+
+            /*the windows behind the stage
+                could not be used until
+                we deal with this stage
+             */
         stage.initModality(Modality.APPLICATION_MODAL);
+
         stage.setTitle("Quit");
+
+        //load the next fxml file
         AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/quitGame.fxml"));
+
+        //Setting the scene on the stage
         stage.setScene(new Scene(pane));
+
+        //Display the stage
         stage.show();
-//        MainPage.window.close();
     }
+
+    /**
+     * onKeyPressed function for  Quit Button
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void clickQuit1(KeyEvent event) throws IOException {
-//        settingsController.initialize();
         if(event.getCode()== KeyCode.ENTER) {
+            //make a new stage
             stage=new Stage();
+
+            /*the windows behind the stage
+                could not be used until
+                we deal with this stage
+             */
             stage.initModality(Modality.APPLICATION_MODAL);
+
             stage.setTitle("Quit");
+
+            //load the next fxml file
             AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/quitGame.fxml"));
+
+            //Setting the scene on the stage
             stage.setScene(new Scene(pane));
+
+            //Display the stage
             stage.show();
         }
     }
+
+    /**
+     * onAction function for Settings button
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void clickSettings(ActionEvent event) throws IOException{
+        //load the next fxml file
         AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/settings.fxml"));
         rootPane.getChildren().setAll(pane);
     }
+
+    /**
+     * onKeyPressed function for Settings button
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void clickSettings1(KeyEvent event) throws IOException {
-//        settingsController.initialize();
+        //only when ENTER key is pressed
         if(event.getCode()== KeyCode.ENTER) {
+            //load the next fxml file
             AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/settings.fxml"));
             rootPane.getChildren().setAll(pane);
         }
     }
-    @FXML
-    public void initialize() {
 
-    }
+//    @FXML
+//    public void initialize() {
+//
+//    }
 
 }

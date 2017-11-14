@@ -18,6 +18,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.security.Key;
 import java.util.Observable;
+
+/**
+ * This class is just like Pair class
+ * The only difference is in the toString function
+ * Which was needed to display in the choice-box used further
+ * @param <T1>
+ * @param <T2>
+ * @author Gagandeep Singh-2016037
+ */
 class P<T1,T2>
 {
     private T1 key;
@@ -49,51 +58,44 @@ class P<T1,T2>
         return key+"x"+value;
     }
 }
+
+/**
+ * This is the controller class for Selecting number of players
+ * and the grid size in which they want to play
+ * Buttons: 1. Play: Starts the game
+ *          2. Back: Takes you to the previous pane
+ * @author Gagandeep Singh-2016037
+ */
 public class SelectPlayerController {
     ObservableList<Integer> list= FXCollections.observableArrayList(1,2,3,4,5,6,7,8);
     P<Integer,Integer> p1=new P(9,6);
     P<Integer,Integer> p2=new P(15,10);
     ObservableList<P<Integer,Integer>> list1= FXCollections.observableArrayList(p1,p2);
-//    Stage primaryStage=new Stage();
     int numberofPlayers;
     P<Integer,Integer> grid;
 
-//    int n=9, m=6;
-//    int numPlayers=2;
 
-//    public int getN() {
-//        return n;
-//    }
-//
-//    public void setN(int n) {
-//        this.n = n;
-//    }
-//
-//    public int getM() {
-//        return m;
-//    }
-//
-//    public void setM(int m) {
-//        this.m = m;
-//    }
-//
-//    public int getNumPlayers() {
-//        return numPlayers;
-//    }
-//
-//    public void setNumPlayers(int numPlayers) {
-//        this.numPlayers = numPlayers;
-//    }
 
     @FXML
     private AnchorPane playerPane;
 
+    /*
+    Choice box for selecting number of players
+     */
     @FXML
     private ChoiceBox<Integer> choiceBox;
+
+    /*
+    Choice box for selecting the grid size
+     */
     @FXML
     private ChoiceBox<P<Integer,Integer> > gridSize;
 
 
+    /**
+     * function to initialize values in the choice boxes
+     * and the default values
+     */
     @FXML
     private void initialize()
     {
@@ -107,15 +109,16 @@ public class SelectPlayerController {
             }
         });
         choiceBox.setTooltip(new Tooltip("Select number of players"));
-//        numberofPlayers=choiceBox.getValue();
-
 
         gridSize.setItems(list1);
         gridSize.setValue(p1);
         gridSize.setTooltip(new Tooltip("Select grid size"));
-//        grid=gridSize.getValue();
-
     }
+
+    /**
+     * onAction function for play button
+     * @param event
+     */
     @FXML
     void clickPlay(ActionEvent event) {
             GamePage gamePage=new GamePage();
@@ -128,6 +131,11 @@ public class SelectPlayerController {
 
 
     }
+
+    /**
+     * onKeyPressed function for play button
+     * @param event
+     */
     @FXML
     void clickPlay1(KeyEvent event) {
         if(event.getCode()== KeyCode.ENTER) {
@@ -136,11 +144,15 @@ public class SelectPlayerController {
             gamePage.setM(getGridSize().getValue());
             gamePage.setNumPlayers(getNumberOfPlayers());
             MainPage.window.close();
-
             gamePage.start(MainPage.window);
         }
-
     }
+
+    /**
+     * onAction function for the back button
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void clickBack(ActionEvent event) throws IOException{
         Path path= Paths.get("game.dat");
@@ -155,6 +167,12 @@ public class SelectPlayerController {
         }
         playerPane.getChildren().setAll(pane);
     }
+
+    /**
+     * onKeyPressed function for the back button
+     * @param event
+     * @throws IOException
+     */
     @FXML
     void clickBack1(KeyEvent event) throws IOException{
         if(event.getCode()== KeyCode.ENTER) {
@@ -169,12 +187,22 @@ public class SelectPlayerController {
             playerPane.getChildren().setAll(pane);
         }
     }
+
+    /**
+     * function that returns the number of players selected by the user
+     * @return
+     */
     public int getNumberOfPlayers()
     {
         numberofPlayers=choiceBox.getValue();
         System.out.println(numberofPlayers);
         return numberofPlayers;
     }
+
+    /**
+     * function that returns the grid size selected by the user
+     * @return
+     */
     public P<Integer,Integer> getGridSize()
     {
         grid=gridSize.getValue();
