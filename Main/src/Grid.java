@@ -21,6 +21,12 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+/**
+ * Grid class is the main class for the game.
+ * It supports all the features and properties of the game.
+ * It contains the players, the balls, media players, stacks that
+ * are required for the functioning of the game.
+ */
 public class Grid implements Serializable {
     private int n, m;
     private transient Ball[][] matrix, prev_state;
@@ -41,6 +47,15 @@ public class Grid implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Constructor using values of number of rows, number of columns, the GridPane,
+     * and the Players array.
+     *
+     * @param n is the number of rows
+     * @param m is the number of columns
+     * @param grid is the GridPane which will be used for the layout
+     * @param players is the array of Players playing the game
+     */
     Grid(int n, int m, GridPane grid, Player[] players) {
         this.n=n;
         this.m=m;
@@ -63,18 +78,35 @@ public class Grid implements Serializable {
             animation_threshold=1000;
     }
 
+    /**
+     * Returns a boolean value signifying whether the game has ended or not.
+     *
+     * @return true if the game has not ended and false otherwise
+     */
     boolean isNotEnded() {
         return notEnded;
     }
 
+    /**
+     * Gets the flag value which signifies whether the first move has been made.
+     *
+     * @return flag which is an integer signifying the first move of the game
+     */
     int getFlag() {
         return flag;
     }
 
+    /**
+     * Sets the computer mode if selected which happens when a single
+     * player wants to play.
+     */
     void setComputerMode() {
         computerMode=1;
     }
 
+    /**
+     * Toggles sound mode. Turns on sound mode if off and vice-versa.
+     */
     void toggleSoundMode() {
         if(soundMode==0)
             soundMode=1;
@@ -82,6 +114,10 @@ public class Grid implements Serializable {
             soundMode=0;
     }
 
+    /**
+     * Turns the grid matrix into a serializable version so that the
+     * state of the game can be saved.
+     */
     void serializeMatrix() {
         s_matrix=new SerializableBall[n][m];
         for(int i=0;i<n;i++) {
@@ -93,6 +129,15 @@ public class Grid implements Serializable {
         load=0;
     }
 
+    /**
+     * Makes visual nodes ie balls on the grid using the values of row index,
+     * column index provided and using the grid which specifies the properties
+     * of the nodes at the given indices.
+     *
+     * @param i is the row index of the cell
+     * @param j is the column index of the cell
+     * @param matrix is the grid of balls containing the properties of the cells
+     */
     private void makeNode(int i, int j, Ball[][] matrix) {
         if(matrix[i][j]!=null) {
             if(matrix[i][j].getMass()==1) {
@@ -121,7 +166,13 @@ public class Grid implements Serializable {
         }
     }
 
-    GridPane resolve(GridPane grid) {
+    /**
+     * Fills up the GridPane with the appropriate state of the saved game on resuming.
+     * It then serves as the layout for the scene of the game page.
+     *
+     * @param grid is the GridPane which will serve as the layout for the game page
+     */
+    void resolve(GridPane grid) {
         // Transient Initialisations
         matrix=new Ball[n][m];
         this.grid=grid;
@@ -160,10 +211,12 @@ public class Grid implements Serializable {
         GamePage.changeGridLineColor(players[curr_player].getColor());
         makeClickable();
         makeUnclickable();
-
-        return grid;
     }
 
+    /**
+     * Removes all the nodes from the visual grid so that no nodes from a
+     * previous version of the grid can be seen during the current game.
+     */
     private void removeGridNodes() {
         ArrayList<Node> list=new ArrayList<>();
         for(Node node : grid.getChildren()) {
@@ -173,6 +226,9 @@ public class Grid implements Serializable {
         grid.getChildren().removeAll(list);
     }
 
+    /**
+     * Restarts the game by resetting all the values.
+     */
     void restartGame() {
         removeGridNodes();
         matrix=new Ball[n][m];
@@ -195,6 +251,11 @@ public class Grid implements Serializable {
                 GamePage.makeBoxClickable(i, j);
     }
 
+    /**
+     * Sets the grid matrix to a previous state and thus performing an undo.
+     * This would only work if there is indeed a previous state to go to as well as
+     * the player has undo moves left.
+     */
     void undo() {
         if(moveStack.isEmpty() || (computerMode==0 && players[curr_player].getUndo()<=0))
             return;
@@ -222,6 +283,10 @@ public class Grid implements Serializable {
         prevPlayer();
     }
 
+    /**
+     * Saves the previous state of the grid in a stack so undo moves
+     * can be performed.
+     */
     private void saveState() {
         prev_state=new Ball[n][m];
         for(int i=0;i<n;i++) {
@@ -233,7 +298,10 @@ public class Grid implements Serializable {
         moveStack.push(prev_state);
     }
 
-    // Only those belonging to a different player
+    /**
+     * Makes all those cells and nodes within those cells have the 'default'
+     * mouse cursor on hover that belong to a different player.
+     */
     private void makeUnclickable() {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
@@ -246,6 +314,10 @@ public class Grid implements Serializable {
         }
     }
 
+    /**
+     * Makes all the cells and nodes withing those cells that are valid for
+     * the current player have the 'click' mouse cursor on hover.
+     */
     private void makeClickable() {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
@@ -260,6 +332,12 @@ public class Grid implements Serializable {
         }
     }
 
+    /**
+     * Returns a boolean signifying whether the player has lost ie the player
+     * does not have any balls left on the grid.
+     *
+     * @return true if the player has lost and false otherwise
+     */
     private boolean hasPlayerLost() {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
@@ -273,6 +351,9 @@ public class Grid implements Serializable {
         return true;
     }
 
+    /**
+     * Passes the turn to a previous player on undo.
+     */
     private void prevPlayer() {
         if(curr_player>0)
             curr_player--;
@@ -287,6 +368,9 @@ public class Grid implements Serializable {
             prevPlayer();
     }
 
+    /**
+     * Passes the turn to the next player once the current player has finished their turn.
+     */
     private void nextPlayer() {
         curr_player=(curr_player+1)%numPlayers;
         GamePage.changeGridLineColor(players[curr_player].getColor());
@@ -298,10 +382,26 @@ public class Grid implements Serializable {
             nextPlayer();
     }
 
+    /**
+     * Returns a boolean signifying where the cell selected is a valid position
+     * for the current player to select.
+     *
+     * @param i is the row index of the cell
+     * @param j is the column index of the cell
+     * @return true if the position is valid and false otherwise
+     */
     boolean checkValidity(int i, int j) {
         return matrix[i][j] == null || players[curr_player].getColor().equals(matrix[i][j].getColor());
     }
+    // TODO: undo left and sound on win
 
+    /**
+     * Returns a boolean value signifying whether the current player has
+     * won the game by determining if all the balls on the grid belong to
+     * the current player.
+     *
+     * @return true if the current player has won and false otherwise
+     */
     private boolean checkWin() {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
@@ -312,11 +412,20 @@ public class Grid implements Serializable {
         return true;
     }
 
+    /**
+     * Returns a boolean value signifying whether any of the specified animations
+     * are in progress.
+     *
+     * @return true if at least one of the specified animations is playing and false otherwise
+     */
     boolean noAnimation() { return animation_count==0; }
 
+    /**
+     * Checks whether the game is over.
+     * If it is, displays the winner and provides with further options the user can select.
+     * If not, continues with the game.
+     */
     private void isGameOver() {
-//        System.out.println(animation_frequency + " "+ animation_count);
-
         if(checkWin() && flag!=0 && (noAnimation() || animation_frequency>animation_threshold)) {
             notEnded=false;
             System.out.println("Game Over!!!");
@@ -362,6 +471,13 @@ public class Grid implements Serializable {
             nextPlayer();
     }
 
+    /**
+     * Sets a current player's node at the selected position only after ensuring
+     * that the position is valid.
+     *
+     * @param i is the row index of the selected cell
+     * @param j is the column index of the selected cell
+     */
     void setPosition(int i, int j) {
         color=players[curr_player].getColor();
         animation_frequency=0;
@@ -379,12 +495,31 @@ public class Grid implements Serializable {
         count++;
     }
 
+    /**
+     * Gets the mass in the specified cell.
+     * If the specified cell has no mass ie there is no ball in the cell, creates
+     * a new ball and puts it in the cell before returning the mass.
+     *
+     * @param i is the row index of the cell
+     * @param j is the column index of the cell
+     * @return the mass in the cell
+     */
     private int getMass(int i, int j) {
         if(matrix[i][j]==null)
             matrix[i][j]=new Ball(color);
         return matrix[i][j].getMass();
     }
 
+    /**
+     * Makes the visual balls that are to placed in the grid at the given
+     * row index and column index. Also sets the appropriate properties for
+     * the ball including the provided color.
+     *
+     * @param s is the Circle that represents the visual of the ball
+     * @param i is the row index of the cell
+     * @param j is the column index of the cell
+     * @param color is the Color that is filled in the ball
+     */
     private void makeCircle(Circle s, int i, int j, Color color) {
         DropShadow dropShadow=new DropShadow(5, Color.GRAY);
         s.setRadius(15);
@@ -398,6 +533,15 @@ public class Grid implements Serializable {
         });
     }
 
+    /**
+     * Provides the two-ball animation to the nodes in the cell that
+     * is specified by the row index, column index, and the ball matrix
+     * provided.
+     *
+     * @param i is the row index of the cell
+     * @param j is the column index of the cell
+     * @param matrix is the grid of balls in which the specified cell belongs
+     */
     private void rotateTwo(int i, int j, Ball[][] matrix) {
         Pane pane=matrix[i][j].stackPane;
         pane.getChildren().removeAll(matrix[i][j], matrix[i][j].two, matrix[i][j].three);
@@ -417,6 +561,15 @@ public class Grid implements Serializable {
         timeline.play();
     }
 
+    /**
+     * Provides the three-ball animation to the nodes in the cell that
+     * is specified by the row index, column index, and the ball matrix
+     * provided.
+     *
+     * @param i is the row index of the cell
+     * @param j is the column index of the cell
+     * @param matrix is the grid of balls in which the specified cell belongs
+     */
     private void rotateThree(int i, int j, Ball[][] matrix) {
         Pane pane=matrix[i][j].stackPane;
         pane.getChildren().removeAll(matrix[i][j], matrix[i][j].two, matrix[i][j].three);
@@ -433,6 +586,15 @@ public class Grid implements Serializable {
         timeline.play();
     }
 
+    /**
+     * Provides the corner-ball animation to the nodes in the cell that
+     * is specified by the row index, column index, and the ball matrix
+     * provided.
+     *
+     * @param i is the row index of the cell
+     * @param j is the column index of the cell
+     * @param matrix is the grid of balls in which the specified cell belongs
+     */
     private void rotateCorner(int i, int j, Ball[][] matrix) {
         double pixel=0.75;
         TranslateTransition left=new TranslateTransition(Duration.millis(75), matrix[i][j]);
@@ -452,6 +614,14 @@ public class Grid implements Serializable {
         sequentialTransition.play();
     }
 
+    /**
+     * Checks whether the cell specified by the row index and the
+     * column index is at a corner of the grid.
+     *
+     * @param i is the row index of the cell
+     * @param j is the column index of the cell
+     * @return true if the cell is at a corner and false otherwise
+     */
     boolean isCorner(int i, int j) {
         if(i==0 && j==0)
             return true;
@@ -464,14 +634,31 @@ public class Grid implements Serializable {
         return false;
     }
 
+    /**
+     * Checks whether the cell specified by the row index and
+     * the column index lies on an extreme side of the grid.
+     *
+     * @param i is the row index of the cell
+     * @param j is the column index of the cell
+     * @return true if the cell is on an extreme side of the grid
+     */
     boolean isExtremeSide(int i, int j) {
         if(i==0 || i==n-1 || j==0 || j==m-1)
             return true;
         return false;
     }
 
+    /**
+     * Increases mass of the cell that is present at the row index
+     * and the column index provided.
+     * It then places a visual representation of the node at the
+     * designated cell.
+     *
+     * @param i is the row index of the cell
+     * @param j is the column index of the cell
+     */
     private void setMass(int i, int j) {
-        // Check Invalid Index
+        // Check Invalid Out Of Bounds Index
         if(i<0 || i>n-1 || j<0 || j>m-1)
             return;
 
@@ -556,6 +743,14 @@ public class Grid implements Serializable {
         checkMass(i, j);
     }
 
+    /**
+     * Checks mass of the nodes present at the cell specified by
+     * the row index and the column index provided. If the mass
+     * exceeds the limit of the cell, sends the cell to be burst.
+     *
+     * @param i is the row index of the cell
+     * @param j is the column index of the cell
+     */
     private void checkMass(int i, int j) {
         // Fade out on remove
         ScaleTransition transition1=new ScaleTransition(Duration.millis(150));
@@ -621,6 +816,16 @@ public class Grid implements Serializable {
         }
     }
 
+    /**
+     * Bursts the nodes in the cell specified by the row index and
+     * the column index provided.
+     * Before that, it adds the splitting-animation to the nodes based
+     * on the mass value and the position of the cell.
+     *
+     * @param val is the mass value of the node in the cell
+     * @param i is the row index of the cell
+     * @param j is the column index of the cell
+     */
     private void burst(int val, int i, int j) {
         // Translate Animation
         // 1R, 2L, 3U, 4D

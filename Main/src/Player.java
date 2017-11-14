@@ -96,18 +96,39 @@ class Player implements Serializable {
         // Only for Computer
     }
 
+    /**
+     * Sets takenTurn to the given boolean value.
+     *
+     * @param b is the boolean value that is set to takenTurn
+     */
     void setTakenTurn(boolean b) {
         takenTurn=b;
     }
 
+    /**
+     * Returns a boolean value signifying whether the player has taken a
+     * turn yet.
+     *
+     * @return true is the player has taken a turn and false otherwise
+     */
     boolean hasTakenTurn() {
         return takenTurn;
     }
 
+    /**
+     * Sets hasLost to the given boolean value.
+     *
+     * @param b is the boolean value that is set to hasLost
+     */
     void setHasLost(boolean b) {
         hasLost=b;
     }
 
+    /**
+     * Returns a boolean value signifying whether the player has lost already.
+     *
+     * @return true if the player has lost and false otherwise
+     */
     boolean hasLost() {
         return hasLost;
     }

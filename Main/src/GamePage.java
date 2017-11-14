@@ -326,7 +326,7 @@ class GamePage {
             borderPane=new BorderPane(grid);
             setBorderPaneProperties();
             g=(Grid)in.readObject();
-            grid=g.resolve(grid);
+            g.resolve(grid);
             // GridPane properties
             grid.setMinSize(500, 500);
             grid.setAlignment(Pos.CENTER);
