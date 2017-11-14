@@ -233,6 +233,33 @@ public class Grid implements Serializable {
     }
 
     /**
+     * Returns the index of the previous player that has not lost yet.
+     *
+     * @return index of the previous player
+     */
+    private int returnPrevPlayer() {
+        int i=curr_player-1;
+
+        while(i>=0) {
+            if(players[i].hasLost())
+                i--;
+            else
+                break;
+        }
+
+        if(i==-1)
+            i=numPlayers-1;
+        while (i>curr_player) {
+            if (players[i].hasLost())
+                i--;
+            else
+                break;
+        }
+
+        return i;
+    }
+
+    /**
      * Restarts the game by resetting all the values.
      */
     void restartGame() {
@@ -256,6 +283,7 @@ public class Grid implements Serializable {
         for(int i=0;i<n;i++)
             for(int j=0;j<m;j++)
                 GamePage.makeBoxClickable(i, j);
+        gamePage.setUndoLabel(-1);
     }
 
     /**
@@ -264,18 +292,18 @@ public class Grid implements Serializable {
      * the player has undo moves left.
      */
     void undo() {
-        if(moveStack.isEmpty() || (computerMode==0 && players[curr_player].getUndo()<=0))
+        if(moveStack.isEmpty() || (computerMode==0 && players[returnPrevPlayer()].getUndo()<=0))
             return;
 
         if(moveStack.size()==1 && load==1)
             return;
 
-        players[curr_player].undo();
         if(moveStack.size()==1 && load==0 && count<=1) {
             restartGame();
             return;
         }
 
+        players[returnPrevPlayer()].undo();
         prev_state=moveStack.pop();
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
@@ -288,6 +316,9 @@ public class Grid implements Serializable {
         matrix=prev_state;
         count--;
         prevPlayer();
+
+        if(moveStack.size()==1 && load==1)
+            gamePage.setUndoLabel(-1);
     }
 
     /**
@@ -369,10 +400,11 @@ public class Grid implements Serializable {
         GamePage.changeGridLineColor(players[curr_player].getColor());
         makeClickable();
         makeUnclickable();
-        gamePage.setUndoLabel(players[curr_player].getUndo());
+        if(computerMode==0)
+            gamePage.setUndoLabel(players[returnPrevPlayer()].getUndo());
 
         // If while undo, the player's balls get deleted, mark that player has not taken turn
-        if(hasPlayerLost())
+        if(!players[curr_player].hasLost() && hasPlayerLost())
             players[curr_player].setTakenTurn(false);
 
         if(players[curr_player].getClass()==Computer.class)
@@ -389,7 +421,8 @@ public class Grid implements Serializable {
         GamePage.changeGridLineColor(players[curr_player].getColor());
         makeClickable();
         makeUnclickable();
-        gamePage.setUndoLabel(players[curr_player].getUndo());
+        if(computerMode==0)
+            gamePage.setUndoLabel(players[returnPrevPlayer()].getUndo());
 
         if(players[curr_player].getClass()==Computer.class)
             players[curr_player].takeTurn(matrix, n, m);
@@ -408,7 +441,6 @@ public class Grid implements Serializable {
     boolean checkValidity(int i, int j) {
         return matrix[i][j] == null || players[curr_player].getColor().equals(matrix[i][j].getColor());
     }
-    // TODO: undo left and sound on win
 
     /**
      * Returns a boolean value signifying whether the current player has

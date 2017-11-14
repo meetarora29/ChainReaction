@@ -88,7 +88,10 @@ class GamePage {
      *                  just played their chance
      */
     void setUndoLabel(int undo_left) {
-        undo_label.setText("Left : "+undo_left);
+        if(undo_left>=0)
+            undo_label.setText("Left : "+undo_left);
+        else
+            undo_label.setText("");
     }
 
     /**
