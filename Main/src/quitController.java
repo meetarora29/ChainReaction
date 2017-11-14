@@ -1,6 +1,4 @@
 import java.io.IOException;
-import java.net.URL;
-import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
@@ -54,8 +52,8 @@ public class quitController {
     void clickYes(ActionEvent event) throws IOException {
 
         Grid grid=GamePage.getGrid();
-        //Checking if the game is finished or not and if there is a grid that is not destroyed
-        if(grid!=null && !(grid.checkWin() && grid.getFlag()!=0 && grid.noAnimation()))
+        //Checking if the game is finished or not and if there is a grid that is not destroyed if(grid!=null && grid.isNotEnded())
+        if(grid!=null && grid.isNotEnded())
         {
             //saving the game if still not ended
             GamePage gamePage=new GamePage();

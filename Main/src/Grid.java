@@ -32,7 +32,8 @@ public class Grid implements Serializable {
     private int curr_player;
     private int numPlayers;
     private int flag;
-    private int animation_count;
+    private int animation_count, animation_frequency, animation_threshold;
+    private boolean notEnded;
     private transient myStack<Ball[][]> moveStack;
     private int load, count, computerMode, soundMode;
     private transient Media media, error_media;
@@ -55,8 +56,16 @@ public class Grid implements Serializable {
         mediaPlayer=new MediaPlayer(media);
         error_media=new Media(new File("src/sounds/NO.mp3").toURI().toString());
         error_player=new MediaPlayer(error_media);
+        notEnded=true;
+        if(n==9)
+            animation_threshold=500;
+        else
+            animation_threshold=1000;
     }
 
+    boolean isNotEnded() {
+        return notEnded;
+    }
 
     int getFlag() {
         return flag;
@@ -173,6 +182,8 @@ public class Grid implements Serializable {
         curr_player=0;
         moveStack=new myStack<>(3*numPlayers);
         count=0;
+        animation_frequency=0;
+        notEnded=true;
         for(int i=0;i<numPlayers;i++)
             players[i].resetUndo();
         GamePage.changeGridLineColor(players[curr_player].getColor());
@@ -284,7 +295,10 @@ public class Grid implements Serializable {
     boolean noAnimation() { return animation_count==0; }
 
     private void isGameOver() {
-        if(checkWin() && flag!=0 && noAnimation()) {
+//        System.out.println(animation_frequency + " "+ animation_count);
+
+        if(checkWin() && flag!=0 && (noAnimation() || animation_frequency>animation_threshold)) {
+            notEnded=false;
             System.out.println("Game Over!!!");
             // Delete File
             File file=new File("game.dat");
@@ -330,6 +344,7 @@ public class Grid implements Serializable {
 
     void setPosition(int i, int j) {
         color=players[curr_player].getColor();
+        animation_frequency=0;
         if(!checkValidity(i, j)) {
             // Error Sound
             if(soundMode==1) {
@@ -459,10 +474,13 @@ public class Grid implements Serializable {
 
                 parallelTransition.setOnFinished(event -> {
                     animation_count--;
-                    isGameOver();
+                    if(notEnded)
+                        isGameOver();
                 });
-                parallelTransition.play();
+                if(notEnded)
+                    parallelTransition.play();
                 animation_count++;
+                animation_frequency++;
             }
             matrix[i][j].increaseMass();
             if(matrix[i][j].getMass()==2 && !isCorner(i, j)) {
@@ -474,7 +492,8 @@ public class Grid implements Serializable {
                 ParallelTransition parallelTransition=new ParallelTransition(left, right);
                 parallelTransition.play();
                 rotateTwo(i, j, matrix);
-                isGameOver();
+                if(notEnded)
+                    isGameOver();
             }
             else if(matrix[i][j].getMass()==3 && !isExtremeSide(i, j)) {
                 makeCircle(matrix[i][j].three, i, j, color);
@@ -487,7 +506,8 @@ public class Grid implements Serializable {
                 ParallelTransition parallelTransition=new ParallelTransition(down, up, down1);
                 parallelTransition.play();
                 rotateThree(i, j, matrix);
-                isGameOver();
+                if(notEnded)
+                    isGameOver();
             }
         }
         else {
@@ -500,11 +520,14 @@ public class Grid implements Serializable {
             fadeTransition.setToValue(1);
             fadeTransition.setOnFinished(event -> {
                 animation_count--;
-                isGameOver();
+                if(notEnded)
+                    isGameOver();
                 flag=1; // For first move
             });
-            fadeTransition.play();
+            if(notEnded)
+                fadeTransition.play();
             animation_count++;
+            animation_frequency++;
 
             if(isCorner(i, j))
                 rotateCorner(i ,j, matrix);
@@ -545,6 +568,7 @@ public class Grid implements Serializable {
                 });
                 parallelTransition.play();
                 animation_count++;
+                animation_frequency++;
                 matrix[i][j] = null;
             }
         }
@@ -557,6 +581,7 @@ public class Grid implements Serializable {
                 });
                 parallelTransition.play();
                 animation_count++;
+                animation_frequency++;
                 matrix[i][j] = null;
             }
         }
@@ -569,6 +594,7 @@ public class Grid implements Serializable {
                 });
                 parallelTransition.play();
                 animation_count++;
+                animation_frequency++;
                 matrix[i][j] = null;
             }
         }
@@ -618,7 +644,8 @@ public class Grid implements Serializable {
         parallelTransition.setOnFinished(event -> {
             animation_count--;
             grid.getChildren().removeAll(one, two, three, four);
-            isGameOver();
+            if(notEnded)
+                isGameOver();
         });
 
         if(val==4) {
@@ -678,12 +705,14 @@ public class Grid implements Serializable {
         }
 
         // Pop Sound on Burst
-        if(soundMode==1) {
+        if(soundMode==1 && notEnded) {
             mediaPlayer.play();
             mediaPlayer.setOnEndOfMedia(() -> mediaPlayer.stop());
         }
 
-        parallelTransition.play();
+        if(notEnded)
+            parallelTransition.play();
         animation_count++;
+        animation_frequency++;
     }
 }
