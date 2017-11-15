@@ -24,7 +24,7 @@ public class NewGameController2 {
      * onAction function for Back button
      */
     @FXML
-    void clickBack(ActionEvent event) {
+    void clickBack() {
         AnchorPane pane= null;
         try {
             pane = FXMLLoader.load(getClass().getResource("fxml_files/sample_main.fxml"));
@@ -36,6 +36,8 @@ public class NewGameController2 {
 
     /**
      * onKeyPressed function for Back button
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      */
     @FXML
     void clickBack1(KeyEvent event) {
@@ -52,10 +54,9 @@ public class NewGameController2 {
 
     /**
      *  onAction function for new Game button
-     * @param event
      */
     @FXML
-    void clickNewGame(ActionEvent event) {
+    void clickNewGame() {
         AnchorPane pane= null;
         try {
             pane = FXMLLoader.load(getClass().getResource("fxml_files/selectplayer.fxml"));
@@ -67,7 +68,8 @@ public class NewGameController2 {
 
     /**
      * onKeyPressed function for new Game button
-     * @param event
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      */
     @FXML
     void clickNewGame1(KeyEvent event) {

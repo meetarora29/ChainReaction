@@ -42,11 +42,10 @@ public class MainController {
 
     /**
      * onAction function for  Play Game Button
-     * @param event
      * @throws IOException
      */
     @FXML
-    void clickPlayGame(ActionEvent event) throws IOException {
+    void clickPlayGame() throws IOException {
         colours=MainPage.getColours();
         Path path= Paths.get("game.dat");
         AnchorPane pane;
@@ -63,7 +62,8 @@ public class MainController {
 
     /**
      * onKeyPressed function of Play Game button
-     * @param event
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      * @throws IOException
      */
     @FXML
@@ -96,11 +96,10 @@ public class MainController {
 
     /**
      * onAction function for  Quit Button
-     * @param event
      * @throws IOException
      */
     @FXML
-    void clickQuit(ActionEvent event) throws IOException {
+    void clickQuit() throws IOException {
         //make a new stage
         stage=new Stage();
 
@@ -124,7 +123,8 @@ public class MainController {
 
     /**
      * onKeyPressed function for  Quit Button
-     * @param event
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      * @throws IOException
      */
     @FXML
@@ -154,11 +154,10 @@ public class MainController {
 
     /**
      * onAction function for Settings button
-     * @param event
      * @throws IOException
      */
     @FXML
-    void clickSettings(ActionEvent event) throws IOException{
+    void clickSettings() throws IOException{
         //load the next fxml file
         AnchorPane pane=FXMLLoader.load(getClass().getResource("fxml_files/settings.fxml"));
         rootPane.getChildren().setAll(pane);
@@ -166,7 +165,8 @@ public class MainController {
 
     /**
      * onKeyPressed function for Settings button
-     * @param event
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      * @throws IOException
      */
     @FXML

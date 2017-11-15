@@ -70,7 +70,7 @@ public class MainPage extends Application {
     /**
      * This function is used to start the game
      * Overriden because this class extends Application class
-     * @param primaryStage
+     * @param primaryStage The stage on which the game starts
      * @throws IOException
      */
     @Override
