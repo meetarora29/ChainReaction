@@ -30,7 +30,8 @@ public class NewGameController {
 
     /**
      * onKeyPressed function of New Game button
-     * @param event
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      * @throws IOException
      */
     @FXML
@@ -55,6 +56,8 @@ public class NewGameController {
 
     /**
      * onKeyPressed function for Resume button
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      * @throws IOException
      * @throws ClassNotFoundException
      */
@@ -79,6 +82,8 @@ public class NewGameController {
 
     /**
      * onKeyPressed function for Back button
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      * @throws IOException
      */
     @FXML

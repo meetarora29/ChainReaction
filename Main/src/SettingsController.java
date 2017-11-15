@@ -64,11 +64,10 @@ public class SettingsController {
     /**
      * onAction function for the done button
      * it confirms the colours selected on the 8 colour pickers
-     * @param event
      * @throws IOException
      */
     @FXML
-    void clickDone(ActionEvent event) throws IOException {
+    void clickDone() throws IOException {
 
 
 
@@ -88,7 +87,8 @@ public class SettingsController {
     /**
      * onKeyPressed function for the done button
      * it confirms the colours selected on the 8 colour pickers
-     * @param event
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      * @throws IOException
      */
     @FXML
@@ -117,11 +117,10 @@ public class SettingsController {
      * If the colour selected is already selected by another player then also it shows an error
      * The error is shown in a pop up window which can be exited by pressing ESCAPE button
      * It resets the value to the original on after exiting the error window
-     * @param event
      * @throws IOException
      */
     @FXML
-    void selectColor1(ActionEvent event) throws IOException {
+    void selectColor1() throws IOException {
         Color c=color1.getValue();
 
         MainPage.colours[0]=c;
@@ -214,11 +213,10 @@ public class SettingsController {
      * If the colour selected is already selected by another player then also it shows an error
      * The error is shown in a pop up window which can be exited by pressing ESCAPE button
      * It resets the value to the original on after exiting the error window
-     * @param event
      * @throws IOException
      */
     @FXML
-    void selectColor2(ActionEvent event) throws IOException {
+    void selectColor2() throws IOException {
         Color c=color2.getValue();
         MainPage.colours[1]=c;
         if(c.equals(Color.WHITE))
@@ -309,11 +307,10 @@ public class SettingsController {
      * If the colour selected is already selected by another player then also it shows an error
      * The error is shown in a pop up window which can be exited by pressing ESCAPE button
      * It resets the value to the original on after exiting the error window
-     * @param event
      * @throws IOException
      */
     @FXML
-    void selectColor3(ActionEvent event) throws IOException {
+    void selectColor3() throws IOException {
         Color c=color3.getValue();
         MainPage.colours[2]=c;
         if(c.equals(Color.WHITE))
@@ -404,11 +401,10 @@ public class SettingsController {
      * If the colour selected is already selected by another player then also it shows an error
      * The error is shown in a pop up window which can be exited by pressing ESCAPE button
      * It resets the value to the original on after exiting the error window
-     * @param event
      * @throws IOException
      */
     @FXML
-    void selectColor4(ActionEvent event) throws IOException {
+    void selectColor4() throws IOException {
         Color c=color4.getValue();
         MainPage.colours[3]=c;
         if(c.equals(Color.WHITE))
@@ -500,11 +496,10 @@ public class SettingsController {
      * If the colour selected is already selected by another player then also it shows an error
      * The error is shown in a pop up window which can be exited by pressing ESCAPE button
      * It resets the value to the original on after exiting the error window
-     * @param event
      * @throws IOException
      */
     @FXML
-    void selectColor5(ActionEvent event) throws IOException {
+    void selectColor5() throws IOException {
         Color c=color5.getValue();
         MainPage.colours[4]=c;
         if(c.equals(Color.WHITE))
@@ -595,11 +590,10 @@ public class SettingsController {
      * If the colour selected is already selected by another player then also it shows an error
      * The error is shown in a pop up window which can be exited by pressing ESCAPE button
      * It resets the value to the original on after exiting the error window
-     * @param event
      * @throws IOException
      */
     @FXML
-    void selectColor6(ActionEvent event) throws IOException {
+    void selectColor6() throws IOException {
         Color c=color6.getValue();
         MainPage.colours[5]=c;
         if(c.equals(Color.WHITE))
@@ -690,11 +684,10 @@ public class SettingsController {
      * If the colour selected is already selected by another player then also it shows an error
      * The error is shown in a pop up window which can be exited by pressing ESCAPE button
      * It resets the value to the original on after exiting the error window
-     * @param event
      * @throws IOException
      */
     @FXML
-    void selectColor7(ActionEvent event) throws IOException {
+    void selectColor7() throws IOException {
         Color c=color7.getValue();
         MainPage.colours[6]=c;
         if(c.equals(Color.WHITE))
@@ -785,11 +778,10 @@ public class SettingsController {
      * If the colour selected is already selected by another player then also it shows an error
      * The error is shown in a pop up window which can be exited by pressing ESCAPE button
      * It resets the value to the original on after exiting the error window
-     * @param event
      * @throws IOException
      */
     @FXML
-    void selectColor8(ActionEvent event) throws IOException {
+    void selectColor8() throws IOException {
         Color c=color8.getValue();
         MainPage.colours[7]=c;
         /*
