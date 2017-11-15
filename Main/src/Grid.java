@@ -272,6 +272,10 @@ public class Grid implements Serializable {
      * Restarts the game by resetting all the values.
      */
     void restartGame() {
+        // If no move has been made
+        if (flag==0)
+            return;
+
         removeGridNodes();
         matrix=new Ball[n][m];
         s_matrix=new SerializableBall[n][m];
@@ -293,6 +297,10 @@ public class Grid implements Serializable {
             for(int j=0;j<m;j++)
                 GamePage.makeBoxClickable(i, j);
         gamePage.setUndoLabel(-1);
+
+        // Delete File
+        File file=new File("game.dat");
+        file.delete();
     }
 
     /**
