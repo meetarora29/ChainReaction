@@ -30,7 +30,7 @@ public class MainPage extends Application {
      * our game starts.
      * Whenever our game starts it calls function initColours()
      * which initialises the Color array.
-     * @param args
+     * @param args Any arguments as input
      */
     public static void main(String[] args)
     {
