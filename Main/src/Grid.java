@@ -382,10 +382,14 @@ public class Grid implements Serializable {
     /**
      * Returns a boolean signifying whether the player has lost ie the player
      * does not have any balls left on the grid.
+     * If flag is 1, the function call has been made from the prevPlayer
+     * function and so no update to the player's hasLost value should be
+     * made because the player cannot lose on undo.
      *
+     * @param flag is an integer value that specifies where the call was made from
      * @return true if the player has lost and false otherwise
      */
-    private boolean hasPlayerLost() {
+    private boolean hasPlayerLost(int flag) {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
                 if(matrix[i][j]!=null && matrix[i][j].getColor().equals(players[curr_player].getColor())) {
@@ -395,6 +399,8 @@ public class Grid implements Serializable {
             }
         }
         players[curr_player].setHasLost(true);
+        if(flag==1)
+            players[curr_player].setHasLost(false);
         return true;
     }
 
@@ -413,7 +419,7 @@ public class Grid implements Serializable {
             gamePage.setUndoLabel(players[returnPrevPlayer()].getUndo());
 
         // If while undo, the player's balls get deleted, mark that player has not taken turn
-        if(!players[curr_player].hasLost() && hasPlayerLost())
+        if(!players[curr_player].hasLost() && hasPlayerLost(1))
             players[curr_player].setTakenTurn(false);
 
         if(players[curr_player].getClass()==Computer.class)
@@ -435,7 +441,7 @@ public class Grid implements Serializable {
 
         if(players[curr_player].getClass()==Computer.class)
             players[curr_player].takeTurn(matrix, n, m);
-        else if(players[curr_player].hasTakenTurn() && hasPlayerLost())
+        else if(players[curr_player].hasTakenTurn() && hasPlayerLost(0))
             nextPlayer();
     }
 
