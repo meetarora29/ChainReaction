@@ -18,10 +18,9 @@ public class quit2Controller {
     /**
      * onAction function of the no button
      * it closes the quit window
-     * @param event
      */
     @FXML
-    void clickNo(ActionEvent event) {
+    void clickNo() {
         GameOverController.stage1.close();
 
     }
@@ -29,7 +28,8 @@ public class quit2Controller {
     /**
      * onKeyPressed function of the no button
      * it closes the quit window
-     * @param event
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      */
     @FXML
     void clickNo1(javafx.scene.input.KeyEvent event) {
@@ -41,10 +41,9 @@ public class quit2Controller {
     /**
      * onAction function of the Yes button
      * it quits the game and close all the windows
-     * @param event
      */
     @FXML
-    void clickYes(ActionEvent event) {
+    void clickYes() {
         MainPage.window.close();
         Grid.stage.close();
         GameOverController.stage1.close();
@@ -53,7 +52,8 @@ public class quit2Controller {
     /**
      * onKeyPressed function of the Yes button
      * it quits the game and close all the windows
-     * @param event
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      */
     @FXML
     void clickYes1(javafx.scene.input.KeyEvent event) {

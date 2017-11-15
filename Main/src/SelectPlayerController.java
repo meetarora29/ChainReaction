@@ -23,8 +23,8 @@ import java.util.Observable;
  * This class is just like Pair class
  * The only difference is in the toString function
  * Which was needed to display in the choice-box used further
- * @param <T1>
- * @param <T2>
+ * @param <T1> First Generic type grid's columns will be based on
+ * @param <T2> Second Generic type grid's rows will be based on
  * @author Gagandeep Singh-2016037
  */
 class P<T1,T2>
@@ -117,10 +117,9 @@ public class SelectPlayerController {
 
     /**
      * onAction function for play button
-     * @param event
      */
     @FXML
-    void clickPlay(ActionEvent event) {
+    void clickPlay() {
             GamePage gamePage=new GamePage();
             gamePage.setN(getGridSize().getKey());
             gamePage.setM(getGridSize().getValue());
@@ -134,7 +133,8 @@ public class SelectPlayerController {
 
     /**
      * onKeyPressed function for play button
-     * @param event
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      */
     @FXML
     void clickPlay1(KeyEvent event) {
@@ -150,11 +150,10 @@ public class SelectPlayerController {
 
     /**
      * onAction function for the back button
-     * @param event
      * @throws IOException
      */
     @FXML
-    void clickBack(ActionEvent event) throws IOException{
+    void clickBack() throws IOException{
         Path path= Paths.get("game.dat");
         AnchorPane pane;
         if(Files.exists(path)) {
@@ -170,7 +169,8 @@ public class SelectPlayerController {
 
     /**
      * onKeyPressed function for the back button
-     * @param event
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      * @throws IOException
      */
     @FXML
@@ -190,7 +190,7 @@ public class SelectPlayerController {
 
     /**
      * function that returns the number of players selected by the user
-     * @return
+     * @return number of players
      */
     public int getNumberOfPlayers()
     {
@@ -201,7 +201,7 @@ public class SelectPlayerController {
 
     /**
      * function that returns the grid size selected by the user
-     * @return
+     * @return grid size
      */
     public P<Integer,Integer> getGridSize()
     {

@@ -33,11 +33,10 @@ public class GameOverController {
 
     /**
      * onAction function for New Game button
-     * @param event
      * @throws IOException
      */
     @FXML
-    void clickNewGame(ActionEvent event) throws IOException{
+    void clickNewGame() throws IOException{
         GamePage.destroyGrid();
         AnchorPane pane= FXMLLoader.load(getClass().getResource("fxml_files/selectplayer.fxml"));
 
@@ -54,7 +53,8 @@ public class GameOverController {
 
     /**
      * onKeyPressed function for New Game button
-     * @param event
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      * @throws IOException
      */
     @FXML
@@ -77,11 +77,10 @@ public class GameOverController {
 
     /**
      * onAction function for Ouit button
-     * @param event
      * @throws IOException
      */
     @FXML
-    void clickQuit(ActionEvent event) throws IOException {
+    void clickQuit() throws IOException {
         stage1 = new Stage();
         stage1.setResizable(false);
         stage1.initModality(Modality.APPLICATION_MODAL);
@@ -93,7 +92,8 @@ public class GameOverController {
 
     /**
      * onKeyPressed function for Ouit button
-     * @param event
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      * @throws IOException
      */
     @FXML
@@ -111,10 +111,9 @@ public class GameOverController {
 
     /**
      * onAction function for Restart button
-     * @param event
      */
     @FXML
-    void clickRestart(ActionEvent event) {
+    void clickRestart() {
         Grid.stage.close();
         Grid grid=GamePage.getGrid();
         if(grid.win_player!=null)
@@ -124,7 +123,8 @@ public class GameOverController {
 
     /**
      * onKeyPR\ressed function for Restart button
-     * @param event
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      */
     @FXML
     void clickRestart1(KeyEvent event) {

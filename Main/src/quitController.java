@@ -16,17 +16,17 @@ public class quitController {
     /**
      * onAction function of the no button
      * it closes the quit window
-     * @param event
      */
     @FXML
-    void clickNo(ActionEvent event) {
+    void clickNo() {
         MainController.stage.close();
     }
 
     /**
      * onKeyPressed function of the no button
      * it closes the quit window
-     * @param event
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      */
     @FXML
     void clickNo1(KeyEvent event) throws IOException {
@@ -39,11 +39,10 @@ public class quitController {
 
     /**
      * onAction function of YES button
-     * @param event
      * @throws IOException
      */
     @FXML
-    void clickYes(ActionEvent event) throws IOException {
+    void clickYes() throws IOException {
 
         Grid grid=GamePage.getGrid();
         //Checking if the game is finished or not and if there is a grid that is not destroyed if(grid!=null && grid.isNotEnded())
@@ -60,7 +59,8 @@ public class quitController {
 
     /**
      * onKeyPressed function of YES button
-     * @param event
+     * @param event This event is a key event which checks whether the key
+     *              pressed is ENTER or not
      * @throws IOException
      */
     @FXML
