@@ -5,6 +5,7 @@ import java.util.Stack;
  * that limits the size of the stack to the defined maximum size.
  *
  * @param <T> is the generic type the stack will be based on
+ * @author Meet Arora
  */
 class myStack<T> extends Stack<T> {
     private int max_size;

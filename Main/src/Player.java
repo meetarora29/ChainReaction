@@ -9,6 +9,8 @@ import java.util.Random;
  * The Player class is used to portray the players who are playing the game.
  * It defines the color of the player and the number of undo moves the player
  * can perform.
+ *
+ * @author Meet Arora
  */
 class Player implements Serializable {
     private transient Color color;
@@ -134,6 +136,11 @@ class Player implements Serializable {
     }
 }
 
+/**
+ * Computer class is used to make a simple AI opponent for single-
+ * player mode.
+ * @author Meet Arora
+ */
 class Computer extends Player implements Serializable {
     
     private static final long serialVersionUID = 4L;

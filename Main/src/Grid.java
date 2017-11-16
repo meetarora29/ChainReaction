@@ -26,8 +26,11 @@ import java.util.ArrayList;
  * It supports all the features and properties of the game.
  * It contains the players, the balls, media players, stacks that
  * are required for the functioning of the game.
+ *
+ * @author Meet Arora
  */
 public class Grid implements Serializable {
+    private static Grid instance=null;
     private int n, m;
     private transient GamePage gamePage;
     private transient Ball[][] matrix, prev_state;
@@ -59,7 +62,7 @@ public class Grid implements Serializable {
      * @param players is the array of Players playing the game
      * @param gamePage is the GamePage object
      */
-    Grid(int n, int m, GridPane grid, Player[] players, GamePage gamePage) {
+    private Grid(int n, int m, GridPane grid, Player[] players, GamePage gamePage) {
         this.n=n;
         this.m=m;
         this.gamePage = gamePage;
@@ -80,6 +83,30 @@ public class Grid implements Serializable {
             animation_threshold=500;
         else
             animation_threshold=1000;
+    }
+
+    /**
+     * Making the Grid class as singleton.
+     *
+     * @param n is the number of rows
+     * @param m is the number of columns
+     * @param grid is the GridPane which will be used for the layout
+     * @param players is the array of Players playing the game
+     * @param gamePage is the GamePage object
+     * @return the sole Grid instance of the class
+     */
+    static Grid getInstance(int n, int m, GridPane grid, Player[] players, GamePage gamePage) {
+        if(instance==null)
+            instance=new Grid(n, m, grid, players, gamePage);
+        return instance;
+    }
+
+    /**
+     * Reset the object so that a new game doesn't have an old instance.
+     */
+    static void resetInstance() {
+        if(instance!=null)
+            instance=null;
     }
 
     /**
