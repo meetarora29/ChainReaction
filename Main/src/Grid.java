@@ -26,8 +26,11 @@ import java.util.ArrayList;
  * It supports all the features and properties of the game.
  * It contains the players, the balls, media players, stacks that
  * are required for the functioning of the game.
+ *
+ * @author Meet Arora
  */
 public class Grid implements Serializable {
+    private static Grid instance=null;
     private int n, m;
     private transient GamePage gamePage;
     private transient Ball[][] matrix, prev_state;
@@ -59,7 +62,7 @@ public class Grid implements Serializable {
      * @param players is the array of Players playing the game
      * @param gamePage is the GamePage object
      */
-    Grid(int n, int m, GridPane grid, Player[] players, GamePage gamePage) {
+    private Grid(int n, int m, GridPane grid, Player[] players, GamePage gamePage) {
         this.n=n;
         this.m=m;
         this.gamePage = gamePage;
@@ -80,6 +83,30 @@ public class Grid implements Serializable {
             animation_threshold=500;
         else
             animation_threshold=1000;
+    }
+
+    /**
+     * Making the Grid class as singleton.
+     *
+     * @param n is the number of rows
+     * @param m is the number of columns
+     * @param grid is the GridPane which will be used for the layout
+     * @param players is the array of Players playing the game
+     * @param gamePage is the GamePage object
+     * @return the sole Grid instance of the class
+     */
+    static Grid getInstance(int n, int m, GridPane grid, Player[] players, GamePage gamePage) {
+        if(instance==null)
+            instance=new Grid(n, m, grid, players, gamePage);
+        return instance;
+    }
+
+    /**
+     * Reset the object so that a new game doesn't have an old instance.
+     */
+    static void resetInstance() {
+        if(instance!=null)
+            instance=null;
     }
 
     /**
@@ -272,6 +299,10 @@ public class Grid implements Serializable {
      * Restarts the game by resetting all the values.
      */
     void restartGame() {
+        // If no move has been made
+        if (flag==0)
+            return;
+
         removeGridNodes();
         matrix=new Ball[n][m];
         s_matrix=new SerializableBall[n][m];
@@ -293,6 +324,13 @@ public class Grid implements Serializable {
             for(int j=0;j<m;j++)
                 GamePage.makeBoxClickable(i, j);
         gamePage.setUndoLabel(-1);
+
+        if(computerMode==1)
+            GamePage.borderPane.requestFocus();
+
+        // Delete File
+        File file=new File("game.dat");
+        file.delete();
     }
 
     /**
@@ -327,6 +365,8 @@ public class Grid implements Serializable {
         prevPlayer();
 
         if(moveStack.size()==1 && load==1)
+            gamePage.setUndoLabel(-1);
+        if(moveStack.empty())
             gamePage.setUndoLabel(-1);
     }
 
@@ -382,10 +422,15 @@ public class Grid implements Serializable {
     /**
      * Returns a boolean signifying whether the player has lost ie the player
      * does not have any balls left on the grid.
+     * If flag is 1, the function call has been made from the prevPlayer
+     * function and so no update to the player's hasLost value should be
+     * made because the player cannot lose on undo.
      *
+     * @param flag is an integer value that specifies where the call was made from
+     * @param curr_player is an integer value that specifies the index of the player
      * @return true if the player has lost and false otherwise
      */
-    private boolean hasPlayerLost() {
+    private boolean hasPlayerLost(int flag, int curr_player) {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
                 if(matrix[i][j]!=null && matrix[i][j].getColor().equals(players[curr_player].getColor())) {
@@ -395,6 +440,8 @@ public class Grid implements Serializable {
             }
         }
         players[curr_player].setHasLost(true);
+        if(flag==1)
+            players[curr_player].setHasLost(false);
         return true;
     }
 
@@ -413,7 +460,7 @@ public class Grid implements Serializable {
             gamePage.setUndoLabel(players[returnPrevPlayer()].getUndo());
 
         // If while undo, the player's balls get deleted, mark that player has not taken turn
-        if(!players[curr_player].hasLost() && hasPlayerLost())
+        if(!players[curr_player].hasLost() && hasPlayerLost(1, curr_player))
             players[curr_player].setTakenTurn(false);
 
         if(players[curr_player].getClass()==Computer.class)
@@ -433,10 +480,33 @@ public class Grid implements Serializable {
         if(computerMode==0)
             gamePage.setUndoLabel(players[returnPrevPlayer()].getUndo());
 
+        didPlayerLose();
+
         if(players[curr_player].getClass()==Computer.class)
             players[curr_player].takeTurn(matrix, n, m);
-        else if(players[curr_player].hasTakenTurn() && hasPlayerLost())
+        else if(players[curr_player].hasTakenTurn() && hasPlayerLost(0, curr_player))
             nextPlayer();
+    }
+
+    /**
+     * Checks if any player has lost in the previous turn.
+     * If yes, clears the stack so that undo cannot be done.
+     */
+    private void didPlayerLose() {
+        if(computerMode==0) {
+            for(int i=0;i<numPlayers;i++) {
+                if(!players[i].hasLost() && players[i].hasTakenTurn()) {
+                    if (hasPlayerLost(0, i)) {
+                        System.out.println("here"+i);
+                        moveStack.clear();
+                        moveStack.push(matrix);
+                        load=1;
+                    }
+                }
+            }
+        }
+        if(load==1 && moveStack.size()==1)
+            gamePage.setUndoLabel(-1);
     }
 
     /**

@@ -8,6 +8,8 @@ import java.io.Serializable;
 /**
  * A Serializable version of the Ball class.
  * Used only when saving or resuming a game.
+ *
+ * @author Meet Arora
  */
 class SerializableBall implements Serializable {
     private int mass;
@@ -42,6 +44,8 @@ class SerializableBall implements Serializable {
  * Ball class is used to display circles on the grid for the game.
  * It inherits from Circle which is non-serializable class. Hence, the need
  * for the SerializableBall class.
+ *
+ * @author Meet Arora
  */
 class Ball extends Circle {
     private int mass;

@@ -27,6 +27,8 @@ import java.util.ArrayList;
  * myRectangle is a custom class inheriting from Rectangle and contains
  * information of the coordinates in the grid they occupy.
  * The objects of this class will be used to create the visual grid for the game.
+ *
+ * @author Meet Arora
  */
 class myRectangle extends Rectangle {
     Point p;
@@ -45,13 +47,15 @@ class myRectangle extends Rectangle {
 /**
  * GamePage is the class used to signify the page the game will be played on.
  * It contains all the components required to make the visual page.
+ *
+ * @author Meet Arora
  */
 class GamePage {
     private static int n, m,numPlayers;
     private static GridPane grid=new GridPane();
     private static Grid g;
     private static myRectangle[][] box;
-    private static BorderPane borderPane;
+    static BorderPane borderPane;
     private static Player[] players;
     private HBox hBox1;
     private Label undo_label;
@@ -497,7 +501,8 @@ class GamePage {
         if(numPlayers==1)
             players = new Player[2];
         Color[] colors;
-        g=new Grid(n, m, grid, players, this);
+        Grid.resetInstance();
+        g=Grid.getInstance(n, m, grid, players, this);
         borderPane=new BorderPane(grid);
         setBorderPaneProperties();
 
