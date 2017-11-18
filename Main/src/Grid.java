@@ -82,7 +82,7 @@ public class Grid implements Serializable {
         if(n==9)
             animation_threshold=500;
         else
-            animation_threshold=1000;
+            animation_threshold=1250;
     }
 
     /**
