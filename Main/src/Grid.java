@@ -325,6 +325,9 @@ public class Grid implements Serializable {
                 GamePage.makeBoxClickable(i, j);
         gamePage.setUndoLabel(-1);
 
+        if(computerMode==1)
+            GamePage.borderPane.requestFocus();
+
         // Delete File
         File file=new File("game.dat");
         file.delete();

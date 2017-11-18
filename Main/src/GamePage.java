@@ -55,7 +55,7 @@ class GamePage {
     private static GridPane grid=new GridPane();
     private static Grid g;
     private static myRectangle[][] box;
-    private static BorderPane borderPane;
+    static BorderPane borderPane;
     private static Player[] players;
     private HBox hBox1;
     private Label undo_label;
