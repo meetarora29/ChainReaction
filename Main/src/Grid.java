@@ -363,6 +363,8 @@ public class Grid implements Serializable {
 
         if(moveStack.size()==1 && load==1)
             gamePage.setUndoLabel(-1);
+        if(moveStack.empty())
+            gamePage.setUndoLabel(-1);
     }
 
     /**
@@ -422,9 +424,10 @@ public class Grid implements Serializable {
      * made because the player cannot lose on undo.
      *
      * @param flag is an integer value that specifies where the call was made from
+     * @param curr_player is an integer value that specifies the index of the player
      * @return true if the player has lost and false otherwise
      */
-    private boolean hasPlayerLost(int flag) {
+    private boolean hasPlayerLost(int flag, int curr_player) {
         for(int i=0;i<n;i++) {
             for(int j=0;j<m;j++) {
                 if(matrix[i][j]!=null && matrix[i][j].getColor().equals(players[curr_player].getColor())) {
@@ -454,7 +457,7 @@ public class Grid implements Serializable {
             gamePage.setUndoLabel(players[returnPrevPlayer()].getUndo());
 
         // If while undo, the player's balls get deleted, mark that player has not taken turn
-        if(!players[curr_player].hasLost() && hasPlayerLost(1))
+        if(!players[curr_player].hasLost() && hasPlayerLost(1, curr_player))
             players[curr_player].setTakenTurn(false);
 
         if(players[curr_player].getClass()==Computer.class)
@@ -474,10 +477,31 @@ public class Grid implements Serializable {
         if(computerMode==0)
             gamePage.setUndoLabel(players[returnPrevPlayer()].getUndo());
 
+        playerLose();
+
         if(players[curr_player].getClass()==Computer.class)
             players[curr_player].takeTurn(matrix, n, m);
-        else if(players[curr_player].hasTakenTurn() && hasPlayerLost(0))
+        else if(players[curr_player].hasTakenTurn() && hasPlayerLost(0, curr_player))
             nextPlayer();
+    }
+
+    /**
+     * Checks if any player has lost in the previous turn.
+     * If yes, clears the stack so that undo cannot be done.
+     */
+    private void playerLose() {
+        if(computerMode==0) {
+            for(int i=0;i<numPlayers;i++) {
+                if(!players[i].hasLost() && players[i].hasTakenTurn()) {
+                    if (hasPlayerLost(0, i)) {
+                        System.out.println("here"+i);
+                        moveStack.clear();
+                    }
+                }
+            }
+        }
+        if(moveStack.empty())
+            gamePage.setUndoLabel(-1);
     }
 
     /**
