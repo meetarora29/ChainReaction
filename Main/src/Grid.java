@@ -480,7 +480,7 @@ public class Grid implements Serializable {
         if(computerMode==0)
             gamePage.setUndoLabel(players[returnPrevPlayer()].getUndo());
 
-        playerLose();
+        didPlayerLose();
 
         if(players[curr_player].getClass()==Computer.class)
             players[curr_player].takeTurn(matrix, n, m);
@@ -492,18 +492,20 @@ public class Grid implements Serializable {
      * Checks if any player has lost in the previous turn.
      * If yes, clears the stack so that undo cannot be done.
      */
-    private void playerLose() {
+    private void didPlayerLose() {
         if(computerMode==0) {
             for(int i=0;i<numPlayers;i++) {
                 if(!players[i].hasLost() && players[i].hasTakenTurn()) {
                     if (hasPlayerLost(0, i)) {
                         System.out.println("here"+i);
                         moveStack.clear();
+                        moveStack.push(matrix);
+                        load=1;
                     }
                 }
             }
         }
-        if(moveStack.empty())
+        if(load==1 && moveStack.size()==1)
             gamePage.setUndoLabel(-1);
     }
 
