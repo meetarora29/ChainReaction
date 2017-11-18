@@ -366,8 +366,6 @@ public class Grid implements Serializable {
 
         if(moveStack.size()==1 && load==1)
             gamePage.setUndoLabel(-1);
-        if(moveStack.empty())
-            gamePage.setUndoLabel(-1);
     }
 
     /**
